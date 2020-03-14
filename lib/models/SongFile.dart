@@ -27,4 +27,8 @@ class SongFile {
 
     return "$hours:$minutes:$seconds $day/$month/$year";
   }
+
+  bool isEmpty() {
+    return this.title.isEmpty || this.text.isEmpty;
+  }
 }

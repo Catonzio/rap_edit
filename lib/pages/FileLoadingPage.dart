@@ -5,6 +5,8 @@ import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/main.dart';
 import 'package:rap_edit/models/SongFile.dart';
 
+import 'TabBarsPage.dart';
+
 class FileLoadingPage extends StatefulWidget {
   static const routeName = '/filesPage';
 
@@ -44,6 +46,16 @@ class FileLoadingPageState extends State<FileLoadingPage> {
                       );
                     },
                   ),
+                ),
+                MaterialButton(
+                  child: Text(
+                    "Return home",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () => {
+                    debugPrint(Navigator.popAndPushNamed(context, TabBarPage.routeName).toString())
+                  },
+                  color: Colors.grey,
                 )
               ]
           ),
@@ -59,7 +71,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   }
 
   loadFile(int index) {
-    Navigator.pushNamed(context, TabBarDemo.routeName, arguments: file[index]);
+    Navigator.popAndPushNamed(context, TabBarPage.routeName, arguments: file[index]);
   }
 
   getOnlyFirstLine(String text) {

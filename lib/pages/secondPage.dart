@@ -4,18 +4,21 @@ import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
 import 'package:rap_edit/models/SongFile.dart';
 
 import '../custom_widgets/floatingButtonsCarouselPage.dart';
+import '../models/SongFile.dart';
 import 'FileLoadingPage.dart';
 
 // ignore: must_be_immutable
 class SecondPage extends StatefulWidget {
   static String routeName = "/secondPage";
   SecondPageState state;
-  SongFile currentFile;
-
-  SecondPage(this.currentFile);
-
   @override
-  SecondPageState createState() => state = SecondPageState(currentFile);
+  SecondPageState createState() =>  state = SecondPageState();
+
+  setCurrentSong(SongFile song) {
+    if(state != null)
+      state.setCurrentSong(song);
+  }
+
 }
 
 class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMixin {
@@ -23,25 +26,25 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
   final TextStyle stileIntestazioni = new TextStyle(color: Colors.white, fontSize: 20);
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
-  SongFile currentFile;
-
-  SecondPageState(this.currentFile);
-
-  void setCurrentFile(currentFile) {
-    this.currentFile = currentFile;
-  }
+  static SongFile currentFile;
 
   @override
   bool get wantKeepAlive => true;
 
+  setCurrentSong(SongFile song) {
+      if(song != null && !song.isEmpty()) {
+        currentFile = song;
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    if(currentFile != null && (currentFile.title != null || currentFile.title.isEmpty)) {
+    if(currentFile != null) {
       textController.text = currentFile.text;
       titleController.text = currentFile.title;
+      debugPrint("ooooooooooooooo " + textController.text);
+      debugPrint("ooooooooooooooo " + titleController.text);
     }
-
     final titleText = TextField(
       obscureText: false,
       cursorColor: Colors.white,
@@ -100,6 +103,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
   }
 
   deleteText() {
+      this.setCurrentSong(new SongFile("", "", ""));
       titleController.clear();
       textController.clear();
   }
@@ -110,7 +114,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
   }
 
   void loadFiles(BuildContext context) {
-    Navigator.pushNamed(context, FileLoadingPage.routeName);
+    Navigator.popAndPushNamed(context, FileLoadingPage.routeName);
   }
 
 }

@@ -9,32 +9,31 @@ class FirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          color: Colors.black87,
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                MaterialButton(
-                  child: Text(
-                    "Load"
-                  ),
-                  onPressed: () => { loadFile() },
-                ),
-                TextField(
-                  readOnly: true,
-                  controller: controller,
-                )
-              ],
+        backgroundColor: Colors.black87,
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              Text(
+              "Hello peppe",
+              style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.white
+              ),
             ),
+              MaterialButton(
+                child: Text(
+                  "Clicca qui",
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: Colors.white
+                    ),
+                  ),
+                color: Colors.blue,
+              )
+            ],
           ),
-        )
+        ),
     );
   }
 
-  loadFile() async {
-
-    filePath = await FilePicker.getFilePath(type: FileType.ANY);
-    debugPrint("ooooo $filePath");
-    controller.text = filePath;
-  }
 }

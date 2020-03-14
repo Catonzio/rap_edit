@@ -3,6 +3,11 @@ import 'dart:math' as math;
 
 import 'package:rap_edit/pages/secondPage.dart';
 
+import '../main.dart';
+import '../main.dart';
+import '../pages/TabBarsPage.dart';
+import '../pages/secondPage.dart';
+
 class FloatingButtonsCarousel extends StatefulWidget {
   final SecondPageState secondPage;
   FloatingButtonsCarousel(this.secondPage);
@@ -143,14 +148,16 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
-      onPressed:  () { Navigator.pop(context); },
+      onPressed: () {
+            Navigator.popAndPushNamed(context, TabBarPage.routeName);
+        },
     );
     Widget continueButton = FlatButton(
       child: Text("Continue"),
       onPressed:  () {
         if(this.secondPage != null) {
           this.secondPage.deleteText();
-          Navigator.pop(context);
+          Navigator.popAndPushNamed(context, TabBarPage.routeName);
         }
         else
           debugPrint("fuck");
