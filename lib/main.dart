@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/pages/prove.dart';
@@ -19,7 +20,7 @@ class TabBarDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+  debugPrint("oooooooooooooooooooo " + FileType.AUDIO.toString());
     FileController.setDirectoryPath();
     return MaterialApp(
 
