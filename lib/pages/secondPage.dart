@@ -53,11 +53,12 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "insert title",
-          hintStyle: TextStyle(color: Colors.grey),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 2.0),
-            borderRadius: BorderRadius.circular(8.0)
+          hintStyle: TextStyle(color: Colors.white),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+              borderRadius: BorderRadius.circular(8.0)
           ),
+
       ),
       controller: titleController
     );
@@ -71,9 +72,9 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "insert text",
-          hintStyle: TextStyle(color: Colors.grey),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 2.0),
+          hintStyle: TextStyle(color: Colors.white),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
               borderRadius: BorderRadius.circular(8.0)
           ),
       ),
@@ -81,7 +82,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
     );
 
     return Scaffold(
-        backgroundColor: Colors.black87,
+        //backgroundColor: Colors.black87,
         body: Container(
           child: Center(
             child: Column(

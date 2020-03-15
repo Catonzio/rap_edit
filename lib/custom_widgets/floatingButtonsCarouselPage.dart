@@ -21,7 +21,6 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
   SecondPageState secondPage;
 
   static const List<IconData> icons = const [ Icons.file_download, Icons.save, Icons.delete_forever ];
-  Color backgroundColor = Colors.grey[700];
 
   FloatingButtonsCarouselState(this.secondPage);
 
@@ -41,7 +40,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
         children: generateLittleFloatingButton().toList()..add(
           new FloatingActionButton(
             heroTag: null,
-            backgroundColor: backgroundColor,
+            backgroundColor: Theme.of(context).primaryColor,
             child: new AnimatedBuilder(
               animation: _controller,
               builder: (BuildContext context, Widget child) {
@@ -82,7 +81,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
 
         child: new FloatingActionButton(
           heroTag: null,
-          backgroundColor: backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[0]),
           onPressed: () { secondPage.loadFiles(context); },
@@ -105,7 +104,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
 
         child: new FloatingActionButton(
           heroTag: null,
-          backgroundColor: backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[1]),
           onPressed: () { secondPage.saveFile(); },
@@ -128,7 +127,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
 
         child: new FloatingActionButton(
           heroTag: null,
-          backgroundColor: backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[2]),
           onPressed: () { alertDeleteText(context); },

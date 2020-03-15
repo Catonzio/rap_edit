@@ -50,12 +50,12 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     });
   }
 
-  Slider createSlider() {
+  Slider createSlider(BuildContext context) {
     return Slider(
       value: position.inSeconds.toDouble(),
       min: 0.0,
       max: duration.inSeconds.toDouble(),
-      activeColor: Colors.white,
+      activeColor: Theme.of(context).primaryColor,
       onChanged: (double value) {
         setState(() {
           seekToSecond(value.toInt());
@@ -87,9 +87,6 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   resumeSong() {
     player.resume();
-    if(position.inSeconds == duration.inSeconds -1) {
-      stopSong();
-    }
     updateText(Icons.pause);
   }
 
@@ -129,12 +126,12 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                       child: MaterialButton(
                         //color: Colors.grey,
                         //child: Text('$playPauseButtonText', style: textStyle,),
-                        child: Icon(playPauseIcon, color: Colors.white,),
+                        child: Icon(playPauseIcon, color: Theme.of(context).primaryColor,),
                         onPressed: () => { playPause() },
                       ),
                     )
                   ),
-                  createSlider(),
+                  createSlider(context),
                   Text(
                     getPositionFormatted(),
                     style: textStyle,
@@ -143,7 +140,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     child: Container(
                       width: 40,
                       child: MaterialButton(
-                        child: Icon(Icons.stop, color: Colors.white,),
+                        child: Icon(Icons.stop, color: Theme.of(context).primaryColor,),
                         onPressed: () => { stopSong() },
                       ),
                     ),
@@ -158,10 +155,8 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-
-
                     MaterialButton(
-                      color: Colors.grey,
+                      color: Theme.of(context).primaryColor,
                       child: Text("Load", style: textStyle),
                       onPressed: () => { loadSong() },
                     )
