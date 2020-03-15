@@ -29,6 +29,6 @@ class SongFile {
   }
 
   bool isEmpty() {
-    return this.title.isEmpty || this.text.isEmpty;
+    return this.text.isEmpty;
   }
 }

@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
     @override
@@ -71,9 +72,15 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   loadSong() async {
-    localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
-    player.play(localFilePath, isLocal: true);
-    updateText(Icons.pause);
+    try {
+      localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
+      if (localFilePath != null || localFilePath.isNotEmpty) {
+        player.play(localFilePath, isLocal: true);
+        updateText(Icons.pause);
+      }
+    } catch(ex) {
+
+    }
   }
 
   stopSong() {
@@ -154,10 +161,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    MaterialButton(
-                      color: Theme.of(context).primaryColor,
-                      child: Text("Load", style: textStyle),
-                      onPressed: () => { loadSong() },
+                    CstmButton(
+                      text: "Load",
+                      pressed: () => { loadSong() },
                     )
                   ],
                 ),

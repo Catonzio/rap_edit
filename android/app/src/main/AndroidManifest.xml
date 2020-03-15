@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="rap_edit"
-        android:icon="@mipmap/ic_launcher">
+        android:label="RapEdit"
+        android:icon="@mipmap/rap_edit_logo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
