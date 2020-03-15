@@ -86,11 +86,11 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
           child: Center(
             child: Column(
               children: <Widget>[
-                Container(height: 20,),
+                SizedBox(height: 50,),
                 AudioPlayerWidget(),
                 titleText,
-                Container(height: 20,),
-                Container(height: 10,),
+                SizedBox(height: 20,),
+                SizedBox(height: 20,),
                 Expanded(
                   child: textText,
                 ),

@@ -44,7 +44,7 @@ class TabBarPageState extends State<TabBarPage> {
       length: 4,
       initialIndex: 1,
       child: Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           backgroundColor: Colors.black,
           bottom: TabBar(
             tabs: [
@@ -54,7 +54,7 @@ class TabBarPageState extends State<TabBarPage> {
               Tab(icon: Icon(Icons.settings)),
             ],
           ),
-          title: Text('Rap Edit'),
+          //title: Text('Rap Edit'),
         ),
         body: TabBarView(
           children: [
@@ -63,7 +63,8 @@ class TabBarPageState extends State<TabBarPage> {
             ThirdPage(),
             ProvePage()
           ],
-        ),
+        ),*/
+        body: secondPage,
       ),
     );
   }

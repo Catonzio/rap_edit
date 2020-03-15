@@ -17,6 +17,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static AudioPlayerState playerState;
   String localFilePath;
   String playPauseButtonText = "Play";
+  IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
 
   @override
@@ -24,7 +25,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     super.initState();
     initPlayer();
   }
-  
+
   void initPlayer() {
     if (player == null) {
       player = new AudioPlayer();
@@ -34,7 +35,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
-        setState(() => position = p);
+        setState(() => { position = p });
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -43,9 +44,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     }
   }
 
-  void updateText(String s) {
+  void updateText(IconData data) {
     setState(() {
-      playPauseButtonText = s;
+      playPauseIcon = data;
     });
   }
 
@@ -54,6 +55,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       value: position.inSeconds.toDouble(),
       min: 0.0,
       max: duration.inSeconds.toDouble(),
+      activeColor: Colors.white,
       onChanged: (double value) {
         setState(() {
           seekToSecond(value.toInt());
@@ -72,12 +74,12 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   loadSong() async {
     localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
     player.play(localFilePath, isLocal: true);
-    updateText("Pause");
+    updateText(Icons.pause);
   }
 
   stopSong() {
     player.stop();
-    updateText("Play");
+    updateText(Icons.play_arrow);
     setState(() {
       seekToSecond(0);
     });
@@ -85,12 +87,15 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   resumeSong() {
     player.resume();
-    updateText("Pause");
+    if(position.inSeconds == duration.inSeconds -1) {
+      stopSong();
+    }
+    updateText(Icons.pause);
   }
 
   pauseSong() {
     player.pause();
-    updateText("Play");
+    updateText(Icons.play_arrow);
   }
 
   playPause() {
@@ -109,16 +114,40 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               color: Colors.transparent,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  Center(
+                    child: Container(
+                      width: 40,
+                      child: MaterialButton(
+                        //color: Colors.grey,
+                        //child: Text('$playPauseButtonText', style: textStyle,),
+                        child: Icon(playPauseIcon, color: Colors.white,),
+                        onPressed: () => { playPause() },
+                      ),
+                    )
+                  ),
                   createSlider(),
                   Text(
-                      getPositionFormatted(),
+                    getPositionFormatted(),
                     style: textStyle,
-                  )
+                  ),
+                  Center(
+                    child: Container(
+                      width: 40,
+                      child: MaterialButton(
+                        child: Icon(Icons.stop, color: Colors.white,),
+                        onPressed: () => { stopSong() },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -126,17 +155,11 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               color: Colors.transparent,
               child: Center(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    MaterialButton(
-                      color: Colors.grey,
-                      child: Text('$playPauseButtonText', style: textStyle,),
-                      onPressed: () => { playPause() },
-                    ),
-                    MaterialButton(
-                      color: Colors.grey,
-                      child: Text("Stop", style: textStyle,),
-                      onPressed: () => { stopSong() },
-                    ),
+
+
                     MaterialButton(
                       color: Colors.grey,
                       child: Text("Load", style: textStyle),
