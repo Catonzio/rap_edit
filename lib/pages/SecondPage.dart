@@ -10,7 +10,7 @@ import 'FileLoadingPage.dart';
 
 class SecondPage extends StatefulWidget {
   static String routeName = "/secondPage";
-  SongFile currentSong;
+  final SongFile currentSong;
 
   SecondPage({Key key, this.currentSong});
 

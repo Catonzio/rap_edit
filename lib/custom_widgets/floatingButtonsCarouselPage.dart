@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:rap_edit/pages/secondPage.dart';
-import '../pages/secondPage.dart';
+import 'package:rap_edit/pages/SecondPage.dart';
+import '../pages/SecondPage.dart';
 
 class FloatingButtonsCarousel extends StatefulWidget {
   final SecondPageState secondPage;

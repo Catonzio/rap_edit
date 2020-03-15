@@ -4,7 +4,7 @@ import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/secondPage.dart';
+import 'package:rap_edit/pages/SecondPage.dart';
 
 class FileLoadingPage extends StatefulWidget {
   static const routeName = '/filesPage';

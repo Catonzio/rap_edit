@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/secondPage.dart';
+import 'package:rap_edit/pages/ChoosingBase.dart';
+import 'package:rap_edit/pages/SecondPage.dart';
 import 'pages/FileLoadingPage.dart';
-import 'pages/secondPage.dart';
+import 'pages/SecondPage.dart';
 
 void main() {
   runApp(PageMain());
@@ -32,7 +33,7 @@ class PageMain extends StatelessWidget {
             body1: TextStyle(fontSize: 20.0, fontFamily: 'Hind'),
           ),
       ),
-      home: SecondPage()
+      home: ChoosingBase()
     );
   }
 }
