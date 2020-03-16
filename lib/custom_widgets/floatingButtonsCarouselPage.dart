@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:rap_edit/pages/SecondPage.dart';
-import '../pages/SecondPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
+import '../pages/WritingPage.dart';
 
 class FloatingButtonsCarousel extends StatefulWidget {
-  final SecondPageState secondPage;
+  final WritingPageState secondPage;
   FloatingButtonsCarousel(this.secondPage);
 
   @override
@@ -13,7 +13,7 @@ class FloatingButtonsCarousel extends StatefulWidget {
 
 class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with TickerProviderStateMixin {
   AnimationController _controller;
-  SecondPageState secondPage;
+  WritingPageState secondPage;
 
   static const List<IconData> icons = const [ Icons.file_download, Icons.save, Icons.delete_forever ];
 

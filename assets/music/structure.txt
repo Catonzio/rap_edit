@@ -1,0 +1,2 @@
+music/metronome 100bpm 8-8.mp3
+music/metronome 120bpm 4-4.mp3

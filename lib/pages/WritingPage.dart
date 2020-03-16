@@ -8,26 +8,28 @@ import '../custom_widgets/floatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import 'FileLoadingPage.dart';
 
-class SecondPage extends StatefulWidget {
-  static String routeName = "/secondPage";
+class WritingPage extends StatefulWidget {
+  static String routeName = "/";
   final SongFile currentSong;
+  final localFilePath;
 
-  SecondPage({Key key, this.currentSong});
+  WritingPage({Key key, this.currentSong, this.localFilePath});
 
   @override
-  SecondPageState createState() => SecondPageState(currentSong: currentSong);
+  WritingPageState createState() => WritingPageState(currentSong: currentSong);
 
 }
 
-class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMixin {
+class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
-  static final GlobalKey<ScaffoldState> secondPageScaffold = new GlobalKey<ScaffoldState>();
+  //static final GlobalKey<ScaffoldState> secondPageScaffold = new GlobalKey<ScaffoldState>();
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
   SongFile currentSong;
+  String localFilePath;
 
-  SecondPageState({Key key, this.currentSong});
+  WritingPageState({Key key, this.currentSong, this.localFilePath});
 
   @override
   bool get wantKeepAlive => true;
@@ -40,6 +42,19 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint("Oooooooooooooooo " + ModalRoute.of(context).settings.arguments.toString());
+
+    var argument;
+    if(ModalRoute.of(context) != null) {
+      argument = ModalRoute.of(context).settings.arguments;
+    }
+    if(argument != null && argument is SongFile) {
+      currentSong = argument;
+    }
+    else if(argument != null && argument is String) {
+      localFilePath = argument;
+    }
 
     if(currentSong != null) { setTitleAndText(); }
 
@@ -55,7 +70,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
     );
 
     return Scaffold(
-      key: secondPageScaffold,
+      //key: secondPageScaffold,
       appBar: AppBar(
         title: Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,),
         centerTitle: true,
@@ -66,7 +81,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
             child: Column(
               children: <Widget>[
                 SizedBox(height: 50,),
-                AudioPlayerWidget(),
+                AudioPlayerWidget(localFilePath: localFilePath,),
                 SizedBox(height: 20,),
                 titleText,
                 SizedBox(height: 20,),
@@ -104,7 +119,7 @@ class SecondPageState extends State<SecondPage> with AutomaticKeepAliveClientMix
       content: Text(message, style: TextStyle(color: Colors.white),),
       backgroundColor: Colors.blue,
     );
-    secondPageScaffold.currentState.showSnackBar(snackBar);
+    //secondPageScaffold.currentState.showSnackBar(snackBar);
   }
 
   void loadFiles(BuildContext context) {

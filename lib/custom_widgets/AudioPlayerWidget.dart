@@ -3,10 +3,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
+import 'package:rap_edit/pages/ChoosingBeats.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
-    @override
-    AudioPlayerWidgetState createState() => new AudioPlayerWidgetState();
+  final String localFilePath;
+  AudioPlayerWidget({Key key, @required this.localFilePath});
+  @override
+  AudioPlayerWidgetState createState() => new AudioPlayerWidgetState(localFilePath: localFilePath);
 }
 
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
@@ -16,9 +19,10 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static Duration position = new Duration();
   static AudioPlayerState playerState;
   String localFilePath;
-  String playPauseButtonText = "Play";
   IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
+
+  AudioPlayerWidgetState({Key key, @required this.localFilePath});
 
   @override
   void initState() {
@@ -41,6 +45,10 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
         setState(() => playerState = s);
       });
+    }
+    if(localFilePath != null && localFilePath.isNotEmpty) {
+      player.play(localFilePath, isLocal: true);
+      updateText(Icons.pause);
     }
   }
 
@@ -71,16 +79,17 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     player.seek(newDuration);
   }
 
-  loadSong() async {
-    try {
-      localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
-      if (localFilePath != null || localFilePath.isNotEmpty) {
+  loadSong(BuildContext context) {
+    /*try {
+      localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      if (localFilePath != null && localFilePath.isNotEmpty) {
         player.play(localFilePath, isLocal: true);
         updateText(Icons.pause);
       }
     } catch(ex) {
 
-    }
+    }*/
+    Navigator.pushNamed(context, ChoosingBeats.routeName);
   }
 
   stopSong() {
@@ -163,7 +172,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   children: <Widget>[
                     CstmButton(
                       text: "Load",
-                      pressed: () => { loadSong() },
+                      pressed: () => { loadSong(context) },
                     )
                   ],
                 ),

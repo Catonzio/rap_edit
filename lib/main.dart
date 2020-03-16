@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/ChoosingBase.dart';
-import 'package:rap_edit/pages/SecondPage.dart';
+import 'package:rap_edit/pages/ChoosingBeats.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 import 'pages/FileLoadingPage.dart';
-import 'pages/SecondPage.dart';
+import 'pages/WritingPage.dart';
 
 void main() {
   runApp(PageMain());
@@ -16,10 +16,22 @@ class PageMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FileController.setDirectoryPath();
+    var argument = getArgument(context);
+    WritingPage secondPage;
+    if(argument != null && argument is SongFile) {
+      secondPage = new WritingPage(currentSong: argument,);
+    }
+    else if(argument != null && argument is String) {
+      secondPage = new WritingPage(localFilePath: argument,);
+    }
+    else {
+      secondPage = new WritingPage();
+    }
     return MaterialApp(
       routes: {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
-        SecondPage.routeName: (context) => SecondPage(currentSong: ModalRoute.of(context).settings.arguments),
+        WritingPage.routeName: (context) => secondPage,
+        ChoosingBeats.routeName: (context) => ChoosingBeats()
       },
       theme: ThemeData(
           brightness: Brightness.dark,
@@ -33,7 +45,14 @@ class PageMain extends StatelessWidget {
             body1: TextStyle(fontSize: 20.0, fontFamily: 'Hind'),
           ),
       ),
-      home: ChoosingBase()
     );
+  }
+
+  getArgument(BuildContext context) {
+    var argument;
+    if(ModalRoute.of(context) != null) {
+      argument = ModalRoute.of(context).settings.arguments;
+    }
+    return argument;
   }
 }

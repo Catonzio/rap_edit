@@ -4,7 +4,7 @@ import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/SecondPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 
 class FileLoadingPage extends StatefulWidget {
   static const routeName = '/filesPage';
@@ -47,7 +47,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
                 ),
                 CstmButton(
                   text: "Home",
-                  pressed: () => { Navigator.pushNamed(context, SecondPage.routeName) },
+                  pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
                 ),
                 SizedBox(height: 20,)
               ]
@@ -64,7 +64,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   }
 
   loadFile(int index) {
-    Navigator.popAndPushNamed(context, SecondPage.routeName, arguments: file[index]);
+    Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: file[index]);
   }
 
   getOnlyFirstLine(String text) {
