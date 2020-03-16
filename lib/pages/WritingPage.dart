@@ -43,8 +43,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   Widget build(BuildContext context) {
 
-    debugPrint("Oooooooooooooooo " + ModalRoute.of(context).settings.arguments.toString());
-
     var argument;
     if(ModalRoute.of(context) != null) {
       argument = ModalRoute.of(context).settings.arguments;
@@ -123,7 +121,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   }
 
   void loadFiles(BuildContext context) {
-    Navigator.pushNamed(context, FileLoadingPage.routeName);
+    Navigator.popAndPushNamed(context, FileLoadingPage.routeName);
   }
 
   setTitleAndText() {

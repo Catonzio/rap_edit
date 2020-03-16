@@ -18,6 +18,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static Duration duration = new Duration();
   static Duration position = new Duration();
   static AudioPlayerState playerState;
+  static Slider slider;
   String localFilePath;
   IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
@@ -28,6 +29,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   void initState() {
     super.initState();
     initPlayer();
+  }
+
+  @override
+  void dispose() {
+    player.pause();
+    //updateIcon(Icons.play_arrow);
+    super.dispose();
   }
 
   void initPlayer() {
@@ -45,25 +53,26 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
         setState(() => playerState = s);
       });
+      slider = createSlider();
     }
-    if(localFilePath != null && localFilePath.isNotEmpty) {
+    if(localFilePath != null && localFilePath.isNotEmpty && player != null) {
       player.play(localFilePath, isLocal: true);
-      updateText(Icons.pause);
+      updateIcon(Icons.pause);
     }
   }
 
-  void updateText(IconData data) {
+  void updateIcon(IconData data) {
     setState(() {
       playPauseIcon = data;
     });
   }
 
-  Slider createSlider(BuildContext context) {
+  Slider createSlider() {
     return Slider(
       value: position.inSeconds.toDouble(),
       min: 0.0,
       max: duration.inSeconds.toDouble(),
-      activeColor: Theme.of(context).primaryColor,
+      //activeColor: Theme.of(context).primaryColor,
       onChanged: (double value) {
         setState(() {
           seekToSecond(value.toInt());
@@ -89,31 +98,33 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     } catch(ex) {
 
     }*/
-    Navigator.pushNamed(context, ChoosingBeats.routeName);
+    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
   }
 
   stopSong() {
-    player.stop();
-    updateText(Icons.play_arrow);
-    setState(() {
-      seekToSecond(0);
-    });
+    if(player != null) {
+      player.stop();
+      updateIcon(Icons.play_arrow);
+      setState(() {
+        seekToSecond(0);
+      });
+    }
   }
 
   resumeSong() {
     player.resume();
-    updateText(Icons.pause);
+    updateIcon(Icons.pause);
   }
 
   pauseSong() {
     player.pause();
-    updateText(Icons.play_arrow);
+    updateIcon(Icons.play_arrow);
   }
 
   playPause() {
     if(playerState == AudioPlayerState.PLAYING)
       pauseSong();
-    if(playerState == AudioPlayerState.PAUSED || playerState == AudioPlayerState.STOPPED || playerState == AudioPlayerState.COMPLETED)
+    else if(playerState == AudioPlayerState.PAUSED || playerState == AudioPlayerState.STOPPED || playerState == AudioPlayerState.COMPLETED)
       resumeSong();
   }
 
@@ -122,8 +133,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
+  isPlaying() {
+    return playerState == AudioPlayerState.PLAYING;
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -139,14 +155,12 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     child: Container(
                       width: 40,
                       child: MaterialButton(
-                        //color: Colors.grey,
-                        //child: Text('$playPauseButtonText', style: textStyle,),
                         child: Icon(playPauseIcon, color: Theme.of(context).primaryColor,),
                         onPressed: () => { playPause() },
                       ),
                     )
                   ),
-                  createSlider(context),
+                  slider,
                   Text(
                     getPositionFormatted(),
                     style: textStyle,

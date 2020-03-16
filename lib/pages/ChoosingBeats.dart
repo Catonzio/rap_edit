@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,22 @@ class ChoosingBeats extends StatefulWidget {
 class ChoosingBeatsState extends State<ChoosingBeats> {
 
   List<String> songs = new List();
+  String loadButtonText = "Load";
+  String previewButtonText = "Preview";
+  AudioPlayer player;
+  AudioCache cache;
+  AudioPlayerState playerState;
 
   @override
   void initState() {
     super.initState();
+    //songs = ["metronome_100bpm_8-8.mp3", "metronome_120bpm_4-4.mp3"];
+    player = AudioPlayer();
+    cache = AudioCache(fixedPlayer: player);
+    player.onPlayerStateChanged.listen((AudioPlayerState s) {
+      setState(() => playerState = s);
+    });
     createSongList();
-    debugPrint("oooooooo fetched strings");
   }
 
   @override
@@ -36,10 +47,10 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              /*ListView.builder(
+              ListView.builder(
                 itemCount: songs.length,
+                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  debugPrint("oooooooo Building List");
                   return Card(
                     color: Theme.of(context).primaryColor,
                     child: Column(
@@ -50,10 +61,11 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                         ButtonBar(
                           children: <Widget>[
                             MaterialButton(
-                              child: Text("Load"),
+                              child: Text(loadButtonText),
                             ),
                             MaterialButton(
-                              child: Text("Preview"),
+                              child: Text(previewButtonText),
+                              onPressed: () => { listenPreview(songs[index]) },
                             )
                           ],
                         )
@@ -61,7 +73,8 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                     )
                   );
                 },
-              ),*/
+              ),
+              SizedBox(height: 30,),
               CstmButton(
                 text: "From file System",
                 pressed: () => { loadFromFileSystem(context) },
@@ -79,8 +92,10 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
   }
 
   createSongList() async {
-    String structure = await rootBundle.loadString("assets/music/structure.txt");
+    String structure = await rootBundle.loadString("assets/structure.txt");
+    debugPrint("oooooooooooooooo " + structure);
     this.songs = structure.split("\n");
+    debugPrint("aaaaaaaa " + songs.length.toString());
   }
 
   String getOnlySongName(String song) {
@@ -89,12 +104,26 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         Navigator.pushNamed(context, WritingPage.routeName, arguments: localFilePath);
       }
     } catch(ex) {
 
+    }
+  }
+
+  listenPreview(String song) {
+    if(playerState != AudioPlayerState.PLAYING) {
+      setState(() {
+        previewButtonText = "Stop";
+      });
+      cache.play(song);
+    } else if(playerState == AudioPlayerState.PLAYING) {
+      setState(() {
+        previewButtonText = "Preview";
+      });
+      player.stop();
     }
   }
 
