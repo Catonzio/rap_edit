@@ -31,4 +31,9 @@ class SongFile {
   bool isEmpty() {
     return this.text.isEmpty;
   }
+
+  @override
+  String toString() {
+    return "Title: " + title + "\nTesto: " + text;
+  }
 }

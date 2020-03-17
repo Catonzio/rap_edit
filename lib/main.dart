@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeats.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
@@ -16,21 +17,11 @@ class PageMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FileController.setDirectoryPath();
-    var argument = getArgument(context);
-    WritingPage secondPage;
-    if(argument != null && argument is SongFile) {
-      secondPage = new WritingPage(currentSong: argument,);
-    }
-    else if(argument != null && argument is String) {
-      secondPage = new WritingPage(localFilePath: argument,);
-    }
-    else {
-      secondPage = new WritingPage();
-    }
+
     return MaterialApp(
       routes: {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
-        WritingPage.routeName: (context) => secondPage,
+        WritingPage.routeName: (context) => WritingPage(),
         ChoosingBeats.routeName: (context) => ChoosingBeats()
       },
       theme: ThemeData(

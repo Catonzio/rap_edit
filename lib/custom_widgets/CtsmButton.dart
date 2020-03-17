@@ -30,5 +30,23 @@ class CstmButton extends StatelessWidget {
       ),
     );
   }
+}
 
+class PlayerButton extends StatelessWidget {
+  final IconData icon;
+  final Function pressed;
+
+  PlayerButton({
+    Key key,
+    this.icon,
+    this.pressed
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      child: Icon(icon, color: Theme.of(context).primaryColor),
+      onPressed: () => { pressed },
+    );
+  }
 }

@@ -2,14 +2,14 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/ChoosingBeats.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
-  final String localFilePath;
-  AudioPlayerWidget({Key key, @required this.localFilePath});
+
   @override
-  AudioPlayerWidgetState createState() => new AudioPlayerWidgetState(localFilePath: localFilePath);
+  AudioPlayerWidgetState createState() => new AudioPlayerWidgetState();
 }
 
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
@@ -18,12 +18,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static Duration duration = new Duration();
   static Duration position = new Duration();
   static AudioPlayerState playerState;
-  static Slider slider;
-  String localFilePath;
+
   IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
-
-  AudioPlayerWidgetState({Key key, @required this.localFilePath});
 
   @override
   void initState() {
@@ -33,7 +30,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   void dispose() {
-    player.pause();
+    //player.pause();
     //updateIcon(Icons.play_arrow);
     super.dispose();
   }
@@ -53,10 +50,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
         setState(() => playerState = s);
       });
-      slider = createSlider();
     }
-    if(localFilePath != null && localFilePath.isNotEmpty && player != null) {
-      player.play(localFilePath, isLocal: true);
+    if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
+      player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
       updateIcon(Icons.pause);
     }
   }
@@ -122,10 +118,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   playPause() {
-    if(playerState == AudioPlayerState.PLAYING)
-      pauseSong();
-    else if(playerState == AudioPlayerState.PAUSED || playerState == AudioPlayerState.STOPPED || playerState == AudioPlayerState.COMPLETED)
-      resumeSong();
+    if(SongSingleton.instance.beatPath != null) {
+      if (playerState == AudioPlayerState.PLAYING)
+        pauseSong();
+      else if (playerState == AudioPlayerState.PAUSED ||
+          playerState == AudioPlayerState.STOPPED ||
+          playerState == AudioPlayerState.COMPLETED)
+        resumeSong();
+    }
   }
 
   String getPositionFormatted() {
@@ -154,13 +154,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   Center(
                     child: Container(
                       width: 40,
-                      child: MaterialButton(
-                        child: Icon(playPauseIcon, color: Theme.of(context).primaryColor,),
-                        onPressed: () => { playPause() },
-                      ),
+                      child: PlayerButton(
+                        icon: playPauseIcon,
+                        pressed: playPause(),
+                      )
                     )
                   ),
-                  slider,
+                  createSlider(),
                   Text(
                     getPositionFormatted(),
                     style: textStyle,
@@ -168,30 +168,15 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   Center(
                     child: Container(
                       width: 40,
-                      child: MaterialButton(
-                        child: Icon(Icons.stop, color: Theme.of(context).primaryColor,),
-                        onPressed: () => { stopSong() },
-                      ),
+                      child: PlayerButton(
+                        icon: Icons.stop,
+                        pressed: stopSong(),
+                      )
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              color: Colors.transparent,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    CstmButton(
-                      text: "Load",
-                      pressed: () => { loadSong(context) },
-                    )
-                  ],
-                ),
-              )
-            )
           ],
         ),
       );

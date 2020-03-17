@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 
 import '../custom_widgets/CtsmButton.dart';
@@ -75,7 +76,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                   );
                 },
               ),*/
-              ListView(children: songsCards,),
+              //ListView(children: songsCards,),
               SizedBox(height: 30,),
               CstmButton(
                 text: "From file System",
@@ -109,9 +110,11 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if(localFilePath != null && localFilePath.isNotEmpty) {
-        Navigator.pushNamed(context, WritingPage.routeName, arguments: localFilePath);
+        SongSingleton.instance.beatPath = localFilePath;
+        SongSingleton.instance.isLocal = true;
+        Navigator.popAndPushNamed(context, WritingPage.routeName);
       }
     } catch(ex) {
 

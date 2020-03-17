@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
+import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
+import 'package:rap_edit/pages/ChoosingBeats.dart';
 
 import '../custom_widgets/floatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
@@ -10,13 +13,9 @@ import 'FileLoadingPage.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
-  final SongFile currentSong;
-  final localFilePath;
-
-  WritingPage({Key key, this.currentSong, this.localFilePath});
 
   @override
-  WritingPageState createState() => WritingPageState(currentSong: currentSong);
+  WritingPageState createState() => WritingPageState();
 }
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
@@ -25,13 +24,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
-  SongFile currentSong;
-  String localFilePath;
-
-  WritingPageState({Key key, this.currentSong, this.localFilePath});
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    setTitleAndText();
+  }
 
   @override
   void dispose() {
@@ -41,19 +42,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   @override
   Widget build(BuildContext context) {
-
-    var argument;
-    if(ModalRoute.of(context) != null) {
-      argument = ModalRoute.of(context).settings.arguments;
-    }
-    if(argument != null && argument is SongFile) {
-      currentSong = argument;
-    }
-    else if(argument != null && argument is String) {
-      localFilePath = argument;
-    }
-
-    if(currentSong != null) { setTitleAndText(); }
 
     final titleText = CstmTextField(
       controller: titleController,
@@ -78,7 +66,22 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             child: Column(
               children: <Widget>[
                 SizedBox(height: 50,),
-                AudioPlayerWidget(localFilePath: localFilePath,),
+                AudioPlayerWidget(),
+                Container(
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          CstmButton(
+                            text: "Load",
+                            pressed: () => { loadSong(context) },
+                          )
+                        ],
+                      ),
+                    )
+                ),
                 SizedBox(height: 20,),
                 titleText,
                 SizedBox(height: 20,),
@@ -95,15 +98,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   }
 
   deleteText() {
-      currentSong = null;
-      titleController.clear();
-      textController.clear();
+    SongSingleton.instance.currentSong = null;
+    titleController.clear();
+    textController.clear();
   }
 
   void saveFile(BuildContext context) {
-    currentSong = new SongFile(titleController.text.trim(), textController.text.trim(), null);
-    if(!currentSong.isEmpty()) {
-      FileController.writeFile(currentSong);
+    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
+    if(!SongSingleton.instance.currentSong.isEmpty()) {
+      FileController.writeFile(SongSingleton.instance.currentSong);
       saveSnackbar(titleController.text + " correctly saved!", context);
     }
     else {
@@ -121,12 +124,20 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   }
 
   void loadFiles(BuildContext context) {
+    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
     Navigator.popAndPushNamed(context, FileLoadingPage.routeName);
   }
 
   setTitleAndText() {
-    this.titleController.text = this.currentSong.title;
-    this.textController.text = this.currentSong.text;
+    if(SongSingleton.instance.currentSong != null) {
+      this.titleController.text = SongSingleton.instance.currentSong.title;
+      this.textController.text = SongSingleton.instance.currentSong.text;
+    }
+  }
+
+  loadSong(BuildContext context) {
+    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
+    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
   }
 
 }

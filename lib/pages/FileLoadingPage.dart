@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
@@ -64,7 +65,8 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   }
 
   loadFile(int index) {
-    Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: file[index]);
+    SongSingleton.instance.currentSong = file[index];
+    Navigator.popAndPushNamed(context, WritingPage.routeName);
   }
 
   getOnlyFirstLine(String text) {
