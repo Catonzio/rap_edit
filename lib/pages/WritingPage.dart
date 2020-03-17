@@ -17,7 +17,6 @@ class WritingPage extends StatefulWidget {
 
   @override
   WritingPageState createState() => WritingPageState(currentSong: currentSong);
-
 }
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
@@ -37,7 +36,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   void dispose() {
     super.dispose();
-    this.saveFile();
+    //this.saveFile();
   }
 
   @override
@@ -101,22 +100,23 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       textController.clear();
   }
 
-  void saveFile() {
+  void saveFile(BuildContext context) {
     currentSong = new SongFile(titleController.text.trim(), textController.text.trim(), null);
     if(!currentSong.isEmpty()) {
       FileController.writeFile(currentSong);
-      saveSnackbar(titleController.text + " correctly saved!");
+      saveSnackbar(titleController.text + " correctly saved!", context);
     }
     else {
-      saveSnackbar("Couldn't save the text!");
+      saveSnackbar("Couldn't save the text!", context);
     }
   }
 
-  static saveSnackbar(String message) {
+  static saveSnackbar(String message, BuildContext context) {
     final snackBar = SnackBar(
       content: Text(message, style: TextStyle(color: Colors.white),),
       backgroundColor: Colors.blue,
     );
+    Scaffold.of(context).showSnackBar(snackBar);
     //secondPageScaffold.currentState.showSnackBar(snackBar);
   }
 

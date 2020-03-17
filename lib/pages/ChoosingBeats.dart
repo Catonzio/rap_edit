@@ -20,6 +20,7 @@ class ChoosingBeats extends StatefulWidget {
 class ChoosingBeatsState extends State<ChoosingBeats> {
 
   List<String> songs = new List();
+  List<Widget> songsCards = new List();
   String loadButtonText = "Load";
   String previewButtonText = "Preview";
   AudioPlayer player;
@@ -29,7 +30,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
   @override
   void initState() {
     super.initState();
-    //songs = ["metronome_100bpm_8-8.mp3", "metronome_120bpm_4-4.mp3"];
+    songs = ["metronome_100bpm_8-8.mp3", "metronome_120bpm_4-4.mp3"];
     player = AudioPlayer();
     cache = AudioCache(fixedPlayer: player);
     player.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -47,7 +48,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ListView.builder(
+              /*ListView.builder(
                 itemCount: songs.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
@@ -73,7 +74,8 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                     )
                   );
                 },
-              ),
+              ),*/
+              ListView(children: songsCards,),
               SizedBox(height: 30,),
               CstmButton(
                 text: "From file System",
@@ -92,10 +94,13 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
   }
 
   createSongList() async {
+    //Future<String> structure = rootBundle.loadString("assets/structure.txt");
+    //Future<List<String>> futureSongs = structure.asStream().forEach((str) => { str.split("\n") });
+    //debugPrint("ooooooooo " + futureSongs.toString());
     String structure = await rootBundle.loadString("assets/structure.txt");
-    debugPrint("oooooooooooooooo " + structure);
     this.songs = structure.split("\n");
-    debugPrint("aaaaaaaa " + songs.length.toString());
+    buildSongList();
+    debugPrint("ooooooooo " + songsCards.length.toString());
   }
 
   String getOnlySongName(String song) {
@@ -104,7 +109,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         Navigator.pushNamed(context, WritingPage.routeName, arguments: localFilePath);
       }
@@ -125,6 +130,35 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
       });
       player.stop();
     }
+  }
+
+  void buildSongList() {
+    songs.forEach((song) {
+      songsCards.add(
+        Card(
+          color: Theme.of(context).primaryColor,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(getOnlySongName(song)),
+              ),
+              ButtonBar(
+                children: <Widget>[
+                  MaterialButton(
+                    child: Text(loadButtonText),
+                  ),
+                  MaterialButton(
+                    child: Text(previewButtonText),
+                    onPressed: () => { listenPreview(song) },
+                  )
+                ],
+              )
+            ],
+          )
+        )
+      );
+    });
+    debugPrint("oooooooooooooooo " + songsCards.toString());
   }
 
 }

@@ -102,7 +102,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[1]),
-          onPressed: () { secondPage.saveFile(); },
+          onPressed: () { secondPage.saveFile(context); },
         ),
       ),
     );
@@ -161,6 +161,8 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Deleting"),
+      backgroundColor: Theme.of(context).primaryColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       content: Text("Are you sure you want to delete the text?"),
       actions: [
         cancelButton,
