@@ -1,3 +1,4 @@
+import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,10 @@ class AudioPlayerWidget extends StatefulWidget {
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   static AudioPlayer player;
+  static AudioCache cache;
+  static AudioPlayerState playerState;
   static Duration duration = new Duration();
   static Duration position = new Duration();
-  static AudioPlayerState playerState;
 
   IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
@@ -30,7 +32,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   void dispose() {
-    //player.pause();
+    player.pause();
     //updateIcon(Icons.play_arrow);
     super.dispose();
   }
@@ -50,10 +52,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
         setState(() => playerState = s);
       });
+
+      cache = AudioCache(fixedPlayer: player);
     }
     if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-      player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
-      updateIcon(Icons.pause);
+      //player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
+      //updateIcon(Icons.pause);
+      playPause();
     }
   }
 
@@ -64,37 +69,39 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   Slider createSlider() {
-    return Slider(
-      value: position.inSeconds.toDouble(),
-      min: 0.0,
-      max: duration.inSeconds.toDouble(),
-      //activeColor: Theme.of(context).primaryColor,
-      onChanged: (double value) {
-        setState(() {
-          seekToSecond(value.toInt());
-          value = value;
-          resumeSong();
-        });
-      },
-    );
+    if(SongSingleton.instance.beatPath != null) {
+      return Slider(
+        value: position.inSeconds.toDouble(),
+        min: 0.0,
+        max: duration.inSeconds.toDouble(),
+        //activeColor: Theme.of(context).primaryColor,
+        onChanged: (double value) {
+          setState(() {
+            seekToSecond(value.toInt());
+            value = value;
+            resumeSong();
+          });
+        },
+      );
+    } else {
+      return Slider(
+        value: 0,
+      );
+    }
+  }
+
+  loadSong(BuildContext context) {
+    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
+  }
+
+  String getPositionFormatted() {
+    String pos = position.toString();
+    return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
   void seekToSecond(int sec) {
     Duration newDuration = Duration(seconds: sec);
     player.seek(newDuration);
-  }
-
-  loadSong(BuildContext context) {
-    /*try {
-      localFilePath = await FilePicker.getFilePath(type: FileType.audio);
-      if (localFilePath != null && localFilePath.isNotEmpty) {
-        player.play(localFilePath, isLocal: true);
-        updateText(Icons.pause);
-      }
-    } catch(ex) {
-
-    }*/
-    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
   }
 
   stopSong() {
@@ -108,7 +115,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   resumeSong() {
-    player.resume();
+    //player.resume();
+    if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
+      cache.play(SongSingleton.instance.beatPath);
+    }
+    else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
+      player.play(SongSingleton.instance.beatPath,
+          isLocal: SongSingleton.instance.isLocal);
+    }
     updateIcon(Icons.pause);
   }
 
@@ -121,30 +135,30 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     if(SongSingleton.instance.beatPath != null) {
       if (playerState == AudioPlayerState.PLAYING)
         pauseSong();
-      else if (playerState == AudioPlayerState.PAUSED ||
-          playerState == AudioPlayerState.STOPPED ||
-          playerState == AudioPlayerState.COMPLETED)
+      else if (playerState != AudioPlayerState.PLAYING)
         resumeSong();
     }
   }
 
-  String getPositionFormatted() {
-    String pos = position.toString();
-    return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
-  }
-
-  isPlaying() {
-    return playerState == AudioPlayerState.PLAYING;
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                      SongSingleton.instance.getName(),
+                    textAlign: TextAlign.center,
+                  )
+                )
+              ],
+            ),
             Container(
               color: Colors.transparent,
               child: Row(
@@ -154,10 +168,15 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   Center(
                     child: Container(
                       width: 40,
-                      child: PlayerButton(
+                      child:
+                      /*PlayerButton(
                         icon: playPauseIcon,
                         pressed: playPause(),
-                      )
+                      )*/
+                      MaterialButton(
+                        child: Icon(playPauseIcon, color: Theme.of(context).primaryColor),
+                        onPressed: () => { playPause() },
+                      ),
                     )
                   ),
                   createSlider(),
@@ -168,9 +187,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   Center(
                     child: Container(
                       width: 40,
-                      child: PlayerButton(
+                      child:
+                      /*PlayerButton(
                         icon: Icons.stop,
                         pressed: stopSong(),
+                      )*/
+                      MaterialButton(
+                        child: Icon(Icons.stop, color: Theme.of(context).primaryColor),
+                        onPressed: () => { stopSong() },
                       )
                     ),
                   ),

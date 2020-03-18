@@ -11,6 +11,7 @@ class SongSingleton {
   SongFile currentSong;
   String beatPath;
   bool isLocal;
+  bool isAsset;
 
   SongFile getSongFile() { return currentSong; }
   String getBeatPath() { return beatPath; }
@@ -20,4 +21,10 @@ class SongSingleton {
   setBeatPath(String path) { beatPath = path; }
   setIsLocal(bool itIs) { isLocal = itIs; }
 
+  getName() {
+    if(beatPath != null)
+      return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".mp")).toLowerCase();
+    else
+      return "";
+  }
 }

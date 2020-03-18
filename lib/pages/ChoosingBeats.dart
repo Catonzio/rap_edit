@@ -49,7 +49,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              /*ListView.builder(
+              ListView.builder(
                 itemCount: songs.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
@@ -64,6 +64,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                           children: <Widget>[
                             MaterialButton(
                               child: Text(loadButtonText),
+                              onPressed: () => { loadAsset(songs[index]) }
                             ),
                             MaterialButton(
                               child: Text(previewButtonText),
@@ -75,7 +76,7 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
                     )
                   );
                 },
-              ),*/
+              ),
               //ListView(children: songsCards,),
               SizedBox(height: 30,),
               CstmButton(
@@ -98,10 +99,9 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
     //Future<String> structure = rootBundle.loadString("assets/structure.txt");
     //Future<List<String>> futureSongs = structure.asStream().forEach((str) => { str.split("\n") });
     //debugPrint("ooooooooo " + futureSongs.toString());
-    String structure = await rootBundle.loadString("assets/structure.txt");
-    this.songs = structure.split("\n");
-    buildSongList();
-    debugPrint("ooooooooo " + songsCards.length.toString());
+    //String structure = await rootBundle.loadString("assets/structure.txt");
+    //this.songs = structure.split("\n");
+    //buildSongList();
   }
 
   String getOnlySongName(String song) {
@@ -110,11 +110,12 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         SongSingleton.instance.beatPath = localFilePath;
         SongSingleton.instance.isLocal = true;
-        Navigator.popAndPushNamed(context, WritingPage.routeName);
+        SongSingleton.instance.isAsset = false;
+        Navigator.pushNamed(context, WritingPage.routeName);
       }
     } catch(ex) {
 
@@ -162,6 +163,13 @@ class ChoosingBeatsState extends State<ChoosingBeats> {
       );
     });
     debugPrint("oooooooooooooooo " + songsCards.toString());
+  }
+
+  loadAsset(String song) {
+    SongSingleton.instance.beatPath = song;
+    SongSingleton.instance.isAsset = true;
+    SongSingleton.instance.isLocal = false;
+    Navigator.pushNamed(context, WritingPage.routeName);
   }
 
 }

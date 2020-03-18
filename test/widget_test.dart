@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 
 import 'package:rap_edit/main.dart';
@@ -26,6 +27,10 @@ void main() {
     expect(result, "text.txt");
     expect(result2, "test.mp3");
     expect(result3, "");
+
+    expect("", SongSingleton.instance.getName());
+    SongSingleton.instance.beatPath = "/data/user/0/test/test.mp3";
+    expect(SongSingleton.instance.getName(), "test");
   });
 
   testWidgets('MyWidget has a title and message', (WidgetTester tester) async {

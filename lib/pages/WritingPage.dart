@@ -24,6 +24,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
+  static AudioPlayerWidget player;
 
   @override
   bool get wantKeepAlive => true;
@@ -32,6 +33,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   void initState() {
     super.initState();
     setTitleAndText();
+    player = AudioPlayerWidget();
   }
 
   @override
@@ -66,7 +68,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             child: Column(
               children: <Widget>[
                 SizedBox(height: 50,),
-                AudioPlayerWidget(),
+                player,
                 Container(
                     color: Colors.transparent,
                     child: Center(
