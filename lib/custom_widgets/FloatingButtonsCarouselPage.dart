@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
+import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'dart:math' as math;
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
+import '../controllers/SongSingleton.dart';
 import '../pages/WritingPage.dart';
+import '../support/MyColors.dart';
+import 'CstmTextField.dart';
 
 class FloatingButtonsCarousel extends StatefulWidget {
   final WritingPageState writingPage;
@@ -133,7 +136,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
             backgroundColor: Colors.transparent,
             mini: true,
             child: new Icon(icons[1]),
-            onPressed: () { writingPage.saveFile(context); },
+            onPressed: () => { alertSaveText(context) },
           ),
         )
       ),
@@ -179,17 +182,44 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     return list;
   }
 
-  alertDeleteText(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {
-            Navigator.pop(context);
-        },
+  alertSaveText(BuildContext context) {
+    TextEditingController titleController = new TextEditingController();
+
+    if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty)
+      titleController.text = SongSingleton.instance.currentSong.title;
+
+    Widget alert = CstmAlertDialog(
+      dialogTitle: "Saving",
+      continueText: "Save",
+      height: 100,
+      body: Column(
+        children: <Widget>[
+          Text("How to save?"),
+          SizedBox(height: 20.0,),
+          CstmTextField(
+            controller: titleController,
+            hintText: "insert title",
+          )
+        ],
+      ),
+      pressed: () {
+        if(this.writingPage != null) {
+          this.writingPage.saveFile(context, titleController);
+          Navigator.pop(context);
+        }
+      },
     );
-    Widget continueButton = FlatButton(
-      child: Text("Continue"),
-      onPressed:  () {
+
+    // show the dialog
+    showMyDialog(context, alert);
+  }
+
+  alertDeleteText(BuildContext context) {
+    Widget alert = CstmAlertDialog(
+      body: Text("Are you sure you want to delete the text?"),
+      continueText: "Delete",
+      dialogTitle: "Deleting",
+      pressed: () {
         if(this.writingPage != null) {
           this.writingPage.deleteText();
           Navigator.pop(context);
@@ -198,23 +228,11 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           debugPrint("fuck");
       },
     );
-
-    // set up the AlertDialog
-    Widget alert = CstmBackGround(
-
-      body: AlertDialog(
-        title: Text("Deleting"),
-        backgroundColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        content: Text("Are you sure you want to delete the text?"),
-        actions: [
-          cancelButton,
-          continueButton,
-        ],
-      ),
-    );
-
     // show the dialog
+    showMyDialog(context, alert);
+  }
+
+  showMyDialog(BuildContext context, Widget alert) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

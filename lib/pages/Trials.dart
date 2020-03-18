@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:audio_recorder/audio_recorder.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +9,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
+
+import '../controllers/FileController.dart';
+import '../custom_widgets/CtsmButton.dart';
 
 typedef void OnError(Exception exception);
 ///SERVE PER CARICARE UNA CANZONE DA INTERNET, MA SOLO SE FINISCE PER .MP3 (NO VIDEO DI YT)
@@ -49,25 +54,33 @@ class AudioProvider {
 
 
 class Trials extends StatefulWidget {
-  static String routeName = "/sdfg";
+  static String routeName = "/asd";
   @override
   TrialsState createState() => TrialsState();
 }
 //storage/emulated/0/Download/MAMMASTOMALE (prod. Dade).mp3
 class TrialsState extends State<Trials> {
 
-  AudioPlayer player;
-  AudioCache cache;
-  AudioPlayerState state;
+  PermissionHandler _permissionHandler;
+  bool hasPermissions;
+  bool isRecording;
 
   @override
   void initState() {
     super.initState();
-    player = AudioPlayer();
-    cache = AudioCache(fixedPlayer: player);
-    player.onPlayerStateChanged.listen((AudioPlayerState s) {
-      setState(() => state = s);
-    });
+    _permissionHandler = PermissionHandler();
+    checkPermissions();
+  }
+
+  checkPermissions() async {
+    var result = await _permissionHandler.requestPermissions([PermissionGroup.microphone]);
+    if(result[PermissionGroup.microphone] == PermissionStatus.granted) {
+      hasPermissions = await AudioRecorder.hasPermissions;hasPermissions = await AudioRecorder.hasPermissions;
+    isRecording = await AudioRecorder.isRecording;
+      isRecording = await AudioRecorder.isRecording;
+    }
+
+    debugPrint("Has permissions: " + hasPermissions.toString() + " isRecording: " + isRecording.toString());
   }
 
   @override
@@ -81,17 +94,17 @@ class TrialsState extends State<Trials> {
          children: <Widget>[
            CstmButton(
              text: "Play",
-             pressed: () => { startSong() },
+             pressed: () => { play() },
            ),
            SizedBox(height: 20.0,),
            CstmButton(
-             text: "Pause",
-             pressed: () => { pauseSong() },
+             text: "Record",
+             pressed: () => { startRecording() },
            ),
            SizedBox(height: 20.0,),
            CstmButton(
              text: "Stop",
-             pressed: () => { stopSong() },
+             pressed: () => { stopRecording() },
            )
          ],
         )
@@ -99,27 +112,24 @@ class TrialsState extends State<Trials> {
     );
   }
 
-  startSong() async {
-    //String result = await FilePicker.getFilePath(type: FileType.AUDIO);
-    //SongSingleton.instance.beatPath = result;
-
-
-    AudioProvider provider = AudioProvider("https://codingwithjoe.com/wp-content/uploads/2018/03/applause.mp3");
-    String result = await provider.load();
-    player.play(result, isLocal: true);
+  startRecording() async {
+    if(hasPermissions != null) {
+      await AudioRecorder.start(path: FileController.filePath + "/prova7", audioOutputFormat: AudioOutputFormat.WAV);
+    }
   }
 
-  stopSong() {
-    player.stop();
+  stopRecording() async {
+    if(isRecording != null) {
+      Recording recording = await AudioRecorder.stop();
+      print("Path : ${recording.path},  Format : ${recording.audioOutputFormat},  Duration : ${recording.duration},  Extension : ${recording.extension},");
+    }
   }
 
-  pauseSong() {
-    player.pause();
+  play() {
+    AudioPlayer player = AudioPlayer();
+    player.play("/data/user/0/com.catonz.rap_edit/app_flutter/prova7.wav", isLocal: true);
   }
 
-  startCache() {
-    SongSingleton.instance.beatPath = "metronome_100bpm_8-8.mp3";
-    cache.play(SongSingleton.instance.beatPath);
-  }
+
 
 }

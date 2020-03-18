@@ -10,8 +10,11 @@ import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../custom_widgets/floatingButtonsCarouselPage.dart';
+import '../controllers/SongSingleton.dart';
+import '../controllers/SongSingleton.dart';
+import '../custom_widgets/FloatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
+import '../support/MyColors.dart';
 import 'FileLoadingPage.dart';
 
 class WritingPage extends StatefulWidget {
@@ -23,7 +26,7 @@ class WritingPage extends StatefulWidget {
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
-  final TextEditingController titleController = new TextEditingController();
+  //final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
   static AudioPlayerWidget player;
 
@@ -45,15 +48,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   Widget build(BuildContext context) {
 
-    final titleText = CstmTextField(
+    /*final titleText = CstmTextField(
       controller: titleController,
       hintText: "insert title",
-    );
+    );*/
 
     final textText = CstmTextField(
       controller: textController,
       hintText: "insert text",
-      maxLines: 15,
+      maxLines: 20,
     );
 
     final loadSongButton = CstmButton(
@@ -61,12 +64,20 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       pressed: () => { loadSong() },
     );
 
+    Text titleText;
+    if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty) {
+      titleText = Text(SongSingleton.instance.currentSong.title, style: Theme.of(context).textTheme.title, textAlign: TextAlign.center);
+    } else {
+      titleText = Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,);
+    }
+
+
     return Scaffold(
       //key: secondPageScaffold,
       appBar: GradientAppBar(
-        title: Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,),
+        title: titleText,
         centerTitle: true,
-        backgroundColorStart: Color(0xFF2C75FF),
+        backgroundColorStart: MyColors.electricBlue,
         backgroundColorEnd: Colors.black,
         //serve per non permettere di tornare indietro dall'appbar
         automaticallyImplyLeading: false,
@@ -79,7 +90,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                 player,
                 loadSongButton,
                 SizedBox(height: 20,),
-                titleText,
+                //titleText,
                 SizedBox(height: 20,),
                 Expanded(
                   child: textText,
@@ -95,12 +106,12 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Deletes the current song of the SongSingleton and clears the TextFields
   deleteText() {
     SongSingleton.instance.currentSong = null;
-    titleController.clear();
+    //titleController.clear();
     textController.clear();
   }
 
   /// Saves the currentSong of the SongSingleton as a File on the file system
-  void saveFile(BuildContext context) {
+  void saveFile(BuildContext context, TextEditingController titleController) {
     SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
     if(!SongSingleton.instance.currentSong.isEmpty()) {
       FileController.writeFile(SongSingleton.instance.currentSong);
@@ -129,7 +140,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() {
     if(SongSingleton.instance.currentSong != null) {
-      this.titleController.text = SongSingleton.instance.currentSong.title;
+      //this.titleController.text = SongSingleton.instance.currentSong.title;
       this.textController.text = SongSingleton.instance.currentSong.text;
     }
   }
@@ -142,7 +153,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Given a routeName, saves in the currentSong of the SongSingleton
   /// the current Title and Text written in the fields and then navigates to the routeName
   loadOtherPage(String routeName) {
-    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
+    SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
     Navigator.popAndPushNamed(context, routeName);
   }
 
