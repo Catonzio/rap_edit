@@ -57,6 +57,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
     );
   }
 
+  /// Deletes the FileSystemEntity correlated with the selected Song from the file system
   deleteFile(int index) {
     FileController.deleteFile(file[index]);
     setState(() {
@@ -64,11 +65,13 @@ class FileLoadingPageState extends State<FileLoadingPage> {
     });
   }
 
+  /// Loads the selected Song from the file system and displays its Title and Text in the WritingPage
   loadFile(int index) {
     SongSingleton.instance.currentSong = file[index];
     Navigator.popAndPushNamed(context, WritingPage.routeName);
   }
 
+  /// Returns only the first line of the string
   getOnlyFirstLine(String text) {
     if(text.contains("\n"))
       return text.substring(0, text.indexOf("\n"));

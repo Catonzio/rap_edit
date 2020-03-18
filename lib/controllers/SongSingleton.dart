@@ -13,15 +13,8 @@ class SongSingleton {
   bool isLocal;
   bool isAsset;
 
-  SongFile getSongFile() { return currentSong; }
-  String getBeatPath() { return beatPath; }
-  bool getIsLocal() { return isLocal; }
-
-  setSongFile(SongFile song) { currentSong = song; }
-  setBeatPath(String path) { beatPath = path; }
-  setIsLocal(bool itIs) { isLocal = itIs; }
-
-  getName() {
+  /// Returns the name of the currentSong (without extension)
+  String getName() {
     if(beatPath != null)
       return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".mp")).toLowerCase();
     else

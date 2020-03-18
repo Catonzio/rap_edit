@@ -7,7 +7,7 @@ import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 
 class Trials extends StatefulWidget {
-  static String routeName = "/trials";
+  static String routeName = "/";
   @override
   TrialsState createState() => TrialsState();
 }
@@ -16,12 +16,16 @@ class TrialsState extends State<Trials> {
 
   AudioPlayer player;
   AudioCache cache;
+  AudioPlayerState state;
 
   @override
   void initState() {
     super.initState();
     player = AudioPlayer();
     cache = AudioCache(fixedPlayer: player);
+    player.onPlayerStateChanged.listen((AudioPlayerState s) {
+      setState(() => state = s);
+    });
   }
 
   @override
@@ -35,7 +39,7 @@ class TrialsState extends State<Trials> {
          children: <Widget>[
            CstmButton(
              text: "Play",
-             pressed: () => { startCache() },
+             pressed: () => { startSong() },
            ),
            SizedBox(height: 20.0,),
            CstmButton(
@@ -54,10 +58,12 @@ class TrialsState extends State<Trials> {
   }
 
   startSong() async {
-    String result = await FilePicker.getFilePath(type: FileType.audio);
+    /*String result = await FilePicker.getFilePath(type: FileType.audio);
     SongSingleton.instance.beatPath = result;
-    SongSingleton.instance.isLocal = true;
-    player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
+    SongSingleton.instance.isLocal = true;*/
+    await player.play("https://soundcloud.com/polo-g/polo-g-stunna-4-vegas-nle");
+    debugPrint(player.toString());
+    debugPrint(state.toString());
   }
 
   stopSong() {

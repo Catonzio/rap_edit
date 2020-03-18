@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
-import 'package:rap_edit/pages/ChoosingBeats.dart';
+import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
 
@@ -62,12 +62,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     }
   }
 
+  /// Updates the icon of play/pause
   void updateIcon(IconData data) {
     setState(() {
       playPauseIcon = data;
     });
   }
 
+  /// Creates the slider belonging to the song played by the player
   Slider createSlider() {
     if(SongSingleton.instance.beatPath != null) {
       return Slider(
@@ -90,20 +92,24 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     }
   }
 
+  /// Navigates to the ChoosingBeats page
   loadSong(BuildContext context) {
-    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
+    Navigator.popAndPushNamed(context, ChoosingBeatsPage.routeName);
   }
 
+  /// Returns the current position of the player displayed as 'minute':'seconds'
   String getPositionFormatted() {
     String pos = position.toString();
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
+  /// Move the player at the second passed as argument
   void seekToSecond(int sec) {
     Duration newDuration = Duration(seconds: sec);
     player.seek(newDuration);
   }
 
+  /// Stops the song
   stopSong() {
     if(player != null) {
       player.stop();
@@ -114,6 +120,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     }
   }
 
+  /// Starts playing the beat located at the beatPath of the SongSingleton
   resumeSong() {
     //player.resume();
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
@@ -126,11 +133,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     updateIcon(Icons.pause);
   }
 
+  /// Sets the player in pause
   pauseSong() {
     player.pause();
     updateIcon(Icons.play_arrow);
   }
 
+  /// Sets the player in pause or in play, depending on the current state
   playPause() {
     if(SongSingleton.instance.beatPath != null) {
       if (playerState == AudioPlayerState.PLAYING)

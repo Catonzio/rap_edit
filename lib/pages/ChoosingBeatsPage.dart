@@ -12,13 +12,13 @@ import 'package:rap_edit/pages/WritingPage.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
-class ChoosingBeats extends StatefulWidget {
+class ChoosingBeatsPage extends StatefulWidget {
   static String routeName = "/choosingBeats";
   @override
-  ChoosingBeatsState createState() => ChoosingBeatsState();
+  ChoosingBeatsPageState createState() => ChoosingBeatsPageState();
 }
 
-class ChoosingBeatsState extends State<ChoosingBeats> {
+class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   List<String> songs = new List();
   List<Widget> songsCards = new List();

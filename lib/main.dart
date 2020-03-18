@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/ChoosingBeats.dart';
+import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/Trials.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'pages/FileLoadingPage.dart';
@@ -23,7 +23,7 @@ class PageMain extends StatelessWidget {
       routes: {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
         WritingPage.routeName: (context) => WritingPage(),
-        ChoosingBeats.routeName: (context) => ChoosingBeats(),
+        ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
         Trials.routeName: (context) => Trials()
       },
       theme: ThemeData(
@@ -39,13 +39,5 @@ class PageMain extends StatelessWidget {
           ),
       ),
     );
-  }
-
-  getArgument(BuildContext context) {
-    var argument;
-    if(ModalRoute.of(context) != null) {
-      argument = ModalRoute.of(context).settings.arguments;
-    }
-    return argument;
   }
 }

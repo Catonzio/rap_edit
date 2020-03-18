@@ -8,10 +8,12 @@ class FileController {
 
   static String filePath;
 
+  ///Sets the directory path of files written on the phone in this application
   static setDirectoryPath() async {
     filePath = (await getApplicationDocumentsDirectory()).path;
   }
 
+  /// Read the content of the text of the song named as title
   static String readFile(String title) {
     try {
       File file = new File(filePath + "/" + title);
@@ -22,6 +24,7 @@ class FileController {
     }
   }
 
+  /// Writes a file named as the song title (.txt) which content is the text of the song
   static void writeFile(SongFile song) {
     song.setLastModified(DateTime.now());
     song.setPath(filePath + "/" + song.title + ".txt");
@@ -29,6 +32,7 @@ class FileController {
     file.writeAsStringSync(song.getText());
   }
 
+  /// Given the path, extracts the name of the file (with extension)
   static String getOnlyFileName(String path) {
     if(path == null)
       return "";
@@ -43,6 +47,7 @@ class FileController {
     }
   }
 
+  /// Given the directory path, extracts the list of FileSystemEntity that are there
   static List<FileSystemEntity> getListOfFilesFromDirectory(String directory) {
     List<FileSystemEntity> file = new List();
     file = Directory("$directory").listSync();
@@ -50,6 +55,7 @@ class FileController {
     return file;
   }
 
+  /// Extracts the list of SongFiles from the current FilePath
   static List<SongFile> getListOfFiles() {
     List<FileSystemEntity> file = new List();
     file = Directory("$filePath").listSync();
@@ -57,14 +63,17 @@ class FileController {
     return getSongsFromFiles(file);
   }
 
+  /// Delete the file which correspond to the song
   static deleteFile(SongFile song) {
     loadFileEntityFromSong(song).deleteSync();
   }
 
+  /// Return the FileSystemEntity that has as path the path of the song
   static FileSystemEntity loadFileEntityFromSong(SongFile song) {
     return new File(song.path);
   }
 
+  /// Returns a list of SongFile built by the list of FileSystemEntity passed as argument
   static List<SongFile> getSongsFromFiles(List<FileSystemEntity> file) {
     List<SongFile> songs = new List();
     for(FileSystemEntity song in file) {
@@ -75,6 +84,7 @@ class FileController {
     return songs;
   }
 
+  /// Create a song from the FileSystemEntity passed as argument
   static SongFile saveSongFromEntity(FileSystemEntity song) {
     String name = getOnlyFileName(song.path);
     SongFile newSong;

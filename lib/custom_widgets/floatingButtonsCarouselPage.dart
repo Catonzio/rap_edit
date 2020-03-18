@@ -4,20 +4,20 @@ import 'package:rap_edit/pages/WritingPage.dart';
 import '../pages/WritingPage.dart';
 
 class FloatingButtonsCarousel extends StatefulWidget {
-  final WritingPageState secondPage;
-  FloatingButtonsCarousel(this.secondPage);
+  final WritingPageState writingPage;
+  FloatingButtonsCarousel(this.writingPage);
 
   @override
-  State createState() => new FloatingButtonsCarouselState(secondPage);
+  State createState() => new FloatingButtonsCarouselState(writingPage);
 }
 
 class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with TickerProviderStateMixin {
   AnimationController _controller;
-  WritingPageState secondPage;
+  WritingPageState writingPage;
 
   static const List<IconData> icons = const [ Icons.file_download, Icons.save, Icons.delete_forever ];
 
-  FloatingButtonsCarouselState(this.secondPage);
+  FloatingButtonsCarouselState(this.writingPage);
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[0]),
-          onPressed: () { secondPage.loadFiles(context); },
+          onPressed: () { writingPage.loadFiles(); },
         ),
       ),
     );
@@ -102,7 +102,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           backgroundColor: Theme.of(context).primaryColor,
           mini: true,
           child: new Icon(icons[1]),
-          onPressed: () { secondPage.saveFile(context); },
+          onPressed: () { writingPage.saveFile(context); },
         ),
       ),
     );
@@ -138,7 +138,6 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
   }
 
   alertDeleteText(BuildContext context) {
-
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
@@ -149,8 +148,8 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     Widget continueButton = FlatButton(
       child: Text("Continue"),
       onPressed:  () {
-        if(this.secondPage != null) {
-          this.secondPage.deleteText();
+        if(this.writingPage != null) {
+          this.writingPage.deleteText();
           Navigator.pop(context);
         }
         else

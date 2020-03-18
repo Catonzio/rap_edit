@@ -5,14 +5,14 @@ import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
-import 'package:rap_edit/pages/ChoosingBeats.dart';
+import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 
 import '../custom_widgets/floatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import 'FileLoadingPage.dart';
 
 class WritingPage extends StatefulWidget {
-  static String routeName = "/";
+  static String routeName = "/er";
 
   @override
   WritingPageState createState() => WritingPageState();
@@ -39,7 +39,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   void dispose() {
     super.dispose();
-    //this.saveFile();
   }
 
   @override
@@ -56,37 +55,27 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       maxLines: 15,
     );
 
+    final loadSongButton = CstmButton(
+      text: "Load",
+      pressed: () => { loadSong() },
+    );
+
     return Scaffold(
       //key: secondPageScaffold,
       appBar: AppBar(
         title: Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,),
         centerTitle: true,
+        //serve per non permettere di tornare indietro dall'appbar
         automaticallyImplyLeading: false,
       ),
         body: Container(
           child: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 50,),
                 player,
-                Container(
-                    color: Colors.transparent,
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          CstmButton(
-                            text: "Load",
-                            pressed: () => { loadSong(context) },
-                          )
-                        ],
-                      ),
-                    )
-                ),
+                loadSongButton,
                 SizedBox(height: 20,),
                 titleText,
-                SizedBox(height: 20,),
                 SizedBox(height: 20,),
                 Expanded(
                   child: textText,
@@ -99,12 +88,14 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     );
   }
 
+  /// Deletes the current song of the SongSingleton and clears the TextFields
   deleteText() {
     SongSingleton.instance.currentSong = null;
     titleController.clear();
     textController.clear();
   }
 
+  /// Saves the currentSong of the SongSingleton as a File on the file system
   void saveFile(BuildContext context) {
     SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
     if(!SongSingleton.instance.currentSong.isEmpty()) {
@@ -116,20 +107,22 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     }
   }
 
+  /// Display a snackBar with the message passed as argument
   static saveSnackbar(String message, BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text(message, style: TextStyle(color: Colors.white),),
-      backgroundColor: Colors.blue,
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message, style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.blue,
+      )
     );
-    Scaffold.of(context).showSnackBar(snackBar);
-    //secondPageScaffold.currentState.showSnackBar(snackBar);
   }
 
-  void loadFiles(BuildContext context) {
-    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
-    Navigator.popAndPushNamed(context, FileLoadingPage.routeName);
+  /// Loads the page of Song Loading
+  void loadFiles() {
+    loadOtherPage(FileLoadingPage.routeName);
   }
 
+  /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() {
     if(SongSingleton.instance.currentSong != null) {
       this.titleController.text = SongSingleton.instance.currentSong.title;
@@ -137,9 +130,16 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     }
   }
 
-  loadSong(BuildContext context) {
+  /// Loads the page of Beats Loading
+  loadSong() {
+    loadOtherPage(ChoosingBeatsPage.routeName);
+  }
+
+  /// Given a routeName, saves in the currentSong of the SongSingleton
+  /// the current Title and Text written in the fields and then navigates to the routeName
+  loadOtherPage(String routeName) {
     SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
-    Navigator.popAndPushNamed(context, ChoosingBeats.routeName);
+    Navigator.popAndPushNamed(context, routeName);
   }
 
 }
