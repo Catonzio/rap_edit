@@ -29,8 +29,8 @@ class PageMain extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.black,
-          primaryColor: Colors.blue,
-          accentColor: Colors.cyan[600],
+          primaryColor: Color(0xFF2C75FF),
+          accentColor: Color(0xFF2C75FF),
           fontFamily: 'Georgia',
           textTheme: TextTheme(
             headline: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),

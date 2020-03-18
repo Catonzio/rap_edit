@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
+import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
@@ -27,32 +28,35 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-          child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: file.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CardFile(
-                        title: file[index].title,
-                        color: Colors.white,
-                        icon: Icons.file_upload,
-                        text: getOnlyFirstLine(file[index].text) + "\n\nLast modified: " + file[index].lastModifiedToString(),
-                        backgroundColor: Theme.of(context).primaryColor,
-                        deleteButtonAction: () => { deleteFile(index) },
-                        loadButtonAction: () => { loadFile(index )},
-                      );
-                    },
+        body: CstmBackGround(
+          body: Center(
+            child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: file.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CardFile(
+                          title: file[index].title,
+                          color: Colors.white,
+                          icon: Icons.file_upload,
+                          text: getOnlyFirstLine(file[index].text) + "\n\nLast modified: " + file[index].lastModifiedToString(),
+                          backgroundColor: Theme.of(context).primaryColor,
+                          deleteButtonAction: () => { deleteFile(index) },
+                          loadButtonAction: () => { loadFile(index )},
+                        );
+                      },
+                    ),
                   ),
-                ),
-                CstmButton(
-                  text: "Home",
-                  pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
-                ),
-                SizedBox(height: 20,)
-              ]
-          ),
+                  SizedBox(height: 20,),
+                  CstmButton(
+                    iconData: Icons.home,
+                    pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
+                  ),
+                  SizedBox(height: 10,)
+                ]
+            ),
+          )
         )
     );
   }

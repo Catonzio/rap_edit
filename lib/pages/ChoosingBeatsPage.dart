@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
@@ -31,67 +29,99 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   @override
   void initState() {
     super.initState();
-    songs = ["metronome_100bpm_8-8.mp3", "metronome_120bpm_4-4.mp3"];
-    player = AudioPlayer();
-    cache = AudioCache(fixedPlayer: player);
-    player.onPlayerStateChanged.listen((AudioPlayerState s) {
-      setState(() => playerState = s);
-    });
+    songs = ["metronome_100bpm_2-4.mp3", "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3", "metronome_100bpm_8-8.mp3"];
+    if(player == null && cache == null) {
+      player = AudioPlayer();
+      cache = AudioCache(fixedPlayer: player);
+      player.onPlayerStateChanged.listen((AudioPlayerState s) {
+        if(player != null)
+          setState(() => playerState = s);
+      });
+    }
     createSongList();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    player.stop();
+    cache.clearCache();
+    player.release();
+    player = null;
+    cache = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ListView.builder(
-                itemCount: songs.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    color: Theme.of(context).primaryColor,
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: Text(getOnlySongName(songs[index])),
-                        ),
-                        ButtonBar(
-                          children: <Widget>[
-                            MaterialButton(
-                              child: Text(loadButtonText),
-                              onPressed: () => { loadAsset(songs[index]) }
+      body: CstmBackGround(
+        body: Center(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: songs.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                          color: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [Colors.black, MyColors.electricBlue]
+                                ),
+                                borderRadius: BorderRadius.circular(15.0)
                             ),
-                            MaterialButton(
-                              child: Text(previewButtonText),
-                              onPressed: () => { listenPreview(songs[index]) },
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text(getOnlySongName(songs[index])),
+                                ),
+                                ButtonBar(
+                                  children: <Widget>[
+                                    MaterialButton(
+                                        child: Text(loadButtonText),
+                                        onPressed: () => { loadAsset(songs[index]) }
+                                    ),
+                                    MaterialButton(
+                                      child: Text(previewButtonText),
+                                      onPressed: () => { listenPreview(songs[index]) },
+                                    )
+                                  ],
+                                )
+                              ],
                             )
-                          ],
-                        )
-                      ],
+                          )
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 30,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CstmButton(
+                      text: "File System",
+                      pressed: () => { loadFromFileSystem(context) },
+                    ),
+                    SizedBox(height: 10.0,),
+                    CstmButton(
+                      iconData: Icons.home,
+                      pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
                     )
-                  );
-                },
-              ),
-              //ListView(children: songsCards,),
-              SizedBox(height: 30,),
-              CstmButton(
-                text: "From file System",
-                pressed: () => { loadFromFileSystem(context) },
-              ),
-              SizedBox(height: 30.0,),
-              CstmButton(
-                text: "Home",
-                pressed: () => { Navigator.pushNamed(context, WritingPage.routeName, arguments: null) },
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 
@@ -110,12 +140,12 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         SongSingleton.instance.beatPath = localFilePath;
         SongSingleton.instance.isLocal = true;
         SongSingleton.instance.isAsset = false;
-        Navigator.pushNamed(context, WritingPage.routeName);
+        Navigator.popAndPushNamed(context, WritingPage.routeName);
       }
     } catch(ex) {
 
@@ -162,14 +192,13 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
         )
       );
     });
-    debugPrint("oooooooooooooooo " + songsCards.toString());
   }
 
   loadAsset(String song) {
     SongSingleton.instance.beatPath = song;
     SongSingleton.instance.isAsset = true;
     SongSingleton.instance.isLocal = false;
-    Navigator.pushNamed(context, WritingPage.routeName);
+    Navigator.popAndPushNamed(context, WritingPage.routeName);
   }
 
 }

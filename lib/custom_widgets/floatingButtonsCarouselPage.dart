@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'dart:math' as math;
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 import '../pages/WritingPage.dart';
 
 class FloatingButtonsCarousel extends StatefulWidget {
@@ -33,27 +35,37 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     return new Row(
         mainAxisSize: MainAxisSize.min,
         children: generateLittleFloatingButton().toList()..add(
-          new FloatingActionButton(
-            heroTag: null,
-            backgroundColor: Theme.of(context).primaryColor,
-            child: new AnimatedBuilder(
-              animation: _controller,
-              builder: (BuildContext context, Widget child) {
-                return new Transform(
-                  transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
-                  alignment: FractionalOffset.center,
-                  child: new Icon(_controller.isDismissed ? Icons.apps : Icons.close),
-                );
+          new Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.black, MyColors.electricBlue]
+                ),
+                borderRadius: BorderRadius.circular(50.0)
+            ),
+            child: FloatingActionButton(
+              heroTag: null,
+              backgroundColor: Colors.transparent,
+              child: new AnimatedBuilder(
+                animation: _controller,
+                builder: (BuildContext context, Widget child) {
+                  return new Transform(
+                    transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
+                    alignment: FractionalOffset.center,
+                    child: new Icon(_controller.isDismissed ? Icons.apps : Icons.close),
+                  );
+                },
+              ),
+              onPressed: () {
+                if (_controller.isDismissed) {
+                  _controller.forward();
+                } else {
+                  _controller.reverse();
+                }
               },
             ),
-            onPressed: () {
-              if (_controller.isDismissed) {
-                _controller.forward();
-              } else {
-                _controller.reverse();
-              }
-            },
-          ),
+          )
         ),
       );
   }
@@ -74,13 +86,23 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           ),
         ),
 
-        child: new FloatingActionButton(
-          heroTag: null,
-          backgroundColor: Theme.of(context).primaryColor,
-          mini: true,
-          child: new Icon(icons[0]),
-          onPressed: () { writingPage.loadFiles(); },
-        ),
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.black, MyColors.electricBlue]
+              ),
+              borderRadius: BorderRadius.circular(50.0)
+          ),
+          child: new FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.transparent,
+            mini: true,
+            child: new Icon(icons[0]),
+            onPressed: () { writingPage.loadFiles(); },
+          ),
+        )
       ),
     );
     Widget saveButton = new Container(
@@ -97,13 +119,23 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           ),
         ),
 
-        child: new FloatingActionButton(
-          heroTag: null,
-          backgroundColor: Theme.of(context).primaryColor,
-          mini: true,
-          child: new Icon(icons[1]),
-          onPressed: () { writingPage.saveFile(context); },
-        ),
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.black, MyColors.electricBlue]
+              ),
+              borderRadius: BorderRadius.circular(50.0)
+          ),
+          child: new FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.transparent,
+            mini: true,
+            child: new Icon(icons[1]),
+            onPressed: () { writingPage.saveFile(context); },
+          ),
+        )
       ),
     );
     Widget deleteButton = new Container(
@@ -120,13 +152,23 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
           ),
         ),
 
-        child: new FloatingActionButton(
-          heroTag: null,
-          backgroundColor: Theme.of(context).primaryColor,
-          mini: true,
-          child: new Icon(icons[2]),
-          onPressed: () { alertDeleteText(context); },
-        ),
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.black, MyColors.electricBlue]
+              ),
+              borderRadius: BorderRadius.circular(50.0)
+          ),
+          child: new FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.transparent,
+            mini: true,
+            child: new Icon(icons[2]),
+            onPressed: () { alertDeleteText(context); },
+          ),
+        )
       ),
     );
 
@@ -158,15 +200,18 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
     );
 
     // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Deleting"),
-      backgroundColor: Theme.of(context).primaryColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      content: Text("Are you sure you want to delete the text?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
+    Widget alert = CstmBackGround(
+
+      body: AlertDialog(
+        title: Text("Deleting"),
+        backgroundColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        content: Text("Are you sure you want to delete the text?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      ),
     );
 
     // show the dialog

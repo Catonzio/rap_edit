@@ -20,6 +20,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static AudioPlayerState playerState;
   static Duration duration = new Duration();
   static Duration position = new Duration();
+  Slider slider;
 
   IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: Colors.white);
@@ -28,13 +29,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   void initState() {
     super.initState();
     initPlayer();
+    slider = createSlider();
   }
 
   @override
   void dispose() {
-    player.pause();
-    //updateIcon(Icons.play_arrow);
     super.dispose();
+    player.pause();
+    slider = null;
   }
 
   void initPlayer() {
@@ -46,7 +48,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
-        setState(() => { position = p });
+        setState(() { position = p; debugPrint("ooooooooo " + p.toString()); });
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -56,8 +58,6 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       cache = AudioCache(fixedPlayer: player);
     }
     if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-      //player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
-      //updateIcon(Icons.pause);
       playPause();
     }
   }
@@ -178,17 +178,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     child: Container(
                       width: 40,
                       child:
-                      /*PlayerButton(
-                        icon: playPauseIcon,
-                        pressed: playPause(),
-                      )*/
                       MaterialButton(
                         child: Icon(playPauseIcon, color: Theme.of(context).primaryColor),
                         onPressed: () => { playPause() },
                       ),
                     )
                   ),
-                  createSlider(),
+                  slider,
                   Text(
                     getPositionFormatted(),
                     style: textStyle,
@@ -197,10 +193,6 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     child: Container(
                       width: 40,
                       child:
-                      /*PlayerButton(
-                        icon: Icons.stop,
-                        pressed: stopSong(),
-                      )*/
                       MaterialButton(
                         child: Icon(Icons.stop, color: Theme.of(context).primaryColor),
                         onPressed: () => { stopSong() },

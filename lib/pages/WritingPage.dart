@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
+import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 import '../custom_widgets/floatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import 'FileLoadingPage.dart';
 
 class WritingPage extends StatefulWidget {
-  static String routeName = "/er";
+  static String routeName = "/";
 
   @override
   WritingPageState createState() => WritingPageState();
 }
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
-
-  //static final GlobalKey<ScaffoldState> secondPageScaffold = new GlobalKey<ScaffoldState>();
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
@@ -62,16 +63,19 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
     return Scaffold(
       //key: secondPageScaffold,
-      appBar: AppBar(
+      appBar: GradientAppBar(
         title: Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,),
         centerTitle: true,
+        backgroundColorStart: Color(0xFF2C75FF),
+        backgroundColorEnd: Colors.black,
         //serve per non permettere di tornare indietro dall'appbar
         automaticallyImplyLeading: false,
       ),
-        body: Container(
-          child: Center(
+        body: CstmBackGround(
+          body: Center(
             child: Column(
               children: <Widget>[
+                SizedBox(height: 10.0,),
                 player,
                 loadSongButton,
                 SizedBox(height: 20,),
@@ -112,7 +116,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.blue,
+        backgroundColor: MyColors.darkGrey,
       )
     );
   }

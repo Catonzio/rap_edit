@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 class CardFile extends StatelessWidget {
 
@@ -27,33 +28,43 @@ class CardFile extends StatelessWidget {
     TextStyle textStyle = new TextStyle(color: color);
 
     return Card(
-      color: backgroundColor,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: Icon(icon),
-            title: Text(title, style: textStyle,),
-            subtitle: Text(
-              text,
-              maxLines: 4,
-              style: textStyle,
-            ),
+      color: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+              colors: [Colors.black, MyColors.electricBlue]
           ),
-          ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: Text("Delete", style: textStyle,),
-                onPressed: deleteButtonAction,
+          borderRadius: BorderRadius.circular(15.0)
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(icon),
+              title: Text(title, style: TextStyle(color: Colors.white, fontSize: 25),),
+              subtitle: Text(
+                text,
+                maxLines: 1,
+                style: TextStyle(color: Colors.white, fontSize: 15),
               ),
-              FlatButton(
-                child: Text("Load", style: textStyle,),
-                onPressed: loadButtonAction,
-              )
-            ],
-          ),
-        ],
-      ),
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: Text("Delete", style: textStyle,),
+                  onPressed: deleteButtonAction,
+                ),
+                FlatButton(
+                  child: Text("Load", style: textStyle,),
+                  onPressed: loadButtonAction,
+                )
+              ],
+            ),
+          ],
+        ),
+      )
     );
   }
 }
