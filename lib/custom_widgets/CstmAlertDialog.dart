@@ -32,7 +32,7 @@ class CstmAlertDialog extends StatelessWidget {
 
     return Container(
       child: AlertDialog(
-        title: Text("Saving"),
+        title: Text(dialogTitle),
         backgroundColor: MyColors.darkGrey,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         content:

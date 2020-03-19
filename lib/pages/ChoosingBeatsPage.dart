@@ -110,7 +110,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
                       text: "File System",
                       pressed: () => { loadFromFileSystem(context) },
                     ),
-                    SizedBox(height: 10.0,),
+                    Container(width: 10.0,),
                     CstmButton(
                       iconData: Icons.home,
                       pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },

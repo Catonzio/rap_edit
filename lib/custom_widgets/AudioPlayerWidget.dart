@@ -7,6 +7,9 @@ import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 
+import '../controllers/SongSingleton.dart';
+import '../controllers/SongSingleton.dart';
+
 class AudioPlayerWidget extends StatefulWidget {
 
   @override
@@ -58,7 +61,8 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       cache = AudioCache(fixedPlayer: player);
     }
     if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-      playPause();
+      player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
+      player.pause();
     }
   }
 

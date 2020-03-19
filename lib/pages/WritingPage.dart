@@ -6,13 +6,16 @@ import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
+import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../controllers/SongSingleton.dart';
 import '../controllers/SongSingleton.dart';
+import '../controllers/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
+import '../models/SongFile.dart';
 import '../models/SongFile.dart';
 import '../support/MyColors.dart';
 import 'FileLoadingPage.dart';
@@ -47,11 +50,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   @override
   Widget build(BuildContext context) {
-
-    /*final titleText = CstmTextField(
-      controller: titleController,
-      hintText: "insert title",
-    );*/
 
     final textText = CstmTextField(
       controller: textController,
@@ -88,9 +86,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
               children: <Widget>[
                 SizedBox(height: 10.0,),
                 player,
-                loadSongButton,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    loadSongButton,
+                    RecorderWidget()
+                  ],
+                ),
                 SizedBox(height: 20,),
-                //titleText,
                 SizedBox(height: 20,),
                 Expanded(
                   child: textText,
@@ -105,8 +109,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Deletes the current song of the SongSingleton and clears the TextFields
   deleteText() {
-    SongSingleton.instance.currentSong = null;
-    //titleController.clear();
+    SongSingleton.instance.currentSong.text = "";
     textController.clear();
   }
 
@@ -115,15 +118,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
     if(!SongSingleton.instance.currentSong.isEmpty()) {
       FileController.writeFile(SongSingleton.instance.currentSong);
-      saveSnackbar(titleController.text + " correctly saved!", context);
+      displaySnackbar(titleController.text + " correctly saved!", context);
     }
     else {
-      saveSnackbar("Couldn't save the text!", context);
+      displaySnackbar("Couldn't save! Text is empty", context);
     }
   }
 
   /// Display a snackBar with the message passed as argument
-  static saveSnackbar(String message, BuildContext context) {
+  static displaySnackbar(String message, BuildContext context) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: TextStyle(color: Colors.white),),
@@ -140,7 +143,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() {
     if(SongSingleton.instance.currentSong != null) {
-      //this.titleController.text = SongSingleton.instance.currentSong.title;
       this.textController.text = SongSingleton.instance.currentSong.text;
     }
   }
@@ -153,7 +155,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Given a routeName, saves in the currentSong of the SongSingleton
   /// the current Title and Text written in the fields and then navigates to the routeName
   loadOtherPage(String routeName) {
-    SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
+    if(SongSingleton.instance.currentSong != null)
+      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title, textController.text, null);
+    else
+      SongSingleton.instance.currentSong = new SongFile("", "", null);
     Navigator.popAndPushNamed(context, routeName);
   }
 

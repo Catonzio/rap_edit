@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/models/SongFile.dart';
@@ -45,6 +46,16 @@ class FileController {
     else {
       return "";
     }
+  }
+
+  static Future<List<FileSystemEntity>> getListDownloads() async {
+    Directory dir = await DownloadsPathProvider.downloadsDirectory;
+    List<FileSystemEntity> file = dir.listSync();
+    file.forEach((file) {
+      if(file.path.contains("aaaa")) {
+        debugPrint("ooooooooooooooooooo " + file.path);
+      }
+    });
   }
 
   /// Given the directory path, extracts the list of FileSystemEntity that are there

@@ -30,6 +30,7 @@ dependencies:
   gradient_app_bar: ^0.0.1
   audio_recorder: ^1.0.1
   permission_handler: ^4.4.0+hotfix.2
+  downloads_path_provider: ^0.1.0
 
 
 dev_dependencies:

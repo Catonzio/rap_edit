@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CstmTextField extends StatelessWidget {
 
@@ -18,6 +19,7 @@ class CstmTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    return TextField(
+     textCapitalization: TextCapitalization.none,
      obscureText: false,
      cursorColor: Colors.white,
      style: textStyle,
