@@ -110,8 +110,9 @@ class FileController {
   }
 
   static String manageName(String text) {
-    String result;
+    String result = text;
     RegExp regExp = RegExp(r'(\({1}[0-9]+\){1})$');
+    // if text is like test(1)
     if(regExp.hasMatch(text)) {
       String str = regExp.stringMatch(text);
       int number = int.parse(str.substring(1, str.length - 1));
@@ -119,20 +120,33 @@ class FileController {
       result = text.substring(0, text.indexOf(str)) +
       "(" + number.toString() + ")";
     } else {
-      result = text + "(1)";
+      int number = numberOfOccurrences(text);
+      if(number == 0)
+        return result;
+      else
+        result = text + "($number)";
     }
     return result;
   }
 
-  static bool existsRecord(String text) {
-    bool itExists = false;
+  static int numberOfOccurrences(String text) {
+    int number = 0;
+    // if text is like "/data/user/0/.../test.wav"; otherwise, is like "test.wav" or "test"
+    if(text.startsWith("/"))
+      text = text.substring(text.lastIndexOf("/") + 1);
     Directory dir = Directory(filePath);
     dir.listSync().forEach((file) {
-      String path = file.path.substring(0, file.path.lastIndexOf("."));
-      if(path.endsWith((text)))
-        itExists = true;
+      String path = file.path;
+      if(path.startsWith("/"))
+        path = path.substring(path.lastIndexOf("/") + 1);
+      if(!path.endsWith(".txt") && path.startsWith(text))
+        number = number + 1;
     });
-    return itExists;
+    return number;
+  }
+
+  static bool existsRecord(String text) {
+    return numberOfOccurrences(text) != 0;
   }
 
 }
