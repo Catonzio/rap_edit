@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/models/SongFile.dart';
@@ -106,6 +107,32 @@ class FileController {
     if(name.contains(".txt"))
       newSong = new SongFile(name.substring(0, name.lastIndexOf(".txt")), readFile(name), song.path);
     return newSong;
+  }
+
+  static String manageName(String text) {
+    String result;
+    RegExp regExp = RegExp(r'(\({1}[0-9]+\){1})$');
+    if(regExp.hasMatch(text)) {
+      String str = regExp.stringMatch(text);
+      int number = int.parse(str.substring(1, str.length - 1));
+      number = number + 1;
+      result = text.substring(0, text.indexOf(str)) +
+      "(" + number.toString() + ")";
+    } else {
+      result = text + "(1)";
+    }
+    return result;
+  }
+
+  static bool existsRecord(String text) {
+    bool itExists = false;
+    Directory dir = Directory(filePath);
+    dir.listSync().forEach((file) {
+      String path = file.path.substring(0, file.path.lastIndexOf("."));
+      if(path.endsWith((text)))
+        itExists = true;
+    });
+    return itExists;
   }
 
 }

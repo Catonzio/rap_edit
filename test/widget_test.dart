@@ -29,59 +29,15 @@ void main() {
     expect(SongSingleton.instance.getName(), "test");
   });
 
-  testWidgets('MyWidget has a title and message', (WidgetTester tester) async {
-    // Create the widget by telling the tester to build it.
-    await tester.pumpWidget(MyWidget());
+  test("Test the name handling of a registration", () {
+    String str1 = "test";
+    String str2 = "test(1)";
+    String str3 = "test(20)";
+    String str4 = "test(ciao)";
 
-    // Create the Finders.
-    final titleFinder = find.text('T');
-    final messageFinder = find.text('M');
-    final buttonText = find.text("B");
-    final button = find.byType(MaterialButton);
-    final field = find.byType(CstmTextField);
-
-    // Use the `findsOneWidget` matcher provided by flutter_test to
-    // verify that the Text widgets appear exactly once in the widget tree.
-    expect(titleFinder, findsOneWidget);
-    expect(messageFinder, findsOneWidget);
-    expect(buttonText, findsOneWidget);
-    expect(button, findsOneWidget);
-    expect(field, findsOneWidget);
+    expect("test(1)", FileController.manageName(str1));
+    expect("test(2)", FileController.manageName(str2));
+    expect("test(21)", FileController.manageName(str3));
+    expect("test(ciao)(1)", FileController.manageName(str4));
   });
-
-  testWidgets("Test my WritingPage", (WidgetTester tester) async {
-    await tester.pumpWidget(WritingPage());
-
-    final textFields = find.byType(CstmTextField);
-
-    expect(textFields, findsNWidgets(2));
-  });
-}
-
-class MyWidget extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("T"),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              Text("M"),
-              MaterialButton(
-                child: Text("B"),
-              ),
-              CstmTextField(
-                hintText: "hello",
-              )
-            ],
-          )
-        ),
-      ),
-    );
-  }
 }

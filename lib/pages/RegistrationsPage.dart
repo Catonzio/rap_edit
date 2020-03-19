@@ -1,13 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
-import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/WritingPage.dart';

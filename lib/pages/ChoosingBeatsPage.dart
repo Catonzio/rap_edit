@@ -140,7 +140,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         SongSingleton.instance.beatPath = localFilePath;
         SongSingleton.instance.isLocal = true;

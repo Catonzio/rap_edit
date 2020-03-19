@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 
-import '../controllers/FileController.dart';
 import 'CstmAlertDialog.dart';
 import 'CstmTextField.dart';
 
@@ -94,6 +95,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
   void startStopRecording() {
     if(registerIcon == Icons.pause) {
       stopRecording();
+      mySetState("");
       updateIcon(Icons.play_arrow);
     }
     else if(registerIcon == Icons.play_arrow) {
@@ -125,6 +127,9 @@ class RecorderWidgetState extends State<RecorderWidget> {
 
   displayAlertWhereToSave(BuildContext context) {
     TextEditingController controller = TextEditingController();
+    if(SongSingleton.instance.currentSong != null) {
+      controller.text = SongSingleton.instance.currentSong.title;
+    }
     if(registerIcon == Icons.play_arrow) {
       Widget alert = CstmAlertDialog(
         dialogTitle: "Recording",
@@ -143,8 +148,13 @@ class RecorderWidgetState extends State<RecorderWidget> {
         ),
         pressed: () {
           setState(() {
-            title = controller.text;
-            startStopRecording();
+            if(!FileController.existsRecord(controller.text)) {
+              title = controller.text;
+              startStopRecording();
+            } else {
+              title = FileController.manageName(controller.text);
+              startStopRecording();
+            }
           });
           Navigator.pop(context);
         },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
@@ -18,7 +19,7 @@ class PageMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FileController.setDirectoryPath();
-
+    checkPermissions();
     return MaterialApp(
       routes: {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
@@ -32,7 +33,7 @@ class PageMain extends StatelessWidget {
           scaffoldBackgroundColor: Colors.black,
           primaryColor: Color(0xFF2C75FF),
           accentColor: Color(0xFF2C75FF),
-          fontFamily: 'Georgia',
+          //fontFamily: 'Georgia',
           textTheme: TextTheme(
             headline: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
             title: TextStyle(fontSize: 36.0,),
@@ -40,5 +41,12 @@ class PageMain extends StatelessWidget {
           ),
       ),
     );
+  }
+
+  checkPermissions() async {
+    final PermissionHandler permissionHandler = PermissionHandler();
+    var result = await permissionHandler.requestPermissions([PermissionGroup.microphone]);
+    var result2 = await permissionHandler.requestPermissions([PermissionGroup.storage]);
+    var result3 = await permissionHandler.requestPermissions([PermissionGroup.mediaLibrary]);
   }
 }
