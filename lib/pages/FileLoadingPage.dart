@@ -48,7 +48,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
                       },
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
                   CstmButton(
                     iconData: Icons.home,
                     pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },

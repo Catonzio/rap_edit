@@ -57,7 +57,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     );
 
     final loadSongButton = CstmButton(
-      text: "Load",
+      text: "Beats",
       pressed: () => { loadSong() },
     );
 

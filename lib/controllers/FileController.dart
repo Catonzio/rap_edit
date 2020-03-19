@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/models/SongFile.dart';
@@ -48,7 +46,7 @@ class FileController {
     }
   }
 
-  static getListDownloads() async {
+  /*static getListDownloads() async {
     Directory dir = await DownloadsPathProvider.downloadsDirectory;
     List<FileSystemEntity> file = dir.listSync();
     file.forEach((file) {
@@ -56,7 +54,7 @@ class FileController {
         debugPrint("ooooooooooooooooooo " + file.path);
       }
     });
-  }
+  }*/
 
   /// Given the directory path, extracts the list of FileSystemEntity that are there
   static List<FileSystemEntity> getListOfFilesFromDirectory(String directory) {
@@ -77,6 +75,10 @@ class FileController {
   /// Delete the file which correspond to the song
   static deleteFile(SongFile song) {
     loadFileEntityFromSong(song).deleteSync();
+  }
+
+  static deleteRegistration(String path) {
+    File(path).deleteSync();
   }
 
   /// Return the FileSystemEntity that has as path the path of the song

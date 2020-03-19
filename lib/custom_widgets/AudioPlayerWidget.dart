@@ -48,7 +48,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
-        setState(() { position = p; debugPrint("ooooooooo " + p.toString()); });
+        setState(() => { position = p });
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
@@ -152,6 +152,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    slider = createSlider();
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -178,14 +179,18 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   Center(
                     child: Container(
                       width: 40,
-                      child:
-                      MaterialButton(
-                        child: Icon(playPauseIcon, color: Theme.of(context).primaryColor),
-                        onPressed: () => { playPause() },
-                      ),
+                      child: Center(
+                        child: MaterialButton(
+                          child: Icon(playPauseIcon, color: Theme.of(context).primaryColor),
+                          onPressed: () => { playPause() },
+                        ),
+                      )
                     )
                   ),
-                  slider,
+                  Container(
+                    width: 250,
+                    child: slider,
+                  ),
                   Text(
                     getPositionFormatted(),
                     style: textStyle,

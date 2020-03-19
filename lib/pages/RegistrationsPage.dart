@@ -1,14 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
+import 'package:share_extend/share_extend.dart';
 
 class RegistrationsPage extends StatefulWidget {
 
@@ -61,12 +65,16 @@ class RegistrationsPageState extends State<RegistrationsPage> {
                                   ButtonBar(
                                     children: <Widget>[
                                       MaterialButton(
+                                        child: Text("Delete"),
+                                        onPressed: () => { deleteRegistration(index) },
+                                      ),
+                                      MaterialButton(
                                         child: Text("Share"),
-                                        onPressed: () => {  },
+                                        onPressed: () => { shareSong(registrationsPath[index]) },
                                       ),
                                       MaterialButton(
                                           child: Text("Load"),
-                                          onPressed: () => {  }
+                                          onPressed: () => { loadRegistration(registrationsPath[index]) }
                                       ),
                                       MaterialButton(
                                         child: Text("Preview"),
@@ -81,10 +89,12 @@ class RegistrationsPageState extends State<RegistrationsPage> {
                     },
                   ),
                 ),
+                SizedBox(height: 10,),
                 CstmButton(
                   iconData: Icons.home,
                   pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName) },
-                )
+                ),
+                SizedBox(height: 10,),
               ],
             ),
           ),
@@ -93,14 +103,13 @@ class RegistrationsPageState extends State<RegistrationsPage> {
     );
   }
 
-  Future<void> loadRegistrations() async {
-    Directory downloadDirectory = await getApplicationDocumentsDirectory();
+  loadRegistrations() {
+    Directory downloadDirectory = Directory(FileController.filePath);
     downloadDirectory.listSync().forEach((file) => {
       if(file.path.endsWith(".wav")) {
         registrationsPath.add(file.path)
       }
     });
-    debugPrint("oooooooooooooooooooo " + registrationsPath.length.toString());
   }
 
   String getOnlyRegistrationName(String registrationsPath) {
@@ -113,6 +122,24 @@ class RegistrationsPageState extends State<RegistrationsPage> {
     Future.delayed(Duration(seconds: 5), () => {
       player.stop()
     });
+  }
+
+  loadRegistration(String registrationsPath) {
+    SongSingleton.instance.beatPath = registrationsPath;
+    SongSingleton.instance.isLocal = true;
+    SongSingleton.instance.isAsset = false;
+    Navigator.popAndPushNamed(context, WritingPage.routeName);
+  }
+
+  deleteRegistration(int index) {
+    FileController.deleteRegistration(registrationsPath[index]);
+    setState(() {
+      registrationsPath.remove(registrationsPath[index]);
+    });
+  }
+
+  shareSong(String registrationsPath) async {
+    ShareExtend.share(registrationsPath, "file");
   }
 
 }

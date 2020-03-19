@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_recorder/audio_recorder.dart';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -109,7 +108,6 @@ class RecorderWidgetState extends State<RecorderWidget> {
         "  Format : ${recording.audioOutputFormat},"
         "  Duration : ${recording.duration},"
         "  Extension : ${recording.extension},");
-    Future.delayed(Duration(seconds: 5), () => { FileController.getListDownloads() });
   }
 
 
