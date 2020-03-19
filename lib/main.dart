@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/controllers/SongSingleton.dart';
-import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/Trials.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+
 import 'pages/FileLoadingPage.dart';
 import 'pages/WritingPage.dart';
 
@@ -24,7 +24,8 @@ class PageMain extends StatelessWidget {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
         WritingPage.routeName: (context) => WritingPage(),
         ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
-        Trials.routeName: (context) => Trials()
+        Trials.routeName: (context) => Trials(),
+        TabbedLoading.routeName: (context) => TabbedLoading()
       },
       theme: ThemeData(
           brightness: Brightness.dark,

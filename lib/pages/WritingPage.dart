@@ -9,13 +9,11 @@ import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../controllers/SongSingleton.dart';
-import '../controllers/SongSingleton.dart';
-import '../controllers/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
-import '../models/SongFile.dart';
 import '../models/SongFile.dart';
 import '../support/MyColors.dart';
 import 'FileLoadingPage.dart';
@@ -49,6 +47,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
 
     final textText = CstmTextField(
@@ -137,7 +136,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Loads the page of Song Loading
   void loadFiles() {
-    loadOtherPage(FileLoadingPage.routeName);
+    loadOtherPage(TabbedLoading.routeName);
   }
 
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton

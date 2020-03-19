@@ -9,8 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../controllers/FileController.dart';
-import '../controllers/FileController.dart';
-import '../pages/WritingPage.dart';
 import 'CstmAlertDialog.dart';
 import 'CstmTextField.dart';
 
@@ -120,8 +118,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
       PermissionHandler permissionHandler = PermissionHandler();
       var result = await permissionHandler.requestPermissions([PermissionGroup.microphone]);
       if(result[PermissionGroup.microphone] == PermissionStatus.granted) {
-        Directory downloadDirectory = await DownloadsPathProvider.downloadsDirectory;
-        debugPrint("oooooo " + downloadDirectory.path);
+        Directory downloadDirectory = await getApplicationDocumentsDirectory();
         Future.delayed(Duration(seconds: 4), () async => { await AudioRecorder
             .start(path: downloadDirectory.path + '/' + title,
             audioOutputFormat: AudioOutputFormat.WAV) });
@@ -140,6 +137,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
             Text("Registration name?"),
             SizedBox(height: 20.0,),
             CstmTextField(
+              maxLines: 1,
               controller: controller,
               hintText: "insert title",
             )

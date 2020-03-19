@@ -93,6 +93,9 @@ class CstmButton extends StatelessWidget {
         ),
       );
     }
+    else {
+      return Text("Error!");
+    }
   }
 }
 

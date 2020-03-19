@@ -48,7 +48,7 @@ class FileController {
     }
   }
 
-  static Future<List<FileSystemEntity>> getListDownloads() async {
+  static getListDownloads() async {
     Directory dir = await DownloadsPathProvider.downloadsDirectory;
     List<FileSystemEntity> file = dir.listSync();
     file.forEach((file) {

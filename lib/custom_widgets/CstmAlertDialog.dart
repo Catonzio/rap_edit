@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../controllers/SongSingleton.dart';
 import '../support/MyColors.dart';
-import 'CstmTextField.dart';
 
 class CstmAlertDialog extends StatelessWidget {
 
@@ -17,8 +15,6 @@ class CstmAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = new TextEditingController();
-
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
       onPressed: () {
