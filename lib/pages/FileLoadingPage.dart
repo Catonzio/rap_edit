@@ -7,6 +7,7 @@ import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 class FileLoadingPage extends StatefulWidget {
   static const routeName = '/filesPage';
@@ -38,7 +39,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return CardFile(
                           title: file[index].title,
-                          color: Colors.white,
+                          color: MyColors.textColor,
                           icon: Icons.file_upload,
                           text: getOnlyFirstLine(file[index].text) + "\n\nLast modified: " + file[index].lastModifiedToString(),
                           backgroundColor: Theme.of(context).primaryColor,

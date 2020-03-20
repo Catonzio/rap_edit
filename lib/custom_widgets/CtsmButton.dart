@@ -4,7 +4,7 @@ import 'package:rap_edit/support/MyColors.dart';
 
 class CstmButton extends StatelessWidget {
   final String text;
-  final TextStyle textStyle = new TextStyle(color: Colors.white, fontSize: 15);
+  final TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
   final Function pressed;
   final IconData iconData;
 
@@ -15,24 +15,6 @@ class CstmButton extends StatelessWidget {
     this.iconData
   });
 
-  /*
-  Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.blue[700], Colors.red[900]]
-          )
-        ),
-
-
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: textStyle,
-            ),
-   */
-
   @override
   Widget build(BuildContext context) {
     if (text != null && iconData == null) {
@@ -41,7 +23,7 @@ class CstmButton extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [MyColors.darkGrey, MyColors.electricBlue]
+                colors: [MyColors.endElementColor, MyColors.startElementColor]
             ),
             borderRadius: BorderRadius.circular(20.0)
         ),
@@ -70,7 +52,7 @@ class CstmButton extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [MyColors.darkGrey, MyColors.electricBlue]
+                colors: [MyColors.endElementColor, MyColors.startElementColor]
             ),
             borderRadius: BorderRadius.circular(30.0)
         ),
@@ -86,7 +68,7 @@ class CstmButton extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             child: Icon(
               iconData,
-              color: Colors.white,
+              color: MyColors.textColor,
             ),
             onPressed: pressed,
           ),

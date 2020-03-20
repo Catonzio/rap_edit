@@ -34,7 +34,7 @@ class CardFile extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-              colors: [Colors.black, MyColors.electricBlue]
+              colors: [MyColors.endElementColor, MyColors.startElementColor]
           ),
           borderRadius: BorderRadius.circular(15.0)
         ),
@@ -42,12 +42,12 @@ class CardFile extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(icon),
-              title: Text(title, style: TextStyle(color: Colors.white, fontSize: 25),),
+              leading: Icon(icon, color: MyColors.textColor),
+              title: Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25),),
               subtitle: Text(
                 text,
                 maxLines: 1,
-                style: TextStyle(color: Colors.white, fontSize: 15),
+                style: TextStyle(color: MyColors.textColor, fontSize: 15),
               ),
             ),
             ButtonBar(

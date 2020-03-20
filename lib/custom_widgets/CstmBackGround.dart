@@ -14,7 +14,7 @@ class CstmBackGround extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [MyColors.backGroundWhite, Colors.black]
+              colors: [MyColors.backGroundWhite, MyColors.endElementColor]
           )
       ),
       child: body,

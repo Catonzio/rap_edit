@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/pages/FileLoadingPage.dart';
 import 'package:rap_edit/pages/RegistrationsPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 class TabbedLoading extends StatelessWidget {
   static String routeName = "/tabbedLoading";
@@ -21,10 +22,10 @@ class TabbedLoading extends StatelessWidget {
           bottomNavigationBar: new TabBar(
             tabs: <Widget>[
               Tab(
-                icon: new Icon(Icons.assignment),
+                icon: new Icon(Icons.assignment, color: MyColors.textColor,),
               ),
               Tab(
-                icon: new Icon(Icons.mic)
+                icon: new Icon(Icons.mic, color: MyColors.textColor)
               )
             ],
           ),

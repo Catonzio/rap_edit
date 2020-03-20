@@ -73,23 +73,23 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
                                 gradient: LinearGradient(
                                     begin: Alignment.topRight,
                                     end: Alignment.bottomLeft,
-                                    colors: [Colors.black, MyColors.electricBlue]
+                                    colors: [MyColors.endElementColor, MyColors.startElementColor]
                                 ),
                                 borderRadius: BorderRadius.circular(15.0)
                             ),
                             child: Column(
                               children: <Widget>[
                                 ListTile(
-                                  title: Text(getOnlySongName(songs[index])),
+                                  title: Text(getOnlySongName(songs[index]), style: TextStyle(color: MyColors.textColor),),
                                 ),
                                 ButtonBar(
                                   children: <Widget>[
                                     MaterialButton(
-                                        child: Text(loadButtonText),
+                                        child: Icon(Icons.file_upload, color: MyColors.textColor),
                                         onPressed: () => { loadAsset(songs[index]) }
                                     ),
                                     MaterialButton(
-                                      child: Text(previewButtonText),
+                                      child: Icon(Icons.play_arrow, color: MyColors.textColor),
                                       onPressed: () => { listenPreview(songs[index]) },
                                     )
                                   ],
@@ -126,12 +126,6 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   }
 
   createSongList() async {
-    //Future<String> structure = rootBundle.loadString("assets/structure.txt");
-    //Future<List<String>> futureSongs = structure.asStream().forEach((str) => { str.split("\n") });
-    //debugPrint("ooooooooo " + futureSongs.toString());
-    //String structure = await rootBundle.loadString("assets/structure.txt");
-    //this.songs = structure.split("\n");
-    //buildSongList();
   }
 
   String getOnlySongName(String song) {
@@ -140,7 +134,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         SongSingleton.instance.beatPath = localFilePath;
         SongSingleton.instance.isLocal = true;

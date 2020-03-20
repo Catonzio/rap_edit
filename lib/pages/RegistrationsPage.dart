@@ -42,46 +42,80 @@ class RegistrationsPageState extends State<RegistrationsPage> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: registrationsPath.length,
+                    //padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                          color: Colors.transparent,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [Colors.black, MyColors.electricBlue]
-                                  ),
-                                  borderRadius: BorderRadius.circular(15.0)
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Text(getOnlyRegistrationName(registrationsPath[index])),
-                                  ),
-                                  ButtonBar(
-                                    children: <Widget>[
-                                      MaterialButton(
-                                        child: Text("Delete"),
+                      return Column(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [MyColors.endElementColor, MyColors.startElementColor]
+                                ),
+                                borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(getOnlyRegistrationName(registrationsPath[index]), textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 25, color: MyColors.textColor),)
+                                  ],
+                                ),
+                                SizedBox(height: 10.0,),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Material(
+                                      elevation: 25,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: MaterialButton(
+                                        child: Icon(Icons.delete, color: MyColors.textColor),
                                         onPressed: () => { deleteRegistration(index) },
                                       ),
-                                      MaterialButton(
-                                        child: Text("Share"),
+                                    ),
+                                    Material(
+                                      elevation: 25,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: MaterialButton(
+                                        child: Icon(Icons.share, color: MyColors.textColor),
                                         onPressed: () => { shareSong(registrationsPath[index]) },
                                       ),
-                                      MaterialButton(
-                                          child: Text("Load"),
-                                          onPressed: () => { loadRegistration(registrationsPath[index]) }
+                                    ),
+                                    Material(
+                                      elevation: 25,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: MaterialButton(
+                                        child: Icon(Icons.file_upload, color: MyColors.textColor,),
+                                        onPressed: () => { loadRegistration(registrationsPath[index]) },
                                       ),
-                                      MaterialButton(
-                                        child: Text("Preview"),
+                                    ),
+                                    Material(
+                                      elevation: 25.0,
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: MaterialButton(
+                                        child: Icon(Icons.play_arrow, color: MyColors.textColor),
                                         onPressed: () => { listenPreview(registrationsPath[index]) },
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )
-                          )
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 8.0,)
+                        ],
                       );
                     },
                   ),
@@ -110,7 +144,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
   }
 
   String getOnlyRegistrationName(String registrationsPath) {
-    return registrationsPath.substring(registrationsPath.lastIndexOf("/") + 1);
+    return registrationsPath.substring(registrationsPath.lastIndexOf("/") + 1, registrationsPath.lastIndexOf("."));
   }
 
   listenPreview(String path) {

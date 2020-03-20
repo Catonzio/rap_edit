@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 import 'CstmAlertDialog.dart';
 import 'CstmTextField.dart';
@@ -44,12 +45,12 @@ class RecorderWidgetState extends State<RecorderWidget> {
     final registerButton = RawMaterialButton(
       child: RawMaterialButton(
         shape: new CircleBorder(),
-        fillColor: Colors.red,
-        child: Icon(registerIcon),
+        fillColor: MyColors.darkRed,
+        //child: Icon(registerIcon),
         onPressed: () => { displayAlertWhereToSave(context) },
       ),
-      shape: new CircleBorder(),
-      elevation: 2.0,
+      shape: new CircleBorder(side: BorderSide(width: 2.5)),
+      //elevation: 2.0,
       fillColor: Colors.white,
       //padding: const EdgeInsets.all(15.0),
     );
@@ -59,7 +60,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
       child: Row(
         children: <Widget>[
           registerButton,
-          Container(width: 1,),
+          Container(width: 5,),
           Text(cuntdownString)
         ],
       ),
@@ -92,13 +93,14 @@ class RecorderWidgetState extends State<RecorderWidget> {
     );
   }
 
-  void startStopRecording() {
-    if(registerIcon == Icons.pause) {
+  void startStopRecording() async {
+    bool recording = await AudioRecorder.isRecording;
+    if(recording) {
       stopRecording();
       mySetState("");
       updateIcon(Icons.play_arrow);
     }
-    else if(registerIcon == Icons.play_arrow) {
+    else if(!recording) {
       startCountdown();
       updateIcon(Icons.pause);
     }
@@ -111,7 +113,6 @@ class RecorderWidgetState extends State<RecorderWidget> {
         "  Duration : ${recording.duration},"
         "  Extension : ${recording.extension},");
   }
-
 
   startRecording() async {
       debugPrint("Start recording");

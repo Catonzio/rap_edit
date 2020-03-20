@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 import '../controllers/SongSingleton.dart';
 
@@ -23,7 +24,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Slider slider;
 
   IconData playPauseIcon = Icons.play_arrow;
-  TextStyle textStyle = new TextStyle(color: Colors.white);
+  TextStyle textStyle = new TextStyle(color: MyColors.textColor);
 
   @override
   void initState() {
@@ -74,6 +75,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Slider createSlider() {
     if(SongSingleton.instance.beatPath != null) {
       return Slider(
+        activeColor: MyColors.startElementColor,
         value: position.inSeconds.toDouble(),
         min: 0.0,
         max: duration.inSeconds.toDouble(),
@@ -170,44 +172,45 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                 )
               ],
             ),
-            Container(
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Center(
-                    child: Container(
-                      width: 40,
-                      child: Center(
-                        child: MaterialButton(
-                          child: Icon(playPauseIcon, color: Theme.of(context).primaryColor),
-                          onPressed: () => { playPause() },
-                        ),
-                      )
-                    )
-                  ),
-                  Container(
-                    width: 250,
-                    child: slider,
-                  ),
-                  Text(
-                    getPositionFormatted(),
-                    style: textStyle,
-                  ),
-                  Center(
-                    child: Container(
-                      width: 40,
-                      child:
-                      MaterialButton(
-                        child: Icon(Icons.stop, color: Theme.of(context).primaryColor),
-                        onPressed: () => { stopSong() },
-                      )
+            Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Center(
+                        child: Container(
+                            width: 40,
+                            child: Center(
+                              child: FlatButton(
+                                child: Center(
+                                    child: Icon(playPauseIcon, color: MyColors.startElementColor, size: 40)
+                                ),
+                                onPressed: () => { playPause() },
+                              ),
+                            )
+                        )
                     ),
-                  ),
-                ],
-              ),
-            ),
+                    Container(width: 10.0,),
+                    Container(
+                      width: 250,
+                      child: slider,
+                    ),
+                    Text(
+                      getPositionFormatted(),
+                      style: textStyle,
+                    ),
+                    Center(
+                      child: Container(
+                          width: 50,
+                          child: MaterialButton(
+                            child: Icon(Icons.stop, color: MyColors.startElementColor, size: 40,),
+                            onPressed: () => { stopSong() },
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              )
           ],
         ),
       );

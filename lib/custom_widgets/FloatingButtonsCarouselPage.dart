@@ -45,7 +45,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.black, MyColors.electricBlue]
+                    colors: [MyColors.endElementColor, MyColors.startElementColor]
                 ),
                 borderRadius: BorderRadius.circular(50.0)
             ),
@@ -58,7 +58,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
                   return new Transform(
                     transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.pi),
                     alignment: FractionalOffset.center,
-                    child: new Icon(_controller.isDismissed ? Icons.apps : Icons.close),
+                    child: new Icon(_controller.isDismissed ? Icons.apps : Icons.close, color: MyColors.textColor),
                   );
                 },
               ),
@@ -96,7 +96,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Colors.black, MyColors.electricBlue]
+                  colors: [MyColors.endElementColor, MyColors.startElementColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),
@@ -104,7 +104,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
             heroTag: null,
             backgroundColor: Colors.transparent,
             mini: true,
-            child: new Icon(icons[0]),
+            child: new Icon(icons[0], color: MyColors.textColor),
             onPressed: () { writingPage.loadFiles(); },
           ),
         )
@@ -129,7 +129,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Colors.black, MyColors.electricBlue]
+                  colors: [MyColors.endElementColor, MyColors.startElementColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),
@@ -137,7 +137,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
             heroTag: null,
             backgroundColor: Colors.transparent,
             mini: true,
-            child: new Icon(icons[1]),
+            child: new Icon(icons[1], color: MyColors.textColor),
             onPressed: () => { alertSaveText(context) },
           ),
         )
@@ -162,7 +162,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [Colors.black, MyColors.electricBlue]
+                  colors: [MyColors.endElementColor, MyColors.startElementColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),
@@ -170,7 +170,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
             heroTag: null,
             backgroundColor: Colors.transparent,
             mini: true,
-            child: new Icon(icons[2]),
+            child: new Icon(icons[2], color: MyColors.textColor),
             onPressed: () { alertDeleteText(context); },
           ),
         )

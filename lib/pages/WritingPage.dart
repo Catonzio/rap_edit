@@ -26,7 +26,6 @@ class WritingPage extends StatefulWidget {
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
-  //final TextEditingController titleController = new TextEditingController();
   final TextEditingController textController = new TextEditingController();
   static AudioPlayerWidget player;
 
@@ -73,8 +72,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       appBar: GradientAppBar(
         title: titleText,
         centerTitle: true,
-        backgroundColorStart: MyColors.electricBlue,
-        backgroundColorEnd: Colors.black,
+        backgroundColorStart: MyColors.startElementColor,
+        backgroundColorEnd: MyColors.endElementColor,
         //serve per non permettere di tornare indietro dall'appbar
         automaticallyImplyLeading: false,
       ),
@@ -127,7 +126,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   static displaySnackbar(String message, BuildContext context) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: TextStyle(color: Colors.white),),
+        content: Text(message, style: TextStyle(color: MyColors.textColor),),
         backgroundColor: MyColors.darkGrey,
       )
     );
