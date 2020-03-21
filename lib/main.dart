@@ -4,12 +4,19 @@ import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/Trials.dart';
+import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pages/FileLoadingPage.dart';
 import 'pages/WritingPage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+  await prefs.setInt("initScreen", 1);
+  print('initScreen $initScreen');
   runApp(PageMain());
 }
 
@@ -21,11 +28,12 @@ class PageMain extends StatelessWidget {
     FileController.setDirectoryPath();
     checkPermissions();
     return MaterialApp(
+      initialRoute: initScreen == 0 || initScreen == null ? WelcomePage.routeName : WritingPage.routeName,
       routes: {
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
         WritingPage.routeName: (context) => WritingPage(),
         ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
-        Trials.routeName: (context) => Trials(),
+        WelcomePage.routeName: (context) => WelcomePage(),
         TabbedLoading.routeName: (context) => TabbedLoading()
       },
       theme: ThemeData(

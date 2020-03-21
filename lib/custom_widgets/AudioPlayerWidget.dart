@@ -19,78 +19,129 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static AudioPlayer player;
   static AudioCache cache;
   static AudioPlayerState playerState;
-  static Duration duration = new Duration();
-  static Duration position = new Duration();
-  Slider slider;
+  static Duration duration;
+  static Duration position;
 
-  IconData playPauseIcon = Icons.play_arrow;
+  static IconData playPauseIcon = Icons.play_arrow;
   TextStyle textStyle = new TextStyle(color: MyColors.textColor);
 
   @override
   void initState() {
     super.initState();
     initPlayer();
-    slider = createSlider();
   }
 
   @override
   void dispose() {
+    pauseSong();
+    player = null;
     super.dispose();
-    player.pause();
-    slider = null;
   }
 
   void initPlayer() {
-    if (player == null) {
-      player = new AudioPlayer();
+      if(player == null) {
+        player = new AudioPlayer();
+        duration = new Duration();
+        position = new Duration();
+      }
 
       player.onDurationChanged.listen((Duration d) {
-        setState(() => duration = d);
+        if (this.mounted)
+          setState(() => duration = d);
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
-        setState(() => { position = p });
+        if (this.mounted)
+          setState(() => { position = p });
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
-        setState(() => playerState = s);
+        if (this.mounted)
+          setState(() => playerState = s);
+      });
+
+      player.onPlayerCompletion.listen((void v) {
+        stopSong();
       });
 
       cache = AudioCache(fixedPlayer: player);
-    }
+
     if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-      player.play(SongSingleton.instance.beatPath, isLocal: SongSingleton.instance.isLocal);
-      player.pause();
+      playSong();
+      pauseSong();
     }
   }
 
   /// Updates the icon of play/pause
   void updateIcon(IconData data) {
-    setState(() {
-      playPauseIcon = data;
-    });
+    if (this.mounted) {
+      setState(() {
+        playPauseIcon = data;
+      });
+    }
   }
 
   /// Creates the slider belonging to the song played by the player
-  Slider createSlider() {
+  SliderTheme createSlider() {
     if(SongSingleton.instance.beatPath != null) {
-      return Slider(
-        activeColor: MyColors.startElementColor,
-        value: position.inSeconds.toDouble(),
-        min: 0.0,
-        max: duration.inSeconds.toDouble(),
-        //activeColor: Theme.of(context).primaryColor,
-        onChanged: (double value) {
-          setState(() {
-            seekToSecond(value.toInt());
-            value = value;
-            resumeSong();
-          });
-        },
+      return SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            activeTrackColor: MyColors.electricBlue,
+            inactiveTrackColor: MyColors.textColor,
+            trackShape: RoundedRectSliderTrackShape(),
+            trackHeight: 4.0,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.0),
+            thumbColor: MyColors.electricBlue,
+            overlayColor: Colors.white.withAlpha(20),
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 5.0),
+            tickMarkShape: RoundSliderTickMarkShape(),
+            activeTickMarkColor: MyColors.electricBlue,
+            inactiveTickMarkColor: MyColors.textColor,
+            valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+            valueIndicatorColor: MyColors.electricBlue,
+            valueIndicatorTextStyle: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          child: Slider(
+            value: position.inSeconds.toDouble(),
+            min: 0.0,
+            max: duration.inSeconds.toDouble(),
+            divisions: 300,
+            label: getPositionFormatted(),
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: (double value) {
+              setState(() {
+                seekToSecond(value.toInt());
+                value = value;
+                //resumeSong();
+              });
+            },
+          )
       );
     } else {
-      return Slider(
-        value: 0,
+      return SliderTheme(
+        data: SliderTheme.of(context).copyWith(
+          activeTrackColor: MyColors.electricBlue,
+          inactiveTrackColor: MyColors.textColor,
+          trackShape: RoundedRectSliderTrackShape(),
+          trackHeight: 4.0,
+          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.0),
+          thumbColor: MyColors.electricBlue,
+          overlayColor: Colors.white.withAlpha(20),
+          overlayShape: RoundSliderOverlayShape(overlayRadius: 5.0),
+          tickMarkShape: RoundSliderTickMarkShape(),
+          activeTickMarkColor: MyColors.electricBlue,
+          inactiveTickMarkColor: MyColors.textColor,
+          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+          valueIndicatorColor: MyColors.electricBlue,
+          valueIndicatorTextStyle: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        child: Slider(
+          value: 0,
+        )
       );
     }
   }
@@ -102,7 +153,11 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   /// Returns the current position of the player displayed as 'minute':'seconds'
   String getPositionFormatted() {
-    String pos = position.toString();
+    String pos;
+    if(position != null)
+      pos = position.toString();
+    else
+      pos = Duration().toString();
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
@@ -117,15 +172,15 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     if(player != null) {
       player.stop();
       updateIcon(Icons.play_arrow);
-      setState(() {
-        seekToSecond(0);
-      });
+      if (this.mounted)
+        setState(() {
+          seekToSecond(0);
+        });
     }
   }
 
   /// Starts playing the beat located at the beatPath of the SongSingleton
-  resumeSong() {
-    //player.resume();
+  playSong() {
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
     }
@@ -148,13 +203,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       if (playerState == AudioPlayerState.PLAYING)
         pauseSong();
       else if (playerState != AudioPlayerState.PLAYING)
-        resumeSong();
+        playSong();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    slider = createSlider();
+    //slider = createSlider();
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,53 +221,48 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                      SongSingleton.instance.getName(),
+                    SongSingleton.instance.getName(),
                     textAlign: TextAlign.center,
                   )
                 )
               ],
             ),
             Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                        child: Container(
-                            width: 40,
-                            child: Center(
-                              child: FlatButton(
-                                child: Center(
-                                    child: Icon(playPauseIcon, color: MyColors.startElementColor, size: 40)
-                                ),
-                                onPressed: () => { playPause() },
-                              ),
-                            )
-                        )
-                    ),
-                    Container(width: 10.0,),
-                    Container(
-                      width: 250,
-                      child: slider,
-                    ),
-                    Text(
-                      getPositionFormatted(),
-                      style: textStyle,
-                    ),
-                    Center(
-                      child: Container(
-                          width: 50,
-                          child: MaterialButton(
-                            child: Icon(Icons.stop, color: MyColors.startElementColor, size: 40,),
-                            onPressed: () => { stopSong() },
-                          )
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(playPauseIcon, color: MyColors.startElementColor),
+                    iconSize: 40,
+                    onPressed: () => { playPause() },
+                  ),
+                  //Container(width: 10.0,),
+                  Container(
+                    width: 220,
+                    child: createSlider(),
+                  ),
+                  Container(
+                    width: 10,
+                  ),
+                  Text(
+                    getPositionFormatted(),
+                    style: textStyle,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.stop, color: MyColors.startElementColor),
+                    iconSize: 40,
+                    onPressed: () => { stopSong() },
+                  )
+                ],
+              ),
+            )
           ],
         ),
       );
     }
+
+  getDivisionsValue() {
+      return duration.inSeconds / 2 == 0 ? duration.inSeconds : duration.inSeconds - 2;
+  }
 }

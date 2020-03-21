@@ -112,7 +112,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Saves the currentSong of the SongSingleton as a File on the file system
   void saveFile(BuildContext context, TextEditingController titleController) {
-    SongSingleton.instance.currentSong = new SongFile(titleController.text, textController.text, null);
+    SongSingleton.instance.currentSong = new SongFile(titleController.text.trim(), textController.text.trim(), null);
     if(!SongSingleton.instance.currentSong.isEmpty()) {
       FileController.writeFile(SongSingleton.instance.currentSong);
       displaySnackbar(titleController.text + " correctly saved!", context);
@@ -140,7 +140,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() {
     if(SongSingleton.instance.currentSong != null) {
-      this.textController.text = SongSingleton.instance.currentSong.text;
+      this.textController.text = SongSingleton.instance.currentSong.text.trim();
     }
   }
 
@@ -153,7 +153,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   /// the current Title and Text written in the fields and then navigates to the routeName
   loadOtherPage(String routeName) {
     if(SongSingleton.instance.currentSong != null)
-      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title, textController.text, null);
+      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
     else
       SongSingleton.instance.currentSong = new SongFile("", "", null);
     Navigator.popAndPushNamed(context, routeName);

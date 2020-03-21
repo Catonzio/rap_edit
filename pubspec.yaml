@@ -31,6 +31,7 @@ dependencies:
   audio_recorder: ^1.0.1
   permission_handler: ^4.4.0+hotfix.2
   share_extend: "^1.1.1"
+  shared_preferences: ^0.5.6+3
 
 
 dev_dependencies:
