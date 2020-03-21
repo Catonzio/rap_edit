@@ -5,7 +5,6 @@ import 'package:rap_edit/support/MyColors.dart';
 
 class CstmTextField extends StatelessWidget {
 
-  final TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 20);
   final TextEditingController controller;
   final String hintText;
   final int maxLines;
@@ -23,7 +22,7 @@ class CstmTextField extends StatelessWidget {
      textCapitalization: TextCapitalization.none,
      obscureText: false,
      cursorColor: MyColors.textColor,
-     style: textStyle,
+     style: Theme.of(context).textTheme.body1,
      maxLines: maxLines,
      //style: style,
      decoration: InputDecoration(

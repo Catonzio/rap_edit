@@ -90,44 +90,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   /// Creates the slider belonging to the song played by the player
   SliderTheme createSlider() {
-    if(SongSingleton.instance.beatPath != null) {
-      return SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            activeTrackColor: MyColors.electricBlue,
-            inactiveTrackColor: MyColors.textColor,
-            trackShape: RoundedRectSliderTrackShape(),
-            trackHeight: 4.0,
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.0),
-            thumbColor: MyColors.electricBlue,
-            overlayColor: Colors.white.withAlpha(20),
-            overlayShape: RoundSliderOverlayShape(overlayRadius: 5.0),
-            tickMarkShape: RoundSliderTickMarkShape(),
-            activeTickMarkColor: MyColors.electricBlue,
-            inactiveTickMarkColor: MyColors.textColor,
-            valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-            valueIndicatorColor: MyColors.electricBlue,
-            valueIndicatorTextStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          child: Slider(
-            value: position.inSeconds.toDouble(),
-            min: 0.0,
-            max: duration.inSeconds.toDouble() + 0.1,
-            divisions: 300,
-            label: getPositionFormatted(),
-            activeColor: Theme.of(context).primaryColor,
-            onChanged: (double value) {
-              setState(() {
-                seekToSecond(value.toInt());
-                value = value;
-                //resumeSong();
-              });
-            },
-          )
-      );
-    } else {
-      return SliderTheme(
+    return SliderTheme(
         data: SliderTheme.of(context).copyWith(
           activeTrackColor: MyColors.electricBlue,
           inactiveTrackColor: MyColors.textColor,
@@ -146,11 +109,26 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             color: Colors.white,
           ),
         ),
-        child: Slider(
-          value: 0,
+        child: SongSingleton.instance.beatPath != null
+        ? Slider(
+          value: position.inSeconds.toDouble(),
+          min: 0.0,
+          max: duration.inSeconds.toDouble() + 0.1,
+          divisions: 300,
+          label: getPositionFormatted(),
+          activeColor: Theme.of(context).primaryColor,
+          onChanged: (double value) {
+            setState(() {
+              seekToSecond(value.toInt());
+              value = value;
+              //resumeSong();
+            });
+          },
         )
-      );
-    }
+       : Slider(
+          value: 0.0,
+        )
+    );
   }
 
   /// Navigates to the ChoosingBeats page
@@ -259,6 +237,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     getPositionFormatted(),
                     style: textStyle,
                   ),
+                  Container(width: 5,),
                   IconButton(
                     icon: Icon(Icons.stop, color: MyColors.startElementColor),
                     iconSize: 40,
@@ -272,7 +251,4 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       );
     }
 
-  getDivisionsValue() {
-      return duration.inSeconds / 2 == 0 ? duration.inSeconds : duration.inSeconds - 2;
-  }
 }

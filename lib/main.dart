@@ -6,6 +6,7 @@ import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/Trials.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'pages/FileLoadingPage.dart';
@@ -39,13 +40,14 @@ class PageMain extends StatelessWidget {
       theme: ThemeData(
           brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.black,
-          primaryColor: Color(0xFF2C75FF),
-          accentColor: Color(0xFF2C75FF),
-          //fontFamily: 'Georgia',
+          primaryColor: MyColors.electricBlue,
+          accentColor: MyColors.electricBlue,
+          fontFamily: 'Montserrat',
           textTheme: TextTheme(
-            headline: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
-            title: TextStyle(fontSize: 36.0,),
-            body1: TextStyle(fontSize: 20.0, fontFamily: 'Hind'),
+            headline: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
+            title: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
+            subtitle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
+            body1: TextStyle(fontSize: 20.0, color: MyColors.textColor),
           ),
       ),
     );

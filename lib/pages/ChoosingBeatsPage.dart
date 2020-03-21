@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
+import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
-import 'package:rap_edit/support/MyColors.dart';
+import 'package:rap_edit/support/ListenAssetSupport.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
@@ -21,49 +22,25 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   List<String> songs = new List();
   List<Widget> songsCards = new List();
-  String loadButtonText = "Load";
-  String previewButtonText = "Preview";
-  AudioPlayer player;
-  AudioCache cache;
-  AudioPlayerState playerState;
+
+  IconData playPauseIcon = Icons.play_arrow;
+  ListenAssetSupport listenAssetSupport;
+
 
   @override
   void initState() {
     super.initState();
     songs = ["metronome_100bpm_2-4.mp3", "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3", "metronome_100bpm_8-8.mp3"];
-    if(player == null && cache == null) {
-      player = AudioPlayer();
-      cache = AudioCache(fixedPlayer: player);
-      player.onPlayerStateChanged.listen((AudioPlayerState s) {
-        if(player != null)
-          setState(() => playerState = s);
-      });
-    }
-    createSongList();
+    listenAssetSupport = ListenAssetSupport();
   }
 
   @override
   void dispose() {
     super.dispose();
-    player.stop();
-    cache.clearCache();
-    player.release();
-    player = null;
-    cache = null;
+    listenAssetSupport.stopPreview();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CstmBackGround(
-        body: Center(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: ListView.builder(
+  /*
+  ListView.builder(
                     itemCount: songs.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
@@ -76,20 +53,14 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
                             pressed: () => { loadAsset(songs[index]) },
                           ),
                           ButtonCstmCard(
-                            icon: Icons.play_arrow,
+                            icon: playPauseIcon,
                             pressed: () => { listenPreview(songs[index]) },
                           )
                         ],
                       );
                     },
                   ),
-                ),
-                SizedBox(height: 30,),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    CstmButton(
+                  CstmButton(
                       text: "File System",
                       pressed: () => { loadFromFileSystem(context) },
                     ),
@@ -98,18 +69,53 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
                       iconData: Icons.home,
                       pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
                     )
-                  ],
-                )
-              ],
-            ),
-          ),
+   */
+
+  @override
+  Widget build(BuildContext context) {
+    return ListPage(
+      title: "Beats",
+      listView: ListView.builder(
+        itemCount: songs.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          return CardFile(
+            title: getOnlySongName(songs[index]),
+            text: "",
+            buttomButtons: <Widget>[
+              ButtonCstmCard(
+                icon: Icons.file_upload,
+                pressed: () => { loadAsset(songs[index]) },
+              ),
+              ButtonCstmCard(
+                icon: playPauseIcon,
+                pressed: () => { listenPreview(songs[index]) },
+              )
+            ],
+          );
+        },
+      ),
+      buttomRowButtons: <Widget>[
+        CstmButton(
+          text: "File System",
+          pressed: () => { loadFromFileSystem(context) },
         ),
-      )
+        Container(width: 10.0,),
+        CstmButton(
+          iconData: Icons.home,
+          pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
+        )
+      ],
     );
   }
 
-  createSongList() async {
-  }
+ updateIcon(IconData data) {
+    if(mounted) {
+      setState(() {
+        playPauseIcon = data;
+      });
+    }
+ }
 
   String getOnlySongName(String song) {
     return song.substring(song.indexOf("/") + 1, song.lastIndexOf(".mp3"));
@@ -130,45 +136,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   }
 
   listenPreview(String song) {
-    if(playerState != AudioPlayerState.PLAYING) {
-      setState(() {
-        previewButtonText = "Stop";
-      });
-      cache.play(song);
-    } else if(playerState == AudioPlayerState.PLAYING) {
-      setState(() {
-        previewButtonText = "Preview";
-      });
-      player.stop();
-    }
-  }
-
-  void buildSongList() {
-    songs.forEach((song) {
-      songsCards.add(
-        Card(
-          color: Theme.of(context).primaryColor,
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(getOnlySongName(song)),
-              ),
-              ButtonBar(
-                children: <Widget>[
-                  MaterialButton(
-                    child: Text(loadButtonText),
-                  ),
-                  MaterialButton(
-                    child: Text(previewButtonText),
-                    onPressed: () => { listenPreview(song) },
-                  )
-                ],
-              )
-            ],
-          )
-        )
-      );
-    });
+    updateIcon(listenAssetSupport.listenAssetPreview(song));
   }
 
   loadAsset(String song) {

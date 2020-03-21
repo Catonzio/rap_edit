@@ -5,8 +5,10 @@ import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
+import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 import 'package:share_extend/share_extend.dart';
 
 class FileLoadingPage extends StatefulWidget {
@@ -28,48 +30,37 @@ class FileLoadingPageState extends State<FileLoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: CstmBackGround(
-          body: Center(
-            child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20,),
-                  Text("Texts", style: TextStyle(fontSize: 40),),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: file.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CardFile(
-                          title: file[index].title,
-                          text: getOnlyFirstLine(file[index].text),
-                          buttomButtons: <Widget>[
-                            ButtonCstmCard(
-                              icon: Icons.delete,
-                              pressed: () => { deleteFile(index) },
-                            ),
-                            ButtonCstmCard(
-                              icon: Icons.share,
-                              pressed: () => { shareText(file[index]) },
-                            ),
-                            ButtonCstmCard(
-                              icon: Icons.file_upload,
-                              pressed: () => { loadFile(index) },
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  CstmButton(
-                    iconData: Icons.home,
-                    pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
-                  ),
-                  SizedBox(height: 10,)
-                ]
-            ),
-          )
-        )
+    return ListPage(
+      title: "Texts",
+      listView: ListView.builder(
+        itemCount: file.length,
+        itemBuilder: (BuildContext context, int index) {
+          return CardFile(
+            title: file[index].title,
+            text: getOnlyFirstLine(file[index].text),
+            buttomButtons: <Widget>[
+              ButtonCstmCard(
+                icon: Icons.delete,
+                pressed: () => { deleteFile(index) },
+              ),
+              ButtonCstmCard(
+                icon: Icons.share,
+                pressed: () => { shareText(file[index]) },
+              ),
+              ButtonCstmCard(
+                icon: Icons.file_upload,
+                pressed: () => { loadFile(index) },
+              )
+            ],
+          );
+        },
+      ),
+      buttomRowButtons: <Widget>[
+        CstmButton(
+          iconData: Icons.home,
+          pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
+        ),
+      ],
     );
   }
 

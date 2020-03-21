@@ -27,7 +27,7 @@ class CardFile extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(15.0),
           ),
-          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -36,13 +36,20 @@ class CardFile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25)),
+                  Container(
+                    child: Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25)),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
+                  )
                 ],
               ),
-              SizedBox(height: 10.0,),
+              //SizedBox(height: 10.0,),
+              //Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
               Row(
                 children: <Widget>[
-                  Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
+                  Container(
+                    child: Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
+                    padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  )
                 ],
               ),
               Row(
