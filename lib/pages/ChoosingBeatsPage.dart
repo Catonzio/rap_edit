@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
@@ -66,37 +67,19 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
                     itemCount: songs.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                          color: Colors.transparent,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [MyColors.endElementColor, MyColors.startElementColor]
-                                ),
-                                borderRadius: BorderRadius.circular(15.0)
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text(getOnlySongName(songs[index]), style: TextStyle(color: MyColors.textColor),),
-                                ),
-                                ButtonBar(
-                                  children: <Widget>[
-                                    MaterialButton(
-                                        child: Icon(Icons.file_upload, color: MyColors.textColor),
-                                        onPressed: () => { loadAsset(songs[index]) }
-                                    ),
-                                    MaterialButton(
-                                      child: Icon(Icons.play_arrow, color: MyColors.textColor),
-                                      onPressed: () => { listenPreview(songs[index]) },
-                                    )
-                                  ],
-                                )
-                              ],
-                            )
+                      return CardFile(
+                        title: getOnlySongName(songs[index]),
+                        text: "",
+                        buttomButtons: <Widget>[
+                          ButtonCstmCard(
+                            icon: Icons.file_upload,
+                            pressed: () => { loadAsset(songs[index]) },
+                          ),
+                          ButtonCstmCard(
+                            icon: Icons.play_arrow,
+                            pressed: () => { listenPreview(songs[index]) },
                           )
+                        ],
                       );
                     },
                   ),
@@ -134,7 +117,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   loadFromFileSystem(BuildContext context) async {
     try {
-      String localFilePath = await FilePicker.getFilePath(type: FileType.AUDIO);
+      String localFilePath = await FilePicker.getFilePath(type: FileType.audio);
       if(localFilePath != null && localFilePath.isNotEmpty) {
         SongSingleton.instance.beatPath = localFilePath;
         SongSingleton.instance.isLocal = true;

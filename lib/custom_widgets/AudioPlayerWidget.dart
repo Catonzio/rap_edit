@@ -10,8 +10,14 @@ import '../controllers/SongSingleton.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
 
+  final AudioPlayerWidgetState state = AudioPlayerWidgetState();
+
   @override
-  AudioPlayerWidgetState createState() => new AudioPlayerWidgetState();
+  AudioPlayerWidgetState createState() => state;
+
+  pauseSong() {
+    state.pauseSong();
+  }
 }
 
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
@@ -31,15 +37,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     initPlayer();
   }
 
-  @override
-  void dispose() {
-    pauseSong();
-    player = null;
-    super.dispose();
-  }
-
   void initPlayer() {
-      if(player == null) {
+    try {
+      if (player == null) {
         player = new AudioPlayer();
         duration = new Duration();
         position = new Duration();
@@ -52,12 +52,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
       player.onAudioPositionChanged.listen((Duration p) {
         if (this.mounted)
-          setState(() => { position = p });
+          setState(() => { position = p});
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
         if (this.mounted)
-          setState(() => playerState = s);
+          setState(() =>
+          playerState = s);
       });
 
       player.onPlayerCompletion.listen((void v) {
@@ -66,10 +67,16 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
       cache = AudioCache(fixedPlayer: player);
 
-    if(SongSingleton.instance.beatPath != null && SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-      playSong();
-      pauseSong();
-    }
+      if (SongSingleton.instance.beatPath != null &&
+          SongSingleton.instance.beatPath.isNotEmpty && player != null) {
+        playSong();
+        if(SongSingleton.instance.isAsset == true) {
+
+        } else {
+          pauseSong();
+        }
+      }
+    } catch(ex) { debugPrint("ooooooooooooooooooo porco diooo"); }
   }
 
   /// Updates the icon of play/pause
@@ -106,7 +113,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           child: Slider(
             value: position.inSeconds.toDouble(),
             min: 0.0,
-            max: duration.inSeconds.toDouble(),
+            max: duration.inSeconds.toDouble() + 0.1,
             divisions: 300,
             label: getPositionFormatted(),
             activeColor: Theme.of(context).primaryColor,
@@ -183,6 +190,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   playSong() {
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
+      updateIcon(Icons.pause);
     }
     else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
       player.play(SongSingleton.instance.beatPath,
@@ -192,9 +200,11 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   /// Sets the player in pause
-  pauseSong() {
-    player.pause();
-    updateIcon(Icons.play_arrow);
+  void pauseSong() {
+    if(player != null) {
+      player.pause();
+      updateIcon(Icons.play_arrow);
+    }
   }
 
   /// Sets the player in pause or in play, depending on the current state

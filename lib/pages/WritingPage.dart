@@ -27,7 +27,7 @@ class WritingPage extends StatefulWidget {
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
   final TextEditingController textController = new TextEditingController();
-  static AudioPlayerWidget player;
+  AudioPlayerWidget player;
 
   @override
   bool get wantKeepAlive => true;
@@ -156,7 +156,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
     else
       SongSingleton.instance.currentSong = new SongFile("", "", null);
-    Navigator.popAndPushNamed(context, routeName);
+    player.pauseSong();
+    Navigator.pushNamed(context, routeName);
   }
 
 }

@@ -6,65 +6,78 @@ class CardFile extends StatelessWidget {
 
   final String title;
   final String text;
-  final IconData icon;
-  final Function deleteButtonAction;
-  final Function loadButtonAction;
-  final Color color;
-  final Color backgroundColor;
+  final List<Widget> buttomButtons;
 
   CardFile({
     @required this.title,
     @required this.text,
-    @required this.icon,
-    @required this.deleteButtonAction,
-    @required this.loadButtonAction,
-    @required this.color,
-    @required this.backgroundColor
+    @required this.buttomButtons
   });
 
   @override
   Widget build(BuildContext context) {
-
-    TextStyle textStyle = new TextStyle(color: color);
-
-    return Card(
-      color: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-              colors: [MyColors.endElementColor, MyColors.startElementColor]
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [MyColors.endElementColor, MyColors.startElementColor]
+            ),
+            borderRadius: BorderRadius.circular(15.0),
           ),
-          borderRadius: BorderRadius.circular(15.0)
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: Icon(icon, color: MyColors.textColor),
-              title: Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25),),
-              subtitle: Text(
-                text,
-                maxLines: 1,
-                style: TextStyle(color: MyColors.textColor, fontSize: 15),
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25)),
+                ],
               ),
-            ),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: Text("Delete", style: textStyle,),
-                  onPressed: deleteButtonAction,
-                ),
-                FlatButton(
-                  child: Text("Load", style: textStyle,),
-                  onPressed: loadButtonAction,
-                )
-              ],
-            ),
-          ],
+              SizedBox(height: 10.0,),
+              Row(
+                children: <Widget>[
+                  Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: buttomButtons
+              )
+            ],
+          ),
         ),
-      )
+        SizedBox(height: 8.0,)
+      ],
     );
   }
+
+}
+
+class ButtonCstmCard extends StatelessWidget {
+
+  final IconData icon;
+  final Function pressed;
+
+  ButtonCstmCard({Key key, this.icon, this.pressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 25.0,
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(20.0),
+      child: MaterialButton(
+        child: Icon(icon, color: MyColors.textColor),
+        onPressed: pressed,
+      ),
+    );
+  }
+
 }

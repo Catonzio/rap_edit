@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
@@ -39,82 +40,33 @@ class RegistrationsPageState extends State<RegistrationsPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(height: 20,),
+                Text("Registrations", style: TextStyle(fontSize: 40),),
                 Expanded(
                   child: ListView.builder(
                     itemCount: registrationsPath.length,
                     //padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                     itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [MyColors.endElementColor, MyColors.startElementColor]
-                                ),
-                                borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(getOnlyRegistrationName(registrationsPath[index]), textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 25, color: MyColors.textColor),)
-                                  ],
-                                ),
-                                SizedBox(height: 10.0,),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Material(
-                                      elevation: 25,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: MaterialButton(
-                                        child: Icon(Icons.delete, color: MyColors.textColor),
-                                        onPressed: () => { deleteRegistration(index) },
-                                      ),
-                                    ),
-                                    Material(
-                                      elevation: 25,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: MaterialButton(
-                                        child: Icon(Icons.share, color: MyColors.textColor),
-                                        onPressed: () => { shareSong(registrationsPath[index]) },
-                                      ),
-                                    ),
-                                    Material(
-                                      elevation: 25,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: MaterialButton(
-                                        child: Icon(Icons.file_upload, color: MyColors.textColor,),
-                                        onPressed: () => { loadRegistration(registrationsPath[index]) },
-                                      ),
-                                    ),
-                                    Material(
-                                      elevation: 25.0,
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: MaterialButton(
-                                        child: Icon(Icons.play_arrow, color: MyColors.textColor),
-                                        onPressed: () => { listenPreview(registrationsPath[index]) },
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                      return CardFile(
+                        title: getOnlyRegistrationName(registrationsPath[index]),
+                        text: "",
+                        buttomButtons: <Widget>[
+                          ButtonCstmCard(
+                            icon: Icons.delete,
+                            pressed: () => { deleteRegistration(index) },
                           ),
-                          SizedBox(height: 8.0,)
+                          ButtonCstmCard(
+                            icon: Icons.share,
+                            pressed: () => { shareSong(registrationsPath[index]) },
+                          ),
+                          ButtonCstmCard(
+                            icon: Icons.file_upload,
+                            pressed: () => { loadRegistration(registrationsPath[index]) },
+                          ),
+                          ButtonCstmCard(
+                            icon: Icons.play_arrow,
+                            pressed: () => { listenPreview(registrationsPath[index]) },
+                          )
                         ],
                       );
                     },

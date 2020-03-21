@@ -7,7 +7,7 @@ import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
-import 'package:rap_edit/support/MyColors.dart';
+import 'package:share_extend/share_extend.dart';
 
 class FileLoadingPage extends StatefulWidget {
   static const routeName = '/filesPage';
@@ -33,18 +33,29 @@ class FileLoadingPageState extends State<FileLoadingPage> {
           body: Center(
             child: Column(
                 children: <Widget>[
+                  SizedBox(height: 20,),
+                  Text("Texts", style: TextStyle(fontSize: 40),),
                   Expanded(
                     child: ListView.builder(
                       itemCount: file.length,
                       itemBuilder: (BuildContext context, int index) {
                         return CardFile(
                           title: file[index].title,
-                          color: MyColors.textColor,
-                          icon: Icons.file_upload,
-                          text: getOnlyFirstLine(file[index].text) + "\n\nLast modified: " + file[index].lastModifiedToString(),
-                          backgroundColor: Theme.of(context).primaryColor,
-                          deleteButtonAction: () => { deleteFile(index) },
-                          loadButtonAction: () => { loadFile(index )},
+                          text: getOnlyFirstLine(file[index].text),
+                          buttomButtons: <Widget>[
+                            ButtonCstmCard(
+                              icon: Icons.delete,
+                              pressed: () => { deleteFile(index) },
+                            ),
+                            ButtonCstmCard(
+                              icon: Icons.share,
+                              pressed: () => { shareText(file[index]) },
+                            ),
+                            ButtonCstmCard(
+                              icon: Icons.file_upload,
+                              pressed: () => { loadFile(index) },
+                            )
+                          ],
                         );
                       },
                     ),
@@ -82,6 +93,10 @@ class FileLoadingPageState extends State<FileLoadingPage> {
       return text.substring(0, text.indexOf("\n"));
     else
       return text;
+  }
+
+  shareText(SongFile file) {
+    ShareExtend.share(file.title + "\n\n" + file.text, "text");
   }
 
 
