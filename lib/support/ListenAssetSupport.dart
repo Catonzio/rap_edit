@@ -20,11 +20,10 @@ class ListenAssetSupport {
   IconData listenAssetPreview(String song) {
     if (playerState == AudioPlayerState.PLAYING) {
       player.stop();
-      return Icons.play_arrow;
     } else {
       cache.play(song);
-      return Icons.stop;
     }
+    return playerState != AudioPlayerState.PLAYING ? Icons.stop : Icons.play_arrow;
   }
 
   IconData listenPreview(String song) {

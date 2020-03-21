@@ -30,7 +30,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   @override
   void initState() {
     super.initState();
-    songs = ["metronome_100bpm_2-4.mp3", "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3", "metronome_100bpm_8-8.mp3"];
+    songs = ["Hip_Hop_Instrumental_Beat.mp3", "Rap_Instrumental_Beat.mp3", "Trap_Instrumental_Beat.mp3", "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3"];
     listenAssetSupport = ListenAssetSupport();
   }
 
@@ -39,37 +39,6 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
     super.dispose();
     listenAssetSupport.stopPreview();
   }
-  /*
-  ListView.builder(
-                    itemCount: songs.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CardFile(
-                        title: getOnlySongName(songs[index]),
-                        text: "",
-                        buttomButtons: <Widget>[
-                          ButtonCstmCard(
-                            icon: Icons.file_upload,
-                            pressed: () => { loadAsset(songs[index]) },
-                          ),
-                          ButtonCstmCard(
-                            icon: playPauseIcon,
-                            pressed: () => { listenPreview(songs[index]) },
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                  CstmButton(
-                      text: "File System",
-                      pressed: () => { loadFromFileSystem(context) },
-                    ),
-                    Container(width: 10.0,),
-                    CstmButton(
-                      iconData: Icons.home,
-                      pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
-                    )
-   */
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +87,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
  }
 
   String getOnlySongName(String song) {
+    song = song.replaceAll("_", " ");
     return song.substring(song.indexOf("/") + 1, song.lastIndexOf(".mp3"));
   }
 
