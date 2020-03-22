@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:ffi';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
@@ -37,4 +39,45 @@ void main() {
     expect("test(21)", FileController.manageName(str3));
     expect("test(ciao)(1)", FileController.manageName(str4));
   });
+
+
+  test("Voglio provare gli operatori", () {
+    var a = 10;
+    var b = a??12;
+    expect(10, b);
+    var c;
+    var d = c??10;
+    expect(10, d);
+    b = c??a;
+    expect(a, b);
+
+    Prova prova = Prova();
+    var e = prova.prova??"-";
+    expect("-", e);
+    prova.prova = "ciao";
+    e = prova.prova??"-";
+    expect("ciao", e);
+    Prova prova2;
+    var f = prova2?.prova??"-";
+    expect("-", f);
+    prova2 = Prova();
+    prova2.prova = "prova2";
+    f = prova2?.prova??"-";
+    expect("prova2", f);
+
+    var h = prova2?.val;
+    expect(null, h);
+    prova2.val = true;
+    h = prova2?.prova == "prova2";
+    expect(true, h);
+    Prova prova3;
+    var i = prova3?.prova == "prova3" ? "yes" : "no";
+    expect("no", i);
+  });
+}
+
+
+class Prova {
+  String prova;
+  bool val;
 }

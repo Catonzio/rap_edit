@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
-import 'package:rap_edit/pages/Trials.dart';
+
 import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
@@ -12,7 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/FileLoadingPage.dart';
 import 'pages/WritingPage.dart';
 
-void main() async {
+var initScreen;
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");

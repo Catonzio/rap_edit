@@ -69,7 +69,7 @@ class FileController {
   static List<SongFile> getListOfFiles() {
     List<FileSystemEntity> file = new List();
     file = Directory("$filePath").listSync();
-    file.removeRange(0, 2);
+    //file.removeRange(0, 2);
     return getSongsFromFiles(file);
   }
 
