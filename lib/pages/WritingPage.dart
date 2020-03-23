@@ -16,6 +16,7 @@ import '../controllers/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import '../support/MyColors.dart';
+import 'ChoosingBeatsDuration.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
@@ -145,7 +146,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Loads the page of Beats Loading
   loadSong() {
-    loadOtherPage(ChoosingBeatsPage.routeName);
+    loadOtherPage(ChoosingBeatsDurationPage.routeName);
   }
 
   /// Given a routeName, saves in the currentSong of the SongSingleton

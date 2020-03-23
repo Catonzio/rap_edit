@@ -9,13 +9,13 @@ import 'package:rap_edit/support/ListenAssetSupport.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
-class ChoosingBeatsPage extends StatefulWidget {
-  static String routeName = "/choosingBeats";
+class ChoosingBeatsDurationPage extends StatefulWidget {
+  static String routeName = "/choosingBeatsDuration";
   @override
-  ChoosingBeatsPageState createState() => ChoosingBeatsPageState();
+  ChoosingBeatsDurationPageState createState() => ChoosingBeatsDurationPageState();
 }
 
-class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
+class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
 
   List<String> songs = new List();
   List<Widget> songsCards = new List();
