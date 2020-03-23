@@ -66,7 +66,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       titleText = Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,);
     }
 
-
     return Scaffold(
       //key: secondPageScaffold,
       appBar: GradientAppBar(

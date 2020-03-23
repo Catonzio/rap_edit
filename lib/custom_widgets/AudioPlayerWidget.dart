@@ -29,7 +29,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   static Duration position;
 
   static IconData playPauseIcon = Icons.play_arrow;
-  TextStyle textStyle = new TextStyle(color: MyColors.textColor);
+  TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
 
   @override
   void initState() {
@@ -115,7 +115,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           min: 0.0,
           max: duration.inSeconds.toDouble() + 0.1,
           divisions: 300,
-          label: getPositionFormatted(),
+          label: getDurationFormatted(position),
           activeColor: Theme.of(context).primaryColor,
           onChanged: (double value) {
             setState(() {
@@ -136,13 +136,10 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     Navigator.popAndPushNamed(context, ChoosingBeatsPage.routeName);
   }
 
-  /// Returns the current position of the player displayed as 'minute':'seconds'
-  String getPositionFormatted() {
-    String pos;
-    if(position != null)
-      pos = position.toString();
-    else
-      pos = Duration().toString();
+  /// Returns the Duration displayed as 'minute':'seconds'
+  String getDurationFormatted(Duration dur) {
+    //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
+    String pos = dur?.toString() ?? Duration().toString();
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
@@ -225,18 +222,21 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     iconSize: 40,
                     onPressed: () => { playPause() },
                   ),
-                  //Container(width: 10.0,),
-                  Container(
-                    width: 220,
-                    child: createSlider(),
-                  ),
-                  Container(
-                    width: 10,
-                  ),
                   Text(
-                    getPositionFormatted(),
+                    getDurationFormatted(position),
                     style: textStyle,
                   ),
+                  Container(width: 10.0,),
+                  Container(
+                    width: 180,
+                    child: createSlider(),
+                  ),
+                  Container(width: 10.0,),
+                  Text(
+                      getDurationFormatted(duration),
+                      style: textStyle,
+                  ),
+
                   Container(width: 5,),
                   IconButton(
                     icon: Icon(Icons.stop, color: MyColors.startElementColor),

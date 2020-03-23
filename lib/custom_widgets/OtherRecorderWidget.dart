@@ -21,7 +21,7 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
 
   String cuntdownString = "";
   Timer cuntdownTimer;
-  IconData registerIcon;
+  //IconData registerIcon;
 
   FlutterAudioRecorder _recorder;
   Recording _recording;
@@ -31,7 +31,6 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
   @override
   void initState() {
     super.initState();
-    registerIcon = Icons.play_arrow;
   }
 
   @override
@@ -85,7 +84,7 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
         children: <Widget>[
           registerButton,
           Container(width: 5,),
-          Text(cuntdownString)
+          Text("${getRecordingText()}")
         ],
       ),
     );
@@ -93,8 +92,23 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
 
   mySetState(String str) {
     setState(() {
-      cuntdownString = str;
+      cuntdownString = str ?? "";
     });
+  }
+
+  String getRecordingText() {
+    try {
+      return int.parse(cuntdownString) != null ? cuntdownString : "";
+    } catch(ex) {
+      return cuntdownString + " " + getDurationFormatted(_recording?.duration);
+    }
+  }
+
+  /// Returns the Duration displayed as 'minute':'seconds'
+  String getDurationFormatted(Duration dur) {
+    //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
+    String pos = dur?.toString() ?? "";
+    return pos.contains(":") ? pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf(".")) : pos;
   }
 
   startCountdown() async {
@@ -120,12 +134,10 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
   void startStopRecording() async {
     if(_recording.status == RecordingStatus.Recording) {
       stopRecording();
-      mySetState("");
-      updateIcon(Icons.play_arrow);
+      mySetState("stopped");
     }
     else if(_recording.status == RecordingStatus.Initialized) {
       startRecording();
-      updateIcon(Icons.pause);
     }
   }
 
@@ -160,7 +172,7 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
     if(SongSingleton.instance.currentSong != null) {
       controller.text = SongSingleton.instance.currentSong.title;
     }
-    if(recordingName == null) {
+    if(recordingName == null || _recording?.status == RecordingStatus.Stopped) {
       Widget alert = CstmAlertDialog(
         dialogTitle: "Recording",
         continueText: "Ok",
@@ -199,10 +211,5 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
     }
   }
 
-  void updateIcon(IconData icon) {
-    setState(() {
-      registerIcon = icon;
-    });
-  }
 
 }
