@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/pages/ChoosingBeatsDuration.dart';
+import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';

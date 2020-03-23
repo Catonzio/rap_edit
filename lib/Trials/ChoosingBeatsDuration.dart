@@ -54,7 +54,9 @@ class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return CardFile(
                     title: getOnlySongName(songs[index]),
-                    text: "Duration: ${snapshot.data[index]}",
+                    text: snapshot.data.length == 0
+                        ? ""
+                        : "Duration: ${snapshot.data[index]}",
                     buttomButtons: <Widget>[
                       ButtonCstmCard(
                         icon: Icons.file_upload,

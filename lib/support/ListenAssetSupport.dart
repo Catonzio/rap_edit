@@ -52,12 +52,35 @@ class ListenAssetSupport {
   Future<List<int>> getAssetsDuration(List<String> song) async {
     List<int> durations = new List();
     song.forEach((str) async {
-      cache.play(str);
+      cache.load(str);
       player.stop();
-      Future.delayed(Duration(milliseconds: 500), () async {
-        int dur = await player?.getDuration() ?? 1;
+      Future.delayed(Duration(milliseconds: 1500), () async {
+        int dur;
+        try {
+          dur = await player?.getDuration() ?? 1;
+        } catch (ex) {
+          dur = 1;
+        }
         durations.add(dur);
         cache.clear(str);
+      });
+    });
+    return durations;
+  }
+
+  Future<List<int>> getLocalsDuration(List<String> registrationsPath) async {
+    List<int> durations = new List();
+    registrationsPath.forEach((str) async {
+      player.setUrl(str, isLocal: true, respectSilence: true);
+      Future.delayed(Duration(milliseconds: 1500), () async {
+        int dur;
+        try {
+          dur = await player?.getDuration() ?? 1;
+        } catch (ex) {
+          dur = 1;
+        }
+        durations.add(dur);
+        player.release();
       });
     });
     return durations;
