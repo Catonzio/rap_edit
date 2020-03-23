@@ -19,6 +19,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   List<String> songs = new List();
   List<Widget> songsCards = new List();
+  Future<List<int>> durations;
 
   IconData playPauseIcon = Icons.play_arrow;
   ListenAssetSupport listenAssetSupport;
@@ -29,6 +30,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
     super.initState();
     songs = ["Hip_Hop_Instrumental_Beat.mp3", "Rap_Instrumental_Beat.mp3", "Trap_Instrumental_Beat.mp3", "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3"];
     listenAssetSupport = ListenAssetSupport();
+    durations = listenAssetSupport.getAssetsDuration(songs);
   }
 
   @override
@@ -41,24 +43,47 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   Widget build(BuildContext context) {
     return ListPage(
       title: "Beats",
-      listView: ListView.builder(
-        itemCount: songs.length,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return CardFile(
-            title: getOnlySongName(songs[index]),
-            text: "",
-            buttomButtons: <Widget>[
-              ButtonCstmCard(
-                icon: Icons.file_upload,
-                pressed: () => { loadAsset(songs[index]) },
-              ),
-              ButtonCstmCard(
-                icon: playPauseIcon,
-                pressed: () => { listenPreview(songs[index]) },
-              )
-            ],
-          );
+      futureBuilder: FutureBuilder<List<int>>(
+        future: durations,
+        builder: (context, snapshot) {
+          try {
+            if(snapshot.hasData) {
+              return ListView.builder(
+                itemCount: songs.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return CardFile(
+                    title: getOnlySongName(songs[index]),
+                    text: "Duration: ${snapshot.data[index]}",
+                    buttomButtons: <Widget>[
+                      ButtonCstmCard(
+                        icon: Icons.file_upload,
+                        pressed: () => { loadAsset(songs[index]) },
+                      ),
+                      ButtonCstmCard(
+                        icon: playPauseIcon,
+                        pressed: () => { listenPreview(songs[index]) },
+                      )
+                    ],
+                  );
+                },
+              );
+            } else {
+              return ListView.builder(
+                itemCount: songs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CircularProgressIndicator();
+                },
+              );
+            }
+          } catch (ex) {
+            return ListView.builder(
+              itemCount: songs.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CircularProgressIndicator();
+              },
+            );
+          }
         },
       ),
       buttomRowButtons: <Widget>[

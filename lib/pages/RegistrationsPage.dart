@@ -40,7 +40,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
         itemBuilder: (BuildContext context, int index) {
           return CardFile(
             title: getOnlyRegistrationName(registrationsPath[index]),
-            text: "",
+            text: "Duration: ${getSongDuration(registrationsPath[index])}",
             buttomButtons: <Widget>[
               ButtonCstmCard(
                 icon: Icons.delete,
@@ -113,5 +113,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
   shareSong(String registrationsPath) async {
     ShareExtend.share(registrationsPath, "file");
   }
+
+  getSongDuration(String registrationsPath) {}
 
 }

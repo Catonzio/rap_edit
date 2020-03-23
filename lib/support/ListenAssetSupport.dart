@@ -48,4 +48,18 @@ class ListenAssetSupport {
     cache.clearCache();
     player.release();
   }
+
+  Future<List<int>> getAssetsDuration(List<String> song) async {
+    List<int> durations = new List();
+    song.forEach((str) async {
+      cache.play(str);
+      player.stop();
+      Future.delayed(Duration(milliseconds: 500), () async {
+        int dur = await player?.getDuration() ?? 1;
+        durations.add(dur);
+        cache.clear(str);
+      });
+    });
+    return durations;
+  }
 }

@@ -8,13 +8,15 @@ class ListPage extends StatelessWidget {
 
   final String title;
   final ListView listView;
+  final FutureBuilder<List<int>> futureBuilder;
   final List<Widget> buttomRowButtons;
 
   ListPage({
     Key key,
     @required this.title,
-    @required this.listView,
+    this.listView,
     @required this.buttomRowButtons,
+    this.futureBuilder
   });
 
   @override
@@ -39,7 +41,7 @@ class ListPage extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 10.0),
                       ),
                       Expanded(
-                        child: listView
+                        child: listView??futureBuilder
                       ),
                       SizedBox(height: 10,),
                       Row(
