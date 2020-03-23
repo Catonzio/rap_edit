@@ -42,7 +42,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSAppleMusicUsageDescription</key>
-    <string>Explain why your app uses music</string>
+    <string>To load beat for writing texts</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Record audio for playback</string>
 </dict>

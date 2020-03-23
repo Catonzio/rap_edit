@@ -146,7 +146,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Loads the page of Beats Loading
   loadSong() {
-    loadOtherPage(ChoosingBeatsDurationPage.routeName);
+    loadOtherPage(ChoosingBeatsPage.routeName);
   }
 
   /// Given a routeName, saves in the currentSong of the SongSingleton
