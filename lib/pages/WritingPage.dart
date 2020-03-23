@@ -6,7 +6,7 @@ import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
-import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
+import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
@@ -88,7 +88,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     loadSongButton,
-                    RecorderWidget()
+                    OtherRecorderWidget()
                   ],
                 ),
                 SizedBox(height: 20,),

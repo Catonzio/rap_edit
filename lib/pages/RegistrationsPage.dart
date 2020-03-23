@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
-import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
-import 'package:rap_edit/support/MyColors.dart';
 import 'package:share_extend/share_extend.dart';
 
 class RegistrationsPage extends StatefulWidget {
@@ -32,15 +30,9 @@ class RegistrationsPageState extends State<RegistrationsPage> {
     listenAssetSupport = ListenAssetSupport();
   }
 
-/*
-CstmButton(
-                  iconData: Icons.home,
-                  pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName) },
-                ),
- */
-
   @override
   Widget build(BuildContext context) {
+    //FileController.deleteAllRegistrations();
     return ListPage(
       title: "Registrations",
       listView: ListView.builder(

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'dart:io' as io;
 import 'dart:async';
+import 'dart:io' as io;
 
-import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(MyApp());

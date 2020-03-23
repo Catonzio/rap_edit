@@ -15,6 +15,9 @@ class ListenAssetSupport {
       if(player != null)
         playerState = s;
     });
+    /*player.onPlayerCompletion.listen((void) {
+      ;
+    });*/
   }
 
   IconData listenAssetPreview(String song) {
@@ -23,6 +26,8 @@ class ListenAssetSupport {
     } else {
       cache.play(song);
     }
+    if(playerState == AudioPlayerState.COMPLETED)
+      return Icons.play_arrow;
     return playerState != AudioPlayerState.PLAYING ? Icons.stop : Icons.play_arrow;
   }
 
@@ -30,10 +35,12 @@ class ListenAssetSupport {
     if(playerState == AudioPlayerState.PLAYING) {
       player.stop();
       return Icons.play_arrow;
-    } else {
+    }
+    else {
       player.play(song, isLocal: true);
       return Icons.stop;
     }
+
   }
 
   stopPreview() {

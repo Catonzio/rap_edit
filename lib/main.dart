@@ -3,12 +3,12 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
-
 import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'controllers/FileController.dart';
 import 'pages/FileLoadingPage.dart';
 import 'pages/WritingPage.dart';
 

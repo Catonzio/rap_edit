@@ -149,4 +149,13 @@ class FileController {
     return numberOfOccurrences(text) != 0;
   }
 
+  static void deleteAllRegistrations() {
+    Directory dir = Directory(filePath);
+    dir.listSync().forEach((file) {
+      if(file.path.endsWith(".wav")) {
+        file.deleteSync();
+      }
+    });
+  }
+
 }
