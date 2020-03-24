@@ -78,8 +78,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
         CstmButton(
           text: "YouTube",
           pressed: () => { 
-            //loadFromYoutubeAlertDialog(context)
-            listenPreview("https://www.youtube.com/watch?v=Y7-34GbX83M")
+            loadFromYoutubeAlertDialog(context)
           },
         )
       ],
@@ -114,7 +113,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   }
 
   listenPreview(String song) {
-    updateIcon(listenAssetSupport.listenPreview(song));
+    updateIcon(listenAssetSupport.listenAssetPreview(song));
   }
 
   loadAsset(String song) {
