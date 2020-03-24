@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/pages/FileLoadingPage.dart';
-import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 class TabbedLoading extends StatelessWidget {

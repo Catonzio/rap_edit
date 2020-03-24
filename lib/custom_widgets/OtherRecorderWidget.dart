@@ -75,6 +75,7 @@ class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
       shape: new CircleBorder(side: BorderSide(width: 2.5)),
       //elevation: 2.0,
       fillColor: Colors.white,
+      onPressed: () => { displayAlertWhereToSave(context) },
       //padding: const EdgeInsets.all(15.0),
     );
 

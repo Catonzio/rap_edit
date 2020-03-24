@@ -127,6 +127,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         )
        : Slider(
           value: 0.0,
+          onChanged: (double val) => {},
         )
     );
   }

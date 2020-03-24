@@ -16,7 +16,6 @@ import '../controllers/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import '../support/MyColors.dart';
-import '../Trials/ChoosingBeatsDuration.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
@@ -29,6 +28,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   final TextEditingController textController = new TextEditingController();
   AudioPlayerWidget player;
+  String lastString = "";
 
   @override
   bool get wantKeepAlive => true;
@@ -38,6 +38,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     super.initState();
     setTitleAndText();
     player = AudioPlayerWidget();
+    textController.addListener(listenForText);
   }
 
   @override
@@ -92,7 +93,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   ],
                 ),
                 SizedBox(height: 20,),
-                SizedBox(height: 20,),
+                Text("$lastString", style: Theme.of(context).textTheme.body1,),
                 Expanded(
                   child: textText,
                 ),
@@ -155,9 +156,18 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     if(SongSingleton.instance.currentSong != null)
       SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
     else
-      SongSingleton.instance.currentSong = new SongFile("", "", null);
+      SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
     player.pauseSong();
     Navigator.pushNamed(context, routeName);
   }
 
+
+  listenForText() {
+    String untilSelection = textController.text.substring(0, textController.selection.base.offset);
+    List<String> strs = untilSelection.split("\n");
+    List<String> lastLineSplitted = strs[strs.length - 1].split(" ");
+    setState(() {
+      lastString = lastLineSplitted[lastLineSplitted.length - 1];
+    });
+  }
 }

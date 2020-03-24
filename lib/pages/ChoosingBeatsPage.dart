@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
+import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
+import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
+import 'package:youtube_extractor/youtube_extractor.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
@@ -66,10 +69,18 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
           text: "File System",
           pressed: () => { loadFromFileSystem(context) },
         ),
-        Container(width: 10.0,),
+        //Container(width: 10.0,),
         CstmButton(
           iconData: Icons.home,
           pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
+        ),
+        //Container(width: 10.0,),
+        CstmButton(
+          text: "YouTube",
+          pressed: () => { 
+            //loadFromYoutubeAlertDialog(context)
+            listenPreview("https://www.youtube.com/watch?v=Y7-34GbX83M")
+          },
         )
       ],
     );
@@ -103,7 +114,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
   }
 
   listenPreview(String song) {
-    updateIcon(listenAssetSupport.listenAssetPreview(song));
+    updateIcon(listenAssetSupport.listenPreview(song));
   }
 
   loadAsset(String song) {
@@ -111,6 +122,51 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
     SongSingleton.instance.isAsset = true;
     SongSingleton.instance.isLocal = false;
     Navigator.popAndPushNamed(context, WritingPage.routeName);
+  }
+
+  loadFromYoutubeAlertDialog(BuildContext context) {
+    TextEditingController urlController = new TextEditingController();
+
+    Widget alert = CstmAlertDialog(
+      dialogTitle: "Loading",
+      continueText: "Load",
+      height: 100,
+      body: Column(
+        children: <Widget>[
+          Text("YouTube url"),
+          SizedBox(height: 20.0,),
+          CstmTextField(
+            maxLines: 1,
+            controller: urlController,
+            hintText: "insert url",
+          )
+        ],
+      ),
+      pressed: () async {
+        await loadFromYoutube(urlController.text);
+        debugPrint("length of youtube videos $length");
+        Navigator.pop(context);
+      }
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  var audioInfoL;
+  int length;
+
+  loadFromYoutube(String text) async {
+    var extractor = YouTubeExtractor();
+    var audioInfo = await extractor.getMediaStreamsAsync('Y7-34GbX83M');
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        length= audioInfo.audio.length;
+      });
+    });
   }
 
 }

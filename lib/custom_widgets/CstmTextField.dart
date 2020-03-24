@@ -35,6 +35,7 @@ class CstmTextField extends StatelessWidget {
        ),
      ),
      controller: controller,
+     autocorrect: false,
    );
   }
 
