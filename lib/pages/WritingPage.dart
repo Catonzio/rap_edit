@@ -93,7 +93,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   ],
                 ),
                 SizedBox(height: 20,),
-                Text("$lastString", style: Theme.of(context).textTheme.body1,),
+                //Text("$lastString", style: Theme.of(context).textTheme.body1,),
                 Expanded(
                   child: textText,
                 ),
@@ -113,13 +113,18 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   /// Saves the currentSong of the SongSingleton as a File on the file system
   void saveFile(BuildContext context, TextEditingController titleController) {
-    SongSingleton.instance.currentSong = new SongFile(titleController.text.trim(), textController.text.trim(), null);
-    if(!SongSingleton.instance.currentSong.isEmpty()) {
-      FileController.writeFile(SongSingleton.instance.currentSong);
-      displaySnackbar(titleController.text + " correctly saved!", context);
-    }
-    else {
-      displaySnackbar("Couldn't save! Text is empty", context);
+    if(titleController.text.trim().isEmpty) {
+      displaySnackbar("Couldn't save! Title is empty!", context);
+    } else {
+      SongSingleton.instance.currentSong = new SongFile(
+          titleController.text.trim(), textController.text.trim(), null);
+      if (!SongSingleton.instance.currentSong.isEmpty()) {
+        FileController.writeFile(SongSingleton.instance.currentSong);
+        displaySnackbar(titleController.text + " correctly saved!", context);
+      }
+      else {
+        displaySnackbar("Couldn't save! Text is empty", context);
+      }
     }
   }
 

@@ -32,6 +32,12 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    listenAssetSupport.stopPreview();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //FileController.deleteAllRegistrations();
     return ListPage(
@@ -49,7 +55,8 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
                   debugPrint("Snapshot datas length: ${snapshot.data.length}");
                   return CardFile(
                     title: getOnlyRegistrationName(registrationsPath[index]),
-                    text: snapshot.data.length == 0
+                    text: //snapshot.data.length == 0
+                          true
                           ? ""
                           : "Duration: ${snapshot.data[index]}",
                     buttomButtons: <Widget>[

@@ -32,8 +32,8 @@ class WelcomePage extends StatelessWidget {
                   child: ListView(
                     children: <Widget>[
                       Text(
-                        "This is a simple App to write and edit texts of songs.\n" +
-                            "For the moment is in alpha version, so you can find some bugs or errors.\n\n" +
+                        "This is a simple App for writing and editing songs' texts.\n" +
+                            "It is currently in aplha, so you could find some bugs.\n\n" +
                             "The main features are:\n" +
                             "\t- Write text;\n" +
                             "\t- Upload beats;\n" +

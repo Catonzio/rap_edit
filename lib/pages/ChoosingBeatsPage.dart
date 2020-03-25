@@ -75,12 +75,12 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
           pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
         ),
         //Container(width: 10.0,),
-        CstmButton(
+        /*CstmButton(
           text: "YouTube",
           pressed: () => { 
             loadFromYoutubeAlertDialog(context)
           },
-        )
+        )*/
       ],
     );
   }
