@@ -7,6 +7,7 @@ import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
+import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
@@ -92,8 +93,14 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                     OtherRecorderWidget()
                   ],
                 ),
-                SizedBox(height: 20,),
-                //Text("$lastString", style: Theme.of(context).textTheme.body1,),
+                Container(
+                  height: 30,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: getRhymesButtons()
+                  ),
+                ),
                 Expanded(
                   child: textText,
                 ),
@@ -168,11 +175,53 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
 
   listenForText() {
-    String untilSelection = textController.text.substring(0, textController.selection.base.offset);
-    List<String> strs = untilSelection.split("\n");
-    List<String> lastLineSplitted = strs[strs.length - 1].split(" ");
+    if(textController.text.trim().isNotEmpty) {
+      String untilSelection = textController.text.substring(
+          0, textController.selection.base.offset);
+      List<String> listOfLines = untilSelection.split("\n");
+      if (listOfLines.length > 1) {
+        List<String> secondLastLineSplitted = listOfLines[listOfLines.length -
+            2]
+            .split(" ");
+        setState(() {
+          if (secondLastLineSplitted.length > 0)
+            lastString =
+            secondLastLineSplitted[secondLastLineSplitted.length - 1];
+        });
+      }
+    }
+  }
+
+  List<String> rhymes = new List();
+
+  getRhymeWord() {
+    if(lastString != null && lastString.isNotEmpty) {
+      setState(() {
+        rhymes = Dictionary.instance.getRhymeWord(lastString);
+        rhymes.forEach((element) { debugPrint(element); });
+      });
+    }
+  }
+
+  addTheRhyme(int i) {
     setState(() {
-      lastString = lastLineSplitted[lastLineSplitted.length - 1];
+      textController.text = textController.text + rhymes[i];
     });
+  }
+
+  getRhymesButtons() {
+    getRhymeWord();
+    List<Widget> listOfButtons = new List();
+    if(rhymes != null && rhymes.length > 0) {
+      rhymes.forEach((element) {
+        listOfButtons.add(
+            FlatButton(
+              child: Text(element),
+              onPressed: addTheRhyme(rhymes.indexOf(element)),
+            )
+        );
+      });
+    }
+    return listOfButtons;
   }
 }

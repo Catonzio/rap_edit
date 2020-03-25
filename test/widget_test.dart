@@ -5,11 +5,23 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/models/Dictionary.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  test('Get rhymes test', () {
+    //Dictionary.instance.initializeWords();
+    List<String> rhymes = new List();
+    String str = "cosa";
+    rhymes.add("cosa");
+    expect(Dictionary.instance.getRhymeWord(str), "cosa");
+  });
+
   test('Gets only the file name given a path', () {
     String path = "/data/user/0/test/text.txt";
     String path2 = "/data/user/0/test/test.mp3";
@@ -25,19 +37,6 @@ void main() {
     SongSingleton.instance.beatPath = "/data/user/0/test/test.mp3";
     expect(SongSingleton.instance.getName(), "test");
   });
-
-  test("Test the name handling of a registration", () {
-    String str1 = "test";
-    String str2 = "test(1)";
-    String str3 = "test(20)";
-    String str4 = "test(ciao)";
-
-    expect("test(1)", FileController.manageName(str1));
-    expect("test(2)", FileController.manageName(str2));
-    expect("test(21)", FileController.manageName(str3));
-    expect("test(ciao)(1)", FileController.manageName(str4));
-  });
-
 
   test("Voglio provare gli operatori", () {
     var a = 10;

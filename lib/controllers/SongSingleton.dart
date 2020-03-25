@@ -23,7 +23,6 @@ class SongSingleton {
       else
         return beatPath.substring(beatPath.indexOf("/") + 1);
     }
-
     else
       return "";
   }

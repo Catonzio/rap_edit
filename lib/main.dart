@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';
@@ -30,6 +31,7 @@ class PageMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FileController.setDirectoryPath();
+    Dictionary.instance.initializeWords();
     checkPermissions();
     return MaterialApp(
       initialRoute: initScreen == 0 || initScreen == null ? WelcomePage.routeName : WritingPage.routeName,
