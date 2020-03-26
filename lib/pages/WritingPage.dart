@@ -29,7 +29,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   final TextEditingController textController = new TextEditingController();
   AudioPlayerWidget player;
-  String lastString = "";
+  String
+  lastString = "";
 
   @override
   bool get wantKeepAlive => true;
@@ -98,7 +99,14 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: getRhymesButtons()
+                      children: <Widget>[
+                        Expanded(
+                          child: ListView(
+                            children: getRhymesButtons(),
+                            scrollDirection: Axis.horizontal,
+                          )
+                        )
+                      ],
                   ),
                 ),
                 Expanded(
@@ -175,18 +183,21 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
 
   listenForText() {
-    if(textController.text.trim().isNotEmpty) {
+    if(textController.text.trim().isNotEmpty && textController.selection.baseOffset > 0) {
       String untilSelection = textController.text.substring(
           0, textController.selection.base.offset);
       List<String> listOfLines = untilSelection.split("\n");
       if (listOfLines.length > 1) {
-        List<String> secondLastLineSplitted = listOfLines[listOfLines.length -
-            2]
-            .split(" ");
+        List<String> secondLastLineSplitted = listOfLines[listOfLines.length - 2].split(" ");
         setState(() {
-          if (secondLastLineSplitted.length > 0)
-            lastString =
-            secondLastLineSplitted[secondLastLineSplitted.length - 1];
+          if (secondLastLineSplitted.length > 0) {
+            String possibleRhyme = secondLastLineSplitted[secondLastLineSplitted
+                .length - 1];
+            if (lastString != possibleRhyme) {
+              lastString = possibleRhyme;
+              getRhymeWord();
+            }
+          }
         });
       }
     }
@@ -198,27 +209,29 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     if(lastString != null && lastString.isNotEmpty) {
       setState(() {
         rhymes = Dictionary.instance.getRhymeWord(lastString);
-        rhymes.forEach((element) { debugPrint(element); });
       });
     }
   }
 
   addTheRhyme(int i) {
+    TextSelection selection = TextSelection(baseOffset: textController.selection.baseOffset  + rhymes[i].length,
+        extentOffset: textController.selection.extentOffset  + rhymes[i].length);
     setState(() {
       textController.text = textController.text + rhymes[i];
     });
+    textController.selection = selection;
   }
 
   getRhymesButtons() {
-    getRhymeWord();
     List<Widget> listOfButtons = new List();
     if(rhymes != null && rhymes.length > 0) {
       rhymes.forEach((element) {
         listOfButtons.add(
-            FlatButton(
-              child: Text(element),
-              onPressed: addTheRhyme(rhymes.indexOf(element)),
-            )
+          FlatButton(
+            child: Text(element, style: Theme.of(context).textTheme.bodyText2,),
+            onPressed: () => { addTheRhyme(rhymes.indexOf(element)) },
+            visualDensity: VisualDensity.compact,
+          )
         );
       });
     }

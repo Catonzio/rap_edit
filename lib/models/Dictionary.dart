@@ -21,6 +21,7 @@ class Dictionary {
   initializeWords() async {
     String paroleFile = await rootBundle.loadString("assets/parole.txt");
     words = paroleFile.split("\n");
+    words.sort();
     debugPrint("${words.length} words loaded");
   }
 
@@ -33,20 +34,26 @@ class Dictionary {
   List<String> getRhymeWord(String lastString) {
     List<String> rhymes = new List();
     words.forEach((word) {
-      if(word.length > 3) {
-        if(lastString.endsWith(word.substring(word.length - 3))) {
-          rhymes.add(word);
-        }
-      } else if(lastString.endsWith(word)) {
-          rhymes.add(word);
-      }
+      if(isRhyme(word, lastString))
+        rhymes.add(word);
     });
-    if(rhymes.length > 0) {
-      if(rhymes.length >= numberOfRhymes) {
-        return rhymes.sublist(0, numberOfRhymes);
-      } else if(rhymes.length < numberOfRhymes) {
-        return rhymes;
+    rhymes.shuffle();
+    if(rhymes.length > 0 && rhymes.length > 10) {
+      return rhymes.sublist(0, 10);
+    } else
+      return rhymes;
+  }
+
+  bool isRhyme(String first, String second) {
+    if(first.isNotEmpty && second.isNotEmpty) {
+      if (first.length > 3) {
+        if (second.endsWith(first.substring(first.length - 3))) {
+          return true;
+        }
+      } else if (second.endsWith(first)) {
+        return true;
       }
     }
+    return false;
   }
 }
