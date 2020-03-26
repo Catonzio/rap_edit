@@ -21,7 +21,7 @@ class Dictionary {
   initializeWords() async {
     String paroleFile = await rootBundle.loadString("assets/parole.txt");
     words = paroleFile.split("\n");
-    words.sort();
+    words.shuffle();
     debugPrint("${words.length} words loaded");
   }
 

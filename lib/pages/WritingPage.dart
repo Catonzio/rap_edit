@@ -228,9 +228,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       rhymes.forEach((element) {
         listOfButtons.add(
           FlatButton(
-            child: Text(element, style: Theme.of(context).textTheme.bodyText2,),
+            child: Text(element, style: Theme.of(context).textTheme.body1,),
             onPressed: () => { addTheRhyme(rhymes.indexOf(element)) },
-            visualDensity: VisualDensity.compact,
           )
         );
       });
