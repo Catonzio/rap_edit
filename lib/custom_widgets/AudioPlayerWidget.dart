@@ -164,11 +164,11 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   /// Starts playing the beat located at the beatPath of the SongSingleton
   playSong() {
-    if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
+    if(SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
       updateIcon(Icons.pause);
     }
-    else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
+    else if(SongSingleton.instance.isAsset == false) {
       player.play(SongSingleton.instance.beatPath,
           isLocal: SongSingleton.instance.isLocal);
     }
@@ -196,7 +196,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     //slider = createSlider();
-    return Center(
+    return Container(
+      padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,51 +207,64 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    SongSingleton.instance.getName(),
-                    textAlign: TextAlign.center,
-                  )
+                /*Expanded(
+                    child: Text(
+                      SongSingleton.instance.getName(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: MyColors.textColor, fontSize: 20),
+                    )
+                )*/
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(playPauseIcon, color: MyColors.startElementColor),
+                  iconSize: 40,
+                  onPressed: () => { playPause() },
+                ),
+                Container(width: 5,),
+                IconButton(
+                    icon: Icon(Icons.fast_rewind, color: MyColors.startElementColor,),
+                    onPressed: () => { seekToSecond(position.inSeconds - 5) }
+                ),
+                Container(width: 5,),
+                IconButton(
+                    icon: Icon(Icons.fast_forward, color: MyColors.startElementColor,),
+                    onPressed: () => { seekToSecond(position.inSeconds + 5) }
+                ),
+                Container(width: 5,),
+                IconButton(
+                  icon: Icon(Icons.stop, color: MyColors.startElementColor),
+                  iconSize: 40,
+                  onPressed: () => { stopSong() },
                 )
               ],
             ),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(playPauseIcon, color: MyColors.startElementColor),
-                    iconSize: 40,
-                    onPressed: () => { playPause() },
-                  ),
-                  Text(
-                    getDurationFormatted(position),
-                    style: textStyle,
-                  ),
-                  Container(width: 10.0,),
-                  Container(
-                    width: 180,
-                    child: createSlider(),
-                  ),
-                  Container(width: 10.0,),
-                  Text(
-                      getDurationFormatted(duration),
-                      style: textStyle,
-                  ),
-
-                  Container(width: 5,),
-                  IconButton(
-                    icon: Icon(Icons.stop, color: MyColors.startElementColor),
-                    iconSize: 40,
-                    onPressed: () => { stopSong() },
-                  )
-                ],
-              ),
-            )
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  getDurationFormatted(position),
+                  style: textStyle,
+                ),
+                Container(width: 10.0,),
+                Expanded(
+                  child: createSlider(),
+                ),
+                Container(width: 10.0,),
+                Text(
+                  getDurationFormatted(duration),
+                  style: textStyle,
+                ),
+              ],
+            ),
           ],
         ),
-      );
-    }
-
+      )
+    );
+  }
 }

@@ -20,6 +20,8 @@ class SongSingleton {
         return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".mp")).toLowerCase();
       else if(beatPath.endsWith("wav"))
         return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".wav")).toLowerCase();
+      else if(beatPath.startsWith("/"))
+        return "";
       else
         return beatPath.substring(beatPath.indexOf("/") + 1);
     }

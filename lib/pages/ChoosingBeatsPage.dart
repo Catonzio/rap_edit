@@ -8,7 +8,7 @@ import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
-import 'package:youtube_extractor/youtube_extractor.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
@@ -75,12 +75,12 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
           pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
         ),
         //Container(width: 10.0,),
-        /*CstmButton(
+        CstmButton(
           text: "YouTube",
           pressed: () => { 
             loadFromYoutubeAlertDialog(context)
           },
-        )*/
+        )
       ],
     );
   }
@@ -142,9 +142,13 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
         ],
       ),
       pressed: () async {
-        await loadFromYoutube(urlController.text);
-        debugPrint("length of youtube videos $length");
+        String videoPath = await loadFromYoutube(context, urlController.text);
+        debugPrint("Video path: $videoPath");
+        SongSingleton.instance.beatPath = videoPath;
+        SongSingleton.instance.isLocal = false;
+        SongSingleton.instance.isAsset = false;
         Navigator.pop(context);
+        Navigator.popAndPushNamed(context, WritingPage.routeName);
       }
     );
     showDialog(
@@ -155,17 +159,13 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
     );
   }
 
-  var audioInfoL;
-  int length;
 
-  loadFromYoutube(String text) async {
-    var extractor = YouTubeExtractor();
-    var audioInfo = await extractor.getMediaStreamsAsync('Y7-34GbX83M');
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        length= audioInfo.audio.length;
-      });
-    });
+  loadFromYoutube(BuildContext context, String text) async {
+    var id = YoutubeExplode.parseVideoId(text);
+    var yt = YoutubeExplode();
+    var mediaStreams = await yt.getVideoMediaStream(id);
+    var audio = mediaStreams.audio;
+    return audio[0].url.toString();
   }
 
 }
