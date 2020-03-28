@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:audioplayers/audio_cache.dart';
@@ -33,6 +34,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
 
   TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
   RangeValues _values;
+  bool loopSelected = true;
 
   @override
   void initState() {
@@ -41,8 +43,8 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
     SongSingleton.instance.beatPath = "Rap_Instrumental_Beat.mp3";
     SongSingleton.instance.isAsset = true;
     SongSingleton.instance.isLocal = false;
-    initPlayer();
     _values = RangeValues(0,0);
+    initPlayer();
   }
 
   @override
@@ -108,6 +110,11 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
         if (this.mounted)
           setState(() {
             position = p;
+            if (position.inSeconds.toDouble() >= _values.end) {
+              seekToSecond(_values.start.toInt());
+              if(!loopSelected)
+                pauseSong();
+            }
           });
       });
 
@@ -133,37 +140,6 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
     }
   }
 
-  static final RangeThumbSelector _customRangeThumbSelector = (
-      TextDirection textDirection,
-      RangeValues values,
-      double tapValue,
-      Size thumbSize,
-      Size trackSize,
-      double dx,
-      ) {
-    final double start = (tapValue - values.start).abs();
-    final double end = (tapValue - values.end).abs();
-    return start < end ? Thumb.start : Thumb.end;
-  };
-
-  /*
-  activeTrackColor: MyColors.electricBlue,
-          inactiveTrackColor: MyColors.textColor,
-          trackShape: RoundedRectSliderTrackShape(),
-          trackHeight: 5.0,
-          //thumbShape: RoundSliderThumbShape(enabledThumbRadius: 25.0),
-          //thumbColor: MyColors.electricBlue,
-          overlayColor: Colors.white.withAlpha(20),
-          overlayShape: RoundSliderOverlayShape(overlayRadius: 5.0),
-          tickMarkShape: RoundSliderTickMarkShape(),
-          activeTickMarkColor: MyColors.electricBlue,
-          inactiveTickMarkColor: MyColors.textColor,
-          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-          valueIndicatorColor: MyColors.electricBlue,
-          valueIndicatorTextStyle: TextStyle(
-            color: Colors.white,
-          ),
-   */
   /// Creates the slider belonging to the song played by the player
   SliderTheme createSlider() {
     return SliderTheme(
@@ -236,30 +212,19 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
       updateIcon(Icons.play_circle_outline);
       if (this.mounted)
         setState(() {
-          seekToSecond(0);
+          seekToSecond(_values.start.toInt());
         });
     }
   }
 
-  setLoop() async {
-    while(playerState == AudioPlayerState.PLAYING) {
-      debugPrint("Position ${position.inSeconds.toDouble()} | valued end ${_values.end}");
-      if(position.inSeconds.toDouble() >= _values.end) {
-        seekToSecond(_values.start.toInt());
-      }
-    }
-  }
-//
   /// Starts playing the beat located at the beatPath of the SongSingleton
   playSong() async {
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
-      await setLoop();
     }
     else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
       player.play(SongSingleton.instance.beatPath,
           isLocal: SongSingleton.instance.isLocal);
-      await setLoop();
     }
     updateIcon(Icons.pause_circle_outline);
   }
@@ -312,6 +277,10 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
+                    icon: Icon(Icons.repeat, color: loopSelected ? MyColors.startElementColor : Color(0xFF7030A0)),
+                    onPressed: () => { loop() },
+                  ),
+                  IconButton(
                       icon: Icon(Icons.fast_rewind, color: MyColors.startElementColor,),
                       onPressed: () => { fastMoving(-5) }
                   ),
@@ -324,12 +293,10 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
                       icon: Icon(Icons.fast_forward, color: MyColors.startElementColor,),
                       onPressed: () => { fastMoving(5) }
                   ),
-                  Container(width: 5,),
-                  /*IconButton(
-                    icon: Icon(Icons.repeat, color: MyColors.startElementColor),
-                    iconSize: 40,
+                  IconButton(
+                    icon: Icon(Icons.stop, color: MyColors.startElementColor),
                     onPressed: () => { stopSong() },
-                  )*/
+                  )
                 ],
               ),
               //row del player
@@ -365,6 +332,15 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
         seekToSecond(position.inSeconds + i);
       }
     }
+  }
+
+  loop() {
+    setState(() {
+      if(loopSelected)
+        loopSelected = false;
+      else
+        loopSelected = true;
+    });
   }
 }
 
