@@ -155,7 +155,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
           rangeThumbShape: MySliderThumb(),
           valueIndicatorColor: MyColors.darkGrey,
           showValueIndicator: ShowValueIndicator.always,
-          rangeTrackShape: MySliderTrackShape(sliderRangeValues: _values)
+          rangeTrackShape: MySliderTrackShape(sliderRangeValues: _values, position: position.inSeconds.toDouble())
         ),
         child: SongSingleton.instance.beatPath != null
             ? RangeSlider(
@@ -356,10 +356,12 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
 class MySliderTrackShape extends RangeSliderTrackShape {
 
   final RangeValues sliderRangeValues;
+  final double position;
 
   MySliderTrackShape({
-   Key key,
-   @required this.sliderRangeValues
+    Key key,
+    @required this.sliderRangeValues,
+    @required this.position
   });
 
 
@@ -409,14 +411,24 @@ class MySliderTrackShape extends RangeSliderTrackShape {
       ..style = PaintingStyle.fill
       ..strokeWidth = 5.0;
 
+    final Paint positionPaint = Paint()
+      ..color = MyColors.electricBlue
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 5.0;
+
     Offset initInactivePoint = Offset(offset.dx + thumbWidth / 2, trackDyPosition);
     Offset endInactivePoint = Offset(offset.dx + trackRect.width + thumbWidth / 2, trackDyPosition);
 
-    Offset initActivePoint = Offset(initInactivePoint.dx + sliderRangeValues.start * 1.5, trackDyPosition);
-    Offset endActivePoint = Offset(endInactivePoint.dx - sliderRangeValues.end, trackDyPosition);
+    Offset initActivePoint = Offset(initInactivePoint.dx + sliderRangeValues.start * 1.6, trackDyPosition);
+    Offset endActivePoint = Offset(initActivePoint.dx + (sliderRangeValues.end - sliderRangeValues.start)*1.6, trackDyPosition);
+
+    Offset initPositionPoint = Offset(initActivePoint.dx , trackDyPosition);
+    Offset endPositionPoint = Offset(initInactivePoint.dx + (position)*1.6, trackDyPosition);
 
     context.canvas.drawLine(initInactivePoint, endInactivePoint, inactivePaint);
     context.canvas.drawLine(initActivePoint, endActivePoint, activePaint);
+    context.canvas.drawLine(initPositionPoint, endPositionPoint, positionPaint);
+    debugPrint("InitPosition ${initPositionPoint.dx} | EndPosition ${endPositionPoint.dx}");
   }
 }
 
