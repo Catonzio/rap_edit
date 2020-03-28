@@ -243,22 +243,23 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
 
   setLoop() async {
     while(playerState == AudioPlayerState.PLAYING) {
-      if(position.inSeconds.toDouble() == _values.end || position.inSeconds.toDouble() > _values.end) {
+      debugPrint("Position ${position.inSeconds.toDouble()} | valued end ${_values.end}");
+      if(position.inSeconds.toDouble() >= _values.end) {
         seekToSecond(_values.start.toInt());
       }
     }
   }
 //
   /// Starts playing the beat located at the beatPath of the SongSingleton
-  playSong() {
+  playSong() async {
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
-      setLoop();
+      await setLoop();
     }
     else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
       player.play(SongSingleton.instance.beatPath,
           isLocal: SongSingleton.instance.isLocal);
-      setLoop();
+      await setLoop();
     }
     updateIcon(Icons.pause_circle_outline);
   }
