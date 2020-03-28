@@ -22,30 +22,59 @@ class AudioPlayerTrials extends StatefulWidget {
   }
 }
 
-class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
+class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindingObserver {
 
   static AudioPlayer player;
   static AudioCache cache;
   static AudioPlayerState playerState;
   static Duration duration;
   static Duration position;
-
   static IconData playPauseIcon = Icons.play_circle_outline;
-  TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
 
-  bool _valuesInitialized = false;
+  TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
+  RangeValues _values;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SongSingleton.instance.beatPath = "Rap_Instrumental_Beat.mp3";
     SongSingleton.instance.isAsset = true;
     SongSingleton.instance.isLocal = false;
     initPlayer();
-    setState(() {
-      _values = RangeValues(position.inSeconds.toDouble(), duration?.inSeconds?.toDouble()??10.0);
-    });
+    _values = RangeValues(0,0);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    player.pause();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state) {
+      case AppLifecycleState.resumed:
+        debugPrint("App state: resumed");
+        initPlayer();
+        break;
+      case AppLifecycleState.inactive:
+        debugPrint("App state: inactive");
+        player.pause();
+        break;
+      case AppLifecycleState.paused:
+        debugPrint("App state: paused");
+        player.pause();
+        break;
+      case AppLifecycleState.detached:
+        debugPrint("App state: detached");
+        player.pause();
+        break;
+    }
+  }
+
 
   void initPlayer() {
     try {
@@ -53,25 +82,32 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
         player = new AudioPlayer();
         duration = new Duration();
         position = new Duration();
+        cache = AudioCache(fixedPlayer: player);
       }
-      /*if(!_valuesInitialized) {
-        _values = _values ?? RangeValues(0, 0);
-        setState(() {
-          _valuesInitialized = true;
-        });
-      }*/
+
+      if (SongSingleton.instance.beatPath != null &&
+          SongSingleton.instance.beatPath.isNotEmpty && player != null) {
+        playSong();
+        if(SongSingleton.instance.isAsset == true) {
+          //pauseSong();
+        } else {
+          pauseSong();
+        }
+      }
+
       player.onDurationChanged.listen((Duration d) {
         if (this.mounted)
-          setState(() {duration = d;});
+          setState(() {
+            duration = d;
+            if(_values == RangeValues(0,0))
+              _values = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
+          });
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
         if (this.mounted)
           setState(() {
             position = p;
-            /*if(_valuesInitialized) {
-              _values = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
-            }*/
           });
       });
 
@@ -84,21 +120,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
       player.onPlayerCompletion.listen((void v) {
         stopSong();
       });
-
-      cache = AudioCache(fixedPlayer: player);
-
-      if (SongSingleton.instance.beatPath != null &&
-          SongSingleton.instance.beatPath.isNotEmpty && player != null) {
-        playSong();
-        if(SongSingleton.instance.isAsset == true) {
-          //pauseSong();
-        } else {
-          pauseSong();
-        }
-      }
-      /*do {
-
-      }while(duration == Duration(seconds: 0));*/
+      //_values = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
     } catch(ex) { debugPrint("ooooooooooooooooooo porco diooo"); }
   }
 
@@ -123,8 +145,6 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
     final double end = (tapValue - values.end).abs();
     return start < end ? Thumb.start : Thumb.end;
   };
-
-  RangeValues _values;
 
   /*
   activeTrackColor: MyColors.electricBlue,
@@ -163,8 +183,10 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
           min: 0.0,
           max: duration.inSeconds.toDouble() + 0.1,
           divisions: 300,
-          labels: RangeLabels(getDurationFormatted(Duration(seconds: _values.start.toInt())), getDurationFormatted(Duration(seconds: _values.end.toInt()))),
-          //activeColor: Theme.of(context).primaryColor,
+          labels: RangeLabels(
+              getDurationFormatted(Duration(seconds: _values.start.toInt())),
+              getDurationFormatted(Duration(seconds: _values.end.toInt()))
+          ),
           onChanged: (RangeValues values) {
             setState(() {
               if (values.end - values.start >= 5) {
@@ -226,7 +248,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
       }
     }
   }
-
+//
   /// Starts playing the beat located at the beatPath of the SongSingleton
   playSong() {
     if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
@@ -261,6 +283,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
         child: Center(
@@ -318,16 +341,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> {
                     style: textStyle,
                   ),
                   Expanded(
-                    child: CustomPaint(
-                      foregroundPainter: CompletionPainter(
-                        completeColor: Colors.red,
-                        position: position.inSeconds.toDouble(),
-                        start: _values.start,
-                        max: _values.end,
-                        width: 4.5
-                      ),
-                      child: createSlider(),
-                    )
+                    child: createSlider()
                   ),
                   Text(
                     getDurationFormatted(duration),
@@ -428,7 +442,7 @@ class MySliderTrackShape extends RangeSliderTrackShape {
     context.canvas.drawLine(initInactivePoint, endInactivePoint, inactivePaint);
     context.canvas.drawLine(initActivePoint, endActivePoint, activePaint);
     context.canvas.drawLine(initPositionPoint, endPositionPoint, positionPaint);
-    debugPrint("InitPosition ${initPositionPoint.dx} | EndPosition ${endPositionPoint.dx}");
+    //debugPrint("InitPosition ${initPositionPoint.dx} | EndPosition ${endPositionPoint.dx}");
   }
 }
 
@@ -468,47 +482,5 @@ class MySliderThumb extends RangeSliderThumbShape {
     canvas.drawRRect(rrect, fillPaint);
     canvas.drawRRect(rrect, borderPaint);
   }
-
-}
-
-class CompletionPainter extends CustomPainter{
-  Color completeColor;
-  double position;
-  double start;
-  double max;
-  double width;
-
-  CompletionPainter({
-    Key key,
-    this.completeColor,
-    this.position,
-    this.start,
-    this.max,
-    this.width
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint line = Paint()
-        ..color = completeColor
-        //..strokeCap = StrokeCap.square
-        ..strokeWidth = width;
-    //debugPrint("Width: ${size.width}");
-    //debugPrint("Start: $start");
-
-    double beginOffset = 24 + start;
-
-    Offset init = Offset(beginOffset, size.height/2);
-    double finalPos = min(start, max);
-    Offset end = Offset(beginOffset + position*1.38, size.height/2);
-
-    //canvas.drawLine(init, end, line);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-
 
 }
