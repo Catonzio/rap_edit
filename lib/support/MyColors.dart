@@ -14,5 +14,6 @@ class MyColors {
   static Color darkGrey = Color(0xFF151515);
   static Color darkRed = Color(0xFF8B0000);
   static Color textColor = Color(0xFFFFFFFF);
+  static Color softGrey = Colors.grey[800];
 
 }

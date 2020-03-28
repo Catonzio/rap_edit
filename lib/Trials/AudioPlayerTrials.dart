@@ -5,11 +5,10 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
-import 'package:rap_edit/Trials/_CustomRangeThumbShape.dart';
-import '../controllers/SongSingleton.dart';
+import '../models/SongSingleton.dart';
 
 class AudioPlayerTrials extends StatefulWidget {
 
@@ -150,36 +149,44 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
           thumbColor: MyColors.electricBlue,
           rangeThumbShape: MySliderThumb(),
           valueIndicatorColor: MyColors.darkGrey,
-          showValueIndicator: ShowValueIndicator.always,
-          rangeTrackShape: MySliderTrackShape(sliderRangeValues: _values, position: position.inSeconds.toDouble())
+          rangeTrackShape: MySliderTrackShape(sliderRangeValues: _values, position: position.inSeconds.toDouble()),
         ),
         child: SongSingleton.instance.beatPath != null
-            ? RangeSlider(
-          values: _values,
-          min: 0.0,
-          max: duration.inSeconds.toDouble() + 0.1,
-          divisions: 300,
-          labels: RangeLabels(
-              getDurationFormatted(Duration(seconds: _values.start.toInt())),
-              getDurationFormatted(Duration(seconds: _values.end.toInt()))
-          ),
-          onChanged: (RangeValues values) {
-            setState(() {
-              if (values.end - values.start >= 5) {
-                _values = values;
-              } else {
-                if (_values.start == values.start) {
-                  _values = RangeValues(_values.start, _values.start + 10);
-                } else {
-                  _values = RangeValues(_values.end - 10, _values.end);
-                }
-              }
-              seekToSecond(values.start.toInt());
-              //setLoop();
-              //resumeSong();
-            });
-          },
-        )
+            ? GestureDetector(
+                onTapDown: (details) {
+                  double tapPosition = details.localPosition.dx/1.6;
+                  double myPosition = tapPosition<(10.5 + _values.start * 1.6) ? 0 : tapPosition - (10.5 + _values.start * 1.6);
+                  debugPrint("Tap position: $tapPosition");
+                  debugPrint("My position: $myPosition");
+                  seekToSecond(myPosition.toInt());
+                },
+                child: RangeSlider(
+                  values: _values,
+                  min: 0.0,
+                  max: duration.inSeconds.toDouble() + 0.1,
+                  divisions: 300,
+                  labels: RangeLabels(
+                      getDurationFormatted(Duration(seconds: _values.start.toInt())),
+                      getDurationFormatted(Duration(seconds: _values.end.toInt()))
+                  ),
+                  onChanged: (RangeValues values) {
+                    setState(() {
+                      if (values.end - values.start >= 5) {
+                        _values = values;
+                      } else {
+                        if (_values.start == values.start) {
+                          _values = RangeValues(_values.start, _values.start + 10);
+                        } else {
+                          _values = RangeValues(_values.end - 10, _values.end);
+                        }
+                      }
+                      seekToSecond(values.start.toInt());
+                      //setLoop();
+                      //resumeSong();
+                    });
+                  },
+                )
+              )
             : Slider(
           value: 0.0,
           onChanged: (double val) => {},
@@ -286,7 +293,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
                   ),
                   IconButton(
                     icon: Icon(playPauseIcon, color: MyColors.startElementColor),
-                    iconSize: 40,
+                    iconSize: 50,
                     onPressed: () => { playPause() },
                   ),
                   IconButton(
@@ -309,7 +316,7 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
                     style: textStyle,
                   ),
                   Expanded(
-                    child: createSlider()
+                    child: createSlider(),
                   ),
                   Text(
                     getDurationFormatted(duration),

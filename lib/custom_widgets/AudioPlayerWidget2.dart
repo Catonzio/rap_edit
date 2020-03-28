@@ -2,25 +2,25 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../controllers/SongSingleton.dart';
+import '../models/SongSingleton.dart';
 
-class AudioPlayerWidget extends StatefulWidget {
+class AudioPlayerWidget2 extends StatefulWidget {
 
-  final AudioPlayerWidgetState state = AudioPlayerWidgetState();
+  final AudioPlayerWidget2State state = AudioPlayerWidget2State();
 
   @override
-  AudioPlayerWidgetState createState() => state;
+  AudioPlayerWidget2State createState() => state;
 
   pauseSong() {
     state.pauseSong();
   }
 }
 
-class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
+class AudioPlayerWidget2State extends State<AudioPlayerWidget2> {
 
   static AudioPlayer player;
   static AudioCache cache;

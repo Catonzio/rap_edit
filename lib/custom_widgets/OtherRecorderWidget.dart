@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/controllers/SongSingleton.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../controllers/FileController.dart';

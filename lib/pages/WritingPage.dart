@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/controllers/SongSingleton.dart';
-import 'package:rap_edit/custom_widgets/AudioPlayerWidget.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/custom_widgets/AudioPlayerWidget2.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
@@ -13,7 +13,7 @@ import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../controllers/SongSingleton.dart';
+import '../models/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
 import '../support/MyColors.dart';
@@ -28,7 +28,7 @@ class WritingPage extends StatefulWidget {
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
   final TextEditingController textController = new TextEditingController();
-  AudioPlayerWidget player;
+  AudioPlayerWidget2 player;
   String
   lastString = "";
 
@@ -39,7 +39,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   void initState() {
     super.initState();
     setTitleAndText();
-    player = AudioPlayerWidget();
+    player = AudioPlayerWidget2();
     textController.addListener(listenForText);
   }
 
