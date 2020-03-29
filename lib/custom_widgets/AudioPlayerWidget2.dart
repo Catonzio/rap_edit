@@ -221,23 +221,23 @@ class AudioPlayerWidget2State extends State<AudioPlayerWidget2> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(playPauseIcon, color: MyColors.startElementColor),
+                  icon: Icon(playPauseIcon, color: MyColors.primaryColor),
                   iconSize: 40,
                   onPressed: () => { playPause() },
                 ),
                 Container(width: 5,),
                 IconButton(
-                    icon: Icon(Icons.fast_rewind, color: MyColors.startElementColor,),
+                    icon: Icon(Icons.fast_rewind, color: MyColors.primaryColor,),
                     onPressed: () => { seekToSecond(position.inSeconds - 5) }
                 ),
                 Container(width: 5,),
                 IconButton(
-                    icon: Icon(Icons.fast_forward, color: MyColors.startElementColor,),
+                    icon: Icon(Icons.fast_forward, color: MyColors.primaryColor,),
                     onPressed: () => { seekToSecond(position.inSeconds + 5) }
                 ),
                 Container(width: 5,),
                 IconButton(
-                  icon: Icon(Icons.stop, color: MyColors.startElementColor),
+                  icon: Icon(Icons.stop, color: MyColors.primaryColor),
                   iconSize: 40,
                   onPressed: () => { stopSong() },
                 )

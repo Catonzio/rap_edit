@@ -282,24 +282,24 @@ class AudioPlayerTrialsState extends State<AudioPlayerTrials> with WidgetsBindin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.repeat, color: loopSelected ? MyColors.startElementColor : Color(0xFF7030A0)),
+                    icon: Icon(Icons.repeat, color: loopSelected ? MyColors.primaryColor : Color(0xFF7030A0)),
                     onPressed: () => { loop() },
                   ),
                   IconButton(
-                      icon: Icon(Icons.fast_rewind, color: MyColors.startElementColor,),
+                      icon: Icon(Icons.fast_rewind, color: MyColors.primaryColor,),
                       onPressed: () => { fastMoving(-5) }
                   ),
                   IconButton(
-                    icon: Icon(playPauseIcon, color: MyColors.startElementColor),
+                    icon: Icon(playPauseIcon, color: MyColors.primaryColor),
                     iconSize: 50,
                     onPressed: () => { playPause() },
                   ),
                   IconButton(
-                      icon: Icon(Icons.fast_forward, color: MyColors.startElementColor,),
+                      icon: Icon(Icons.fast_forward, color: MyColors.primaryColor,),
                       onPressed: () => { fastMoving(5) }
                   ),
                   IconButton(
-                    icon: Icon(Icons.stop, color: MyColors.startElementColor),
+                    icon: Icon(Icons.stop, color: MyColors.primaryColor),
                     onPressed: () => { stopSong() },
                   )
                 ],

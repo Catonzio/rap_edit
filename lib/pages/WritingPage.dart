@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/custom_widgets/AudioPlayerWidget2.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
@@ -32,6 +31,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
   final TextEditingController textController = new TextEditingController();
   String lastString = "";
+  AudioPlayerWidget player;
 
   @override
   bool get wantKeepAlive => true;
@@ -40,6 +40,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   void initState() {
     super.initState();
     setTitleAndText();
+    player = AudioPlayerWidget();
     textController.addListener(listenForText);
   }
 
@@ -75,7 +76,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       appBar: GradientAppBar(
         title: titleText,
         centerTitle: true,
-        backgroundColorStart: MyColors.startElementColor,
+        backgroundColorStart: MyColors.primaryColor,
         backgroundColorEnd: MyColors.endElementColor,
         //serve per non permettere di tornare indietro dall'appbar
         automaticallyImplyLeading: false,
@@ -87,7 +88,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                 SizedBox(height: 10.0,),
                 ChangeNotifierProvider(
                   create: (context) => AudioPlayerController(),
-                  child: AudioPlayerWidget(),
+                  child: player,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +181,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
     else
       SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
-    Navigator.popAndPushNamed(context, routeName);
+    player.pauseSong();
+    Navigator.pushNamed(context, routeName);
   }
 
 

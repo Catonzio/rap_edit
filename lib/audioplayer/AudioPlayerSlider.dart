@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/MyColors.dart';
 

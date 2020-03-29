@@ -61,8 +61,8 @@ class PageMain extends StatelessWidget {
 
   checkPermissions() async {
     final PermissionHandler permissionHandler = PermissionHandler();
-    var result = await permissionHandler.requestPermissions([PermissionGroup.microphone]);
-    var result2 = await permissionHandler.requestPermissions([PermissionGroup.storage]);
-    var result3 = await permissionHandler.requestPermissions([PermissionGroup.mediaLibrary]);
+    await permissionHandler.requestPermissions([PermissionGroup.microphone]);
+    await permissionHandler.requestPermissions([PermissionGroup.storage]);
+    await permissionHandler.requestPermissions([PermissionGroup.mediaLibrary]);
   }
 }

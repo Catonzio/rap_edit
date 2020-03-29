@@ -30,7 +30,7 @@ class CstmTextField extends StatelessWidget {
        hintText: hintText,
        hintStyle: TextStyle(color: MyColors.textColor),
        border: OutlineInputBorder(
-           borderSide: BorderSide(color: MyColors.startElementColor, width: 2.0),
+           borderSide: BorderSide(color: MyColors.primaryColor, width: 2.0),
            borderRadius: BorderRadius.circular(8.0)
        ),
      ),

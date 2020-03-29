@@ -6,8 +6,8 @@ import 'package:rap_edit/models/SongSingleton.dart';
 
 class AudioPlayerController extends ChangeNotifier {
 
-  AudioPlayer player;
-  AudioCache cache;
+  static AudioPlayer player;
+  static AudioCache cache;
   AudioPlayerState playerState;
   Duration duration;
   Duration position;
@@ -21,10 +21,11 @@ class AudioPlayerController extends ChangeNotifier {
     try {
       if (player == null) {
         player = new AudioPlayer();
-        duration = new Duration();
-        position = new Duration();
         cache = AudioCache(fixedPlayer: player);
       }
+
+      duration = new Duration();
+      position = new Duration();
 
       if (SongSingleton.instance.beatPath != null &&
           SongSingleton.instance.beatPath.isNotEmpty && player != null) {

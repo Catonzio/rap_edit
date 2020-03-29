@@ -2,7 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import 'AudioPlayerController.dart';
@@ -10,10 +9,14 @@ import 'AudioPlayerSlider.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
 
-  @override
-  AudioPlayerWidgetState createState() => AudioPlayerWidgetState();
+  final AudioPlayerWidgetState state = AudioPlayerWidgetState();
 
-  void pauseSong() {}
+  @override
+  AudioPlayerWidgetState createState() => state;
+
+  void pauseSong() {
+    state.pauseSong();
+  }
 }
 
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
@@ -32,9 +35,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   @override
   void dispose() {
-    Provider.of<AudioPlayerController>(context).pauseSong();
-    super.dispose();
+    //Provider.of<AudioPlayerController>(context, listen: false).pauseSong();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -63,11 +66,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   /// Updates the icon of play/pause
   void updateIcon(IconData data) {
-
-      setState(() {
-        playPauseIcon = data;
-      });
-
+    setState(() {
+      playPauseIcon = data;
+    });
   }
 
   setLoop(AudioPlayerController controller) {
@@ -88,7 +89,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
   }
 
   pauseSong() {
-    Provider.of<AudioPlayerController>(context).pauseSong();
+    Provider.of<AudioPlayerController>(context, listen: false).pauseSong();
   }
 
   /// Sets the player in pause or in play, depending on the current state
@@ -102,8 +103,8 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
   @override
   Widget build(BuildContext context) {
     final AudioPlayerController controller = Provider.of<AudioPlayerController>(context);
-    //if(controller.player == null)
-      //controller.initPlayer();
+    if(controller == null)
+      controller.initPlayer();
     return Container(
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
         child: Center(
@@ -131,24 +132,24 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.repeat, color: controller.loopSelected ? MyColors.startElementColor : Color(0xFF7030A0)),
+                    icon: Icon(Icons.repeat, color: controller.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
                     onPressed: () => { setLoop(controller) },
                   ),
                   IconButton(
-                      icon: Icon(Icons.fast_rewind, color: MyColors.startElementColor,),
+                      icon: Icon(Icons.fast_rewind, color: MyColors.primaryColor,),
                       onPressed: () => { fastRewind(controller) }
                   ),
                   IconButton(
-                    icon: Icon(playPauseIcon, color: MyColors.startElementColor),
+                    icon: Icon(playPauseIcon, color: MyColors.primaryColor),
                     iconSize: 50,
                     onPressed: () => { playPause(controller) },
                   ),
                   IconButton(
-                      icon: Icon(Icons.fast_forward, color: MyColors.startElementColor,),
+                      icon: Icon(Icons.fast_forward, color: MyColors.primaryColor,),
                       onPressed: () => { fastForward(controller) }
                   ),
                   IconButton(
-                    icon: Icon(Icons.stop, color: MyColors.startElementColor),
+                    icon: Icon(Icons.stop, color: MyColors.primaryColor),
                     onPressed: () => { stopSong(controller) },
                   )
                 ],

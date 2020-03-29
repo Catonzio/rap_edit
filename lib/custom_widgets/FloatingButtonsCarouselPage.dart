@@ -45,7 +45,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [MyColors.endElementColor, MyColors.startElementColor]
+                    colors: [MyColors.endElementColor, MyColors.primaryColor]
                 ),
                 borderRadius: BorderRadius.circular(50.0)
             ),
@@ -96,7 +96,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [MyColors.endElementColor, MyColors.startElementColor]
+                  colors: [MyColors.endElementColor, MyColors.primaryColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),
@@ -129,7 +129,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [MyColors.endElementColor, MyColors.startElementColor]
+                  colors: [MyColors.endElementColor, MyColors.primaryColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),
@@ -162,7 +162,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
-                  colors: [MyColors.endElementColor, MyColors.startElementColor]
+                  colors: [MyColors.endElementColor, MyColors.primaryColor]
               ),
               borderRadius: BorderRadius.circular(50.0)
           ),

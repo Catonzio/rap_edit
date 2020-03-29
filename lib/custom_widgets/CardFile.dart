@@ -23,7 +23,7 @@ class CardFile extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [MyColors.endElementColor, MyColors.startElementColor]
+                colors: [MyColors.endElementColor, MyColors.primaryColor]
             ),
             borderRadius: BorderRadius.circular(15.0),
           ),
