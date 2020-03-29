@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 
-class AudioPlayerController {
+class AudioPlayerController extends ChangeNotifier {
 
   AudioPlayer player;
   AudioCache cache;
@@ -14,15 +14,10 @@ class AudioPlayerController {
   RangeValues rangeValues;
   bool loopSelected;
 
-  AudioPlayerController.privateConstructor();
-
-  static final AudioPlayerController _instance = AudioPlayerController.privateConstructor();
-
-  static AudioPlayerController get instance => _instance;
-
   void initPlayer() {
     loopSelected = loopSelected??true;
     rangeValues = rangeValues??RangeValues(0,0);
+
     try {
       if (player == null) {
         player = new AudioPlayer();
@@ -37,7 +32,7 @@ class AudioPlayerController {
         if(SongSingleton.instance.isAsset == true) {
           //pauseSong();
         } else {
-          pauseSong();
+          //pauseSong();
         }
       }
 
@@ -45,6 +40,7 @@ class AudioPlayerController {
         duration = d;
         if(rangeValues == RangeValues(0,0))
           rangeValues = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
+        notifyListeners();
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
@@ -54,17 +50,14 @@ class AudioPlayerController {
             if(!loopSelected)
               pauseSong();
           }
+          notifyListeners();
       });
 
       player.onPlayerStateChanged.listen((AudioPlayerState s) {
           playerState = s;
+          notifyListeners();
       });
 
-      player.onPlayerCompletion.listen((void v) {
-        stopSong();
-      });
-
-      //_values = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
     } catch(ex) { debugPrint("ooooooooooooooooooo porco diooo"); }
   }
 
@@ -81,6 +74,7 @@ class AudioPlayerController {
         seekToSecond(position.inSeconds + i);
       }
     }
+    notifyListeners();
   }
 
   playPause() {
@@ -128,21 +122,20 @@ class AudioPlayerController {
   void seekToSecond(int sec) {
     Duration newDuration = Duration(seconds: sec);
     player.seek(newDuration);
+    notifyListeners();
   }
 
   setLoop() {
-    if(loopSelected)
-      loopSelected = false;
-    else
-      loopSelected = true;
+    loopSelected = !loopSelected;
+    notifyListeners();
   }
 
   durationSeconds() {
-    return duration.inSeconds.toDouble();
+    return duration?.inSeconds?.toDouble();
   }
 
   positionSeconds() {
-    return position.inSeconds.toDouble();
+    return position?.inSeconds?.toDouble();
   }
 
   /// Returns the Duration displayed as 'minute':'seconds'

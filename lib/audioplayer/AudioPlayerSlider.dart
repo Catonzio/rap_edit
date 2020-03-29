@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -7,18 +8,15 @@ import 'AudioPlayerController.dart';
 
 class AudioPlayerSlider extends StatefulWidget {
 
+  final AudioPlayerController controller;
+
+  AudioPlayerSlider(this.controller);
+
   @override
   AudioPlayerSliderState createState() => AudioPlayerSliderState();
 }
 
 class AudioPlayerSliderState extends State<AudioPlayerSlider> {
-
-  /// Returns the Duration displayed as 'minute':'seconds'
-  String getDurationFormatted(Duration dur) {
-    //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
-    String pos = dur?.toString() ?? Duration().toString();
-    return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,35 +28,40 @@ class AudioPlayerSliderState extends State<AudioPlayerSlider> {
           thumbColor: MyColors.electricBlue,
           rangeThumbShape: MySliderThumb(),
           valueIndicatorColor: MyColors.darkGrey,
-          rangeTrackShape: MySliderTrackShape(sliderRangeValues: AudioPlayerController.instance.rangeValues, position: AudioPlayerController.instance.positionSeconds()),
+          rangeTrackShape: MySliderTrackShape(sliderRangeValues: widget.controller.rangeValues, position: widget.controller.positionSeconds()),
         ),
         child: SongSingleton.instance.beatPath != null
             ? RangeSlider(
-          values: AudioPlayerController.instance.rangeValues,
+          values: widget.controller.rangeValues,
           min: 0.0,
-          max: AudioPlayerController.instance.durationSeconds() + 0.1,
+          max: widget.controller.durationSeconds() + 0.1,
           divisions: 300,
           labels: RangeLabels(
-              getDurationFormatted(Duration(seconds: AudioPlayerController.instance.rangeValues.start.toInt())),
-              getDurationFormatted(Duration(seconds: AudioPlayerController.instance.rangeValues.end.toInt()))
+              widget.controller.getDurationFormatted(Duration(seconds: widget.controller.rangeValues.start.toInt())),
+              widget.controller.getDurationFormatted(Duration(seconds: widget.controller.rangeValues.end.toInt()))
           ),
           onChanged: (RangeValues values) {
             setState(() {
+              var oldStart = widget.controller.rangeValues.start;
               if (values.end - values.start >= 5) {
-                AudioPlayerController.instance.rangeValues = values;
+                widget.controller.rangeValues = values;
               } else {
-                if (AudioPlayerController.instance.rangeValues.start == values.start) {
-                  AudioPlayerController.instance.rangeValues = RangeValues(
-                      AudioPlayerController.instance.rangeValues.start,
-                      AudioPlayerController.instance.rangeValues.start + 10
+                if (widget.controller.rangeValues.start == values.start) {
+                  widget.controller.rangeValues = RangeValues(
+                      widget.controller.rangeValues.start,
+                      widget.controller.rangeValues.start + 10
                   );
                 } else {
-                  AudioPlayerController.instance.rangeValues = RangeValues(
-                      AudioPlayerController.instance.rangeValues.end - 10,
-                      AudioPlayerController.instance.rangeValues.end
+                  widget.controller.rangeValues = RangeValues(
+                      widget.controller.rangeValues.end - 10,
+                      widget.controller.rangeValues.end
                   );
                 }
               }
+              if(widget.controller.rangeValues.end < widget.controller.position.inSeconds.toDouble())
+                widget.controller.seekToSecond(widget.controller.rangeValues.end.toInt());
+              if(oldStart != values.start)
+                widget.controller.seekToSecond(values.start.toInt());
             });
           },
         )

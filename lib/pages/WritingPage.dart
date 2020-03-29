@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
+import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/custom_widgets/AudioPlayerWidget2.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
@@ -9,13 +11,14 @@ import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../models/SongSingleton.dart';
 import '../custom_widgets/FloatingButtonsCarouselPage.dart';
 import '../models/SongFile.dart';
+import '../models/SongSingleton.dart';
 import '../support/MyColors.dart';
 
 class WritingPage extends StatefulWidget {
@@ -28,9 +31,7 @@ class WritingPage extends StatefulWidget {
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
   final TextEditingController textController = new TextEditingController();
-  AudioPlayerWidget2 player;
-  String
-  lastString = "";
+  String lastString = "";
 
   @override
   bool get wantKeepAlive => true;
@@ -39,7 +40,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   void initState() {
     super.initState();
     setTitleAndText();
-    player = AudioPlayerWidget2();
     textController.addListener(listenForText);
   }
 
@@ -85,7 +85,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             child: Column(
               children: <Widget>[
                 SizedBox(height: 10.0,),
-                player,
+                ChangeNotifierProvider(
+                  create: (context) => AudioPlayerController(),
+                  child: AudioPlayerWidget(),
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -177,8 +180,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
     else
       SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
-    player.pauseSong();
-    Navigator.pushNamed(context, routeName);
+    Navigator.popAndPushNamed(context, routeName);
   }
 
 

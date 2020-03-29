@@ -8,8 +8,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rap_edit/controllers/FileController.dart';
-import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/models/Dictionary.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -41,7 +41,7 @@ class PageMain extends StatelessWidget {
         ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
         WelcomePage.routeName: (context) => WelcomePage(),
         TabbedLoading.routeName: (context) => TabbedLoading(),
-        ChoosingBeatsDurationPage.routeName: (context) => ChoosingBeatsDurationPage()
+        ChoosingBeatsDurationPage.routeName: (context) => ChoosingBeatsDurationPage(),
       },
       theme: ThemeData(
           brightness: Brightness.dark,

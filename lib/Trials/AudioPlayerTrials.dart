@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
+
 import '../models/SongSingleton.dart';
 
 class AudioPlayerTrials extends StatefulWidget {

@@ -1,16 +1,8 @@
-import 'dart:async';
-import 'dart:io' as io;
-
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:rap_edit/Trials/AudioPlayerTrials.dart';
-import 'package:rap_edit/Trials/CstmSlider.dart';
+import 'package:provider/provider.dart';
+import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
-import 'package:rap_edit/custom_widgets/AudioPlayerWidget2.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
-import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,14 +16,14 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: CstmBackGround(
-          body: AudioPlayerWidget(),
+          body: ChangeNotifierProvider(
+            create: (context) => AudioPlayerController(),
+            child: AudioPlayerWidget(),
+          )
         ),
       )
     );
   }
-
-
-
 }
 
 class Trials extends StatefulWidget {
