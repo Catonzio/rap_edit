@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
+import '../models/SongSingleton.dart';
 import 'AudioPlayerController.dart';
 import 'AudioPlayerSlider.dart';
 
@@ -14,6 +15,7 @@ class AudioPlayerWidget extends StatefulWidget {
   @override
   AudioPlayerWidgetState createState() => state;
 
+  ///se riesco, da modificare!
   void pauseSong() {
     state.pauseSong();
   }
@@ -21,7 +23,7 @@ class AudioPlayerWidget extends StatefulWidget {
 
 class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
 
-  static IconData playPauseIcon = Icons.pause_circle_outline;
+  static IconData playPauseIcon = Icons.play_circle_outline;
 
   TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
   bool loopSelected = true;
@@ -30,7 +32,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    Provider.of<AudioPlayerController>(context, listen: false).initPlayer();
+    var controller = Provider.of<AudioPlayerController>(context, listen: false);
+    controller.initPlayer();
+    playPause(controller);
   }
 
   @override
@@ -95,9 +99,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
   /// Sets the player in pause or in play, depending on the current state
   playPause(AudioPlayerController controller) {
     controller.playPause();
-    controller.playerState == AudioPlayerState.PLAYING
-    ? updateIcon(Icons.play_circle_outline)
-    : updateIcon(Icons.pause_circle_outline);
+    if(controller.playerState != null) {
+      controller.playerState == AudioPlayerState.PLAYING
+          ? updateIcon(Icons.play_circle_outline)
+          : updateIcon(Icons.pause_circle_outline);
+    } else if (SongSingleton.instance.beatPath != null) {
+      updateIcon(Icons.pause_circle_outline);
+    }
   }
 
   @override

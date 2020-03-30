@@ -30,23 +30,18 @@ class AudioPlayerController extends ChangeNotifier {
       if (SongSingleton.instance.beatPath != null &&
           SongSingleton.instance.beatPath.isNotEmpty && player != null) {
         playSong();
-        if(SongSingleton.instance.isAsset == true) {
-          //pauseSong();
-        } else {
-          //pauseSong();
-        }
       }
 
       player.onDurationChanged.listen((Duration d) {
         duration = d;
-        if(rangeValues == RangeValues(0,0))
-          rangeValues = RangeValues(position.inSeconds.toDouble(), duration.inSeconds.toDouble());
+        if(rangeValues == RangeValues(0,0) || rangeValues.end > durationSeconds())
+          rangeValues = RangeValues(0, durationSeconds());
         notifyListeners();
       });
 
       player.onAudioPositionChanged.listen((Duration p) {
           position = p;
-          if (position.inSeconds.toDouble() >= rangeValues.end) {
+          if (positionSeconds() >= rangeValues.end) {
             seekToSecond(rangeValues.start.toInt());
             if(!loopSelected)
               pauseSong();
@@ -103,10 +98,10 @@ class AudioPlayerController extends ChangeNotifier {
 
   /// Starts playing the beat located at the beatPath of the SongSingleton
   void playSong() {
-    if(SongSingleton.instance.isLocal == false && SongSingleton.instance.isAsset == true) {
+    if(SongSingleton.instance.isAsset == true) {
       cache.play(SongSingleton.instance.beatPath);
     }
-    else if(SongSingleton.instance.isLocal == true && SongSingleton.instance.isAsset == false) {
+    else if(SongSingleton.instance.isAsset == false) {
       player.play(SongSingleton.instance.beatPath,
           isLocal: SongSingleton.instance.isLocal);
     }
@@ -131,11 +126,11 @@ class AudioPlayerController extends ChangeNotifier {
     notifyListeners();
   }
 
-  durationSeconds() {
+  double durationSeconds() {
     return duration?.inSeconds?.toDouble();
   }
 
-  positionSeconds() {
+  double positionSeconds() {
     return position?.inSeconds?.toDouble();
   }
 
