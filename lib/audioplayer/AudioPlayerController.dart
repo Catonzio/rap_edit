@@ -13,6 +13,7 @@ class AudioPlayerController extends ChangeNotifier {
   Duration position;
   RangeValues rangeValues;
   bool loopSelected;
+  String previousSongPath;
 
   void initPlayer() {
     loopSelected = loopSelected??true;
@@ -34,8 +35,10 @@ class AudioPlayerController extends ChangeNotifier {
 
       player.onDurationChanged.listen((Duration d) {
         duration = d;
-        if(rangeValues == RangeValues(0,0) || rangeValues.end > durationSeconds())
+        if(rangeValues == RangeValues(0,0) || rangeValues.end > durationSeconds() || previousSongPath != SongSingleton.instance.beatPath) {
           rangeValues = RangeValues(0, durationSeconds());
+          previousSongPath = SongSingleton.instance.beatPath;
+        }
         notifyListeners();
       });
 
