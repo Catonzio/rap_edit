@@ -139,6 +139,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Container(
+                    width: 50,
+                    child: Text(
+                      controller.getDurationFormatted(controller.position),
+                      style: textStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   IconButton(
                     icon: Icon(Icons.repeat, color: controller.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
                     onPressed: () => { setLoop(controller) },
@@ -159,6 +167,14 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                   IconButton(
                     icon: Icon(Icons.stop, color: MyColors.primaryColor),
                     onPressed: () => { stopSong(controller) },
+                  ),
+                  Container(
+                    width: 50,
+                    child: Text(
+                      controller.getDurationFormatted(controller.duration),
+                      style: textStyle,
+                      textAlign: TextAlign.center,
+                    ),
                   )
                 ],
               ),
@@ -167,15 +183,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    controller.getDurationFormatted(controller.position),
-                    style: textStyle,
-                  ),
+                  Container(width: 10,),
                   AudioPlayerSlider(controller),
-                  Text(
-                    controller.getDurationFormatted(controller.duration),
-                    style: textStyle,
-                  ),
+                  Container(width: 10,),
                 ],
               ),
             ],

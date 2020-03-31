@@ -8,12 +8,12 @@ class AudioPlayerController extends ChangeNotifier {
 
   static AudioPlayer player;
   static AudioCache cache;
+  String previousSongPath;
   AudioPlayerState playerState;
   Duration duration;
   Duration position;
   RangeValues rangeValues;
   bool loopSelected;
-  String previousSongPath;
 
   void initPlayer() {
     loopSelected = loopSelected??true;
@@ -36,7 +36,6 @@ class AudioPlayerController extends ChangeNotifier {
       player.onDurationChanged.listen((Duration d) {
         duration = d;
         if(rangeValues == RangeValues(0,0)
-            //|| rangeValues.end > durationSeconds()
             || previousSongPath == null
             || previousSongPath != SongSingleton.instance.beatPath) {
           rangeValues = RangeValues(0, durationSeconds());
@@ -47,7 +46,8 @@ class AudioPlayerController extends ChangeNotifier {
 
       player.onAudioPositionChanged.listen((Duration p) {
           position = p;
-          if (positionSeconds() >= rangeValues.end) {
+          if (positionSeconds() >= rangeValues.end || positionSeconds() >= durationSeconds()) {
+            debugPrint("Start: ${rangeValues.start}");
             seekToSecond(rangeValues.start.toInt());
             if(!loopSelected)
               pauseSong();
@@ -64,7 +64,7 @@ class AudioPlayerController extends ChangeNotifier {
   }
 
   String getSongName() {
-    return "";
+    return SongSingleton.instance.getName();
   }
 
   fastMoving(int i) {

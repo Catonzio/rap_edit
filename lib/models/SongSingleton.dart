@@ -15,17 +15,23 @@ class SongSingleton {
 
   /// Returns the name of the currentSong (without extension)
   String getName() {
+    String name;
     if(beatPath != null) {
       if(beatPath.endsWith("mp3") || beatPath.endsWith("mp4"))
-        return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".mp")).toLowerCase();
+        name = beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".mp")).toLowerCase();
       else if(beatPath.endsWith("wav"))
-        return beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".wav")).toLowerCase();
-      else if(beatPath.startsWith("/"))
-        return "";
+        name = beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".wav")).toLowerCase();
+      else if(beatPath.startsWith("https://"))
+        name = "YouTube video";
       else
-        return beatPath.substring(beatPath.indexOf("/") + 1);
+        name = beatPath.substring(beatPath.indexOf("/") + 1);
     }
     else
-      return "";
+      name = "";
+    if(name != null && name.isNotEmpty) {
+      if(name.contains("_"))
+        name = name.replaceAll("_", " ");
+    }
+    return name;
   }
 }
