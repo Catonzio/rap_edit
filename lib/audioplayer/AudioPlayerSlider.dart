@@ -39,7 +39,7 @@ class AudioPlayerSliderState extends State<AudioPlayerSlider> {
               ? RangeSlider(
             values: widget.controller.rangeValues,
             min: 0.0,
-            max: widget.controller.durationSeconds() + 0.1,
+            max: widget.controller.durationSeconds(),
             divisions: 300,
             labels: RangeLabels(
                 widget.controller.getDurationFormatted(Duration(seconds: widget.controller.rangeValues.start.toInt())),
@@ -52,15 +52,17 @@ class AudioPlayerSliderState extends State<AudioPlayerSlider> {
                   widget.controller.rangeValues = values;
                 } else {
                   if (widget.controller.rangeValues.start == values.start) {
-                    widget.controller.rangeValues = RangeValues(
-                        widget.controller.rangeValues.start,
-                        widget.controller.rangeValues.start + 10
-                    );
+                    if(widget.controller.rangeValues.start + 10 <= widget.controller.durationSeconds())
+                      widget.controller.rangeValues = RangeValues(
+                          widget.controller.rangeValues.start,
+                          widget.controller.rangeValues.start + 10
+                      );
                   } else {
-                    widget.controller.rangeValues = RangeValues(
-                        widget.controller.rangeValues.end - 10,
-                        widget.controller.rangeValues.end
-                    );
+                    if(widget.controller.rangeValues.end - 10 >= 0)
+                      widget.controller.rangeValues = RangeValues(
+                          widget.controller.rangeValues.end - 10,
+                          widget.controller.rangeValues.end
+                      );
                   }
                 }
                 if(widget.controller.rangeValues.end < widget.controller.positionSeconds())
