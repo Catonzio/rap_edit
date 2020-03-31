@@ -114,7 +114,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
     if(controller == null)
       controller.initPlayer();
     return Container(
-        padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+        padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -171,9 +171,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                     controller.getDurationFormatted(controller.position),
                     style: textStyle,
                   ),
-                  Expanded(
-                    child: AudioPlayerSlider(controller)
-                  ),
+                  AudioPlayerSlider(controller),
                   Text(
                     controller.getDurationFormatted(controller.duration),
                     style: textStyle,

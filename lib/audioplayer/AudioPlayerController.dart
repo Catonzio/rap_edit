@@ -35,7 +35,10 @@ class AudioPlayerController extends ChangeNotifier {
 
       player.onDurationChanged.listen((Duration d) {
         duration = d;
-        if(rangeValues == RangeValues(0,0) || rangeValues.end > durationSeconds() || previousSongPath != SongSingleton.instance.beatPath) {
+        if(rangeValues == RangeValues(0,0)
+            //|| rangeValues.end > durationSeconds()
+            || previousSongPath == null
+            || previousSongPath != SongSingleton.instance.beatPath) {
           rangeValues = RangeValues(0, durationSeconds());
           previousSongPath = SongSingleton.instance.beatPath;
         }
