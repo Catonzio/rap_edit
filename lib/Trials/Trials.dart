@@ -4,6 +4,8 @@ import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 
+import '../drawer/CstmDrawer.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -14,12 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        body: CstmBackGround(
-          body: ChangeNotifierProvider(
-            create: (context) => AudioPlayerController(),
-            child: AudioPlayerWidget(),
-          )
+      home: Container(
+        child: CstmBackGround(
+          body: CstmDrawer(),
         ),
       )
     );
