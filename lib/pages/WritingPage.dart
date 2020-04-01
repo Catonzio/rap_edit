@@ -8,6 +8,7 @@ import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
+import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
@@ -79,8 +80,9 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
         backgroundColorStart: MyColors.primaryColor,
         backgroundColorEnd: MyColors.endElementColor,
         //serve per non permettere di tornare indietro dall'appbar
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
       ),
+        drawer: CstmDrawer(),
         body: CstmBackGround(
           body: Center(
             child: Column(
@@ -120,7 +122,24 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             ),
           ),
         ),
-        floatingActionButton: FloatingButtonsCarousel(this),
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [MyColors.endElementColor, MyColors.primaryColor]
+              ),
+              borderRadius: BorderRadius.circular(50.0)
+          ),
+          child: new FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Colors.transparent,
+            mini: true,
+            child: new Icon(Icons.delete, color: MyColors.textColor),
+            onPressed: () { //alertDeleteText(context);
+               },
+          ),
+        )
     );
   }
 
