@@ -26,10 +26,10 @@ class FileController {
 
   /// Writes a file named as the song title (.txt) which content is the text of the song
   static void writeFile(SongFile song) {
-    song.setLastModified(DateTime.now());
-    song.setPath(filePath + "/" + song.title + ".txt");
+    song.lastModified = DateTime.now();
+    song.path = filePath + "/" + song.title + ".txt";
     File file = new File(song.path);
-    file.writeAsStringSync(song.getText());
+    file.writeAsStringSync(song.text);
   }
 
   /// Given the path, extracts the name of the file (with extension)

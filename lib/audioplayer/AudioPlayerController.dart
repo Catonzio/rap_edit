@@ -31,6 +31,7 @@ class AudioPlayerController extends ChangeNotifier {
       if (SongSingleton.instance.beatPath != null &&
           SongSingleton.instance.beatPath.isNotEmpty && player != null) {
         playSong();
+
       }
 
       player.onDurationChanged.listen((Duration d) {
@@ -104,12 +105,16 @@ class AudioPlayerController extends ChangeNotifier {
 
   /// Starts playing the beat located at the beatPath of the SongSingleton
   void playSong() {
-    if(SongSingleton.instance.isAsset == true) {
-      cache.play(SongSingleton.instance.beatPath);
-    }
-    else if(SongSingleton.instance.isAsset == false) {
-      player.play(SongSingleton.instance.beatPath,
-          isLocal: SongSingleton.instance.isLocal);
+    try {
+      if(SongSingleton.instance.isAsset == true) {
+        cache.play(SongSingleton.instance.beatPath);
+      }
+      else if(SongSingleton.instance.isAsset == false) {
+        player.play(SongSingleton.instance.beatPath,
+            isLocal: SongSingleton.instance.isLocal);
+      }
+    } catch (exception) {
+
     }
   }
 

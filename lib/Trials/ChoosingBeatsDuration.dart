@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
-import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 
 import '../custom_widgets/CtsmButton.dart';

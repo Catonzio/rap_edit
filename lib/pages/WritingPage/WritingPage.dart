@@ -3,23 +3,22 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
-import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
+import 'package:rap_edit/custom_widgets/FloatingButtonsCarouselPage.dart';
 import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
-import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
+import 'package:rap_edit/pages/WritingPage/WritingPageController.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../custom_widgets/FloatingButtonsCarouselPage.dart';
-import '../models/SongFile.dart';
-import '../models/SongSingleton.dart';
-import '../support/MyColors.dart';
+import '../../models/SongFile.dart';
+import '../../models/SongSingleton.dart';
+import '../../support/MyColors.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
@@ -30,9 +29,9 @@ class WritingPage extends StatefulWidget {
 
 class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
 
-  final TextEditingController textController = new TextEditingController();
-  String lastString = "";
+  TextEditingController textController;
   AudioPlayerWidget player;
+  List<String> rhymes = new List();
 
   @override
   bool get wantKeepAlive => true;
@@ -40,19 +39,17 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   void initState() {
     super.initState();
+    textController = new TextEditingController();
     setTitleAndText();
     player = AudioPlayerWidget();
-    textController.addListener(listenForText);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
+
+    final controller = Provider.of<WritingPageController>(context);
+    textController.addListener(() => listenForText(controller));
 
     final textText = CstmTextField(
       controller: textController,
@@ -65,17 +62,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       pressed: () => { loadSong() },
     );
 
-    Text titleText;
-    if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty) {
-      titleText = Text(SongSingleton.instance.currentSong.title, style: Theme.of(context).textTheme.title, textAlign: TextAlign.center);
-    } else {
-      titleText = Text("RapEdit", style: Theme.of(context).textTheme.title, textAlign: TextAlign.center,);
-    }
-
     return Scaffold(
       //key: secondPageScaffold,
       appBar: GradientAppBar(
-        title: titleText,
+        title: controller.setTitleText(),
         centerTitle: true,
         backgroundColorStart: MyColors.primaryColor,
         backgroundColorEnd: MyColors.endElementColor,
@@ -122,48 +112,27 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             ),
           ),
         ),
-        floatingActionButton: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [MyColors.endElementColor, MyColors.primaryColor]
-              ),
-              borderRadius: BorderRadius.circular(50.0)
-          ),
-          child: new FloatingActionButton(
-            heroTag: null,
-            backgroundColor: Colors.transparent,
-            mini: true,
-            child: new Icon(Icons.delete, color: MyColors.textColor),
-            onPressed: () { //alertDeleteText(context);
-               },
-          ),
-        )
-    );
+        floatingActionButton: FloatingButtonsCarousel(this),
+        );
   }
 
   /// Deletes the current song of the SongSingleton and clears the TextFields
   deleteText() {
-    SongSingleton.instance.currentSong.text = "";
+    if(SongSingleton.instance.currentSong != null)
+      SongSingleton.instance.currentSong.text = "";
     textController.clear();
   }
 
   /// Saves the currentSong of the SongSingleton as a File on the file system
-  void saveFile(BuildContext context, TextEditingController titleController) {
-    if(titleController.text.trim().isEmpty) {
+  void saveFile(BuildContext context, String title) {
+    int result = Provider.of<WritingPageController>(context, listen: false).saveFile(title, textController.text.trim());
+
+    if(result == -1)
       displaySnackbar("Couldn't save! Title is empty!", context);
-    } else {
-      SongSingleton.instance.currentSong = new SongFile(
-          titleController.text.trim(), textController.text.trim(), null);
-      if (!SongSingleton.instance.currentSong.isEmpty()) {
-        FileController.writeFile(SongSingleton.instance.currentSong);
-        displaySnackbar(titleController.text + " correctly saved!", context);
-      }
-      else {
-        displaySnackbar("Couldn't save! Text is empty", context);
-      }
-    }
+    else if(result == 1)
+        displaySnackbar(title + " correctly saved!", context);
+    else
+      displaySnackbar("Couldn't save! Text is empty", context);
   }
 
   /// Display a snackBar with the message passed as argument
@@ -177,21 +146,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   }
 
   /// Loads the page of Song Loading
-  void loadFiles() {
-    loadOtherPage(TabbedLoading.routeName);
-  }
+  void loadFiles() => loadOtherPage(TabbedLoading.routeName);
 
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
-  setTitleAndText() {
-    if(SongSingleton.instance.currentSong != null) {
-      this.textController.text = SongSingleton.instance.currentSong.text.trim();
-    }
-  }
+  setTitleAndText() => textController.text = Provider.of<WritingPageController>(context, listen: false).setCurrentText();
+
 
   /// Loads the page of Beats Loading
-  loadSong() {
-    loadOtherPage(ChoosingBeatsPage.routeName);
-  }
+  loadSong() => loadOtherPage(ChoosingBeatsPage.routeName);
+
 
   /// Given a routeName, saves in the currentSong of the SongSingleton
   /// the current Title and Text written in the fields and then navigates to the routeName
@@ -204,35 +167,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     Navigator.pushNamed(context, routeName);
   }
 
-
-  listenForText() {
-    if(textController.text.trim().isNotEmpty && textController.selection.baseOffset > 0) {
-      String untilSelection = textController.text.substring(
-          0, textController.selection.base.offset);
-      List<String> listOfLines = untilSelection.split("\n");
-      if (listOfLines.length > 1) {
-        List<String> secondLastLineSplitted = listOfLines[listOfLines.length - 2].split(" ");
-        setState(() {
-          if (secondLastLineSplitted.length > 0) {
-            String possibleRhyme = secondLastLineSplitted[secondLastLineSplitted
-                .length - 1];
-            if (lastString != possibleRhyme) {
-              lastString = possibleRhyme;
-              getRhymeWord();
-            }
-          }
-        });
-      }
-    }
-  }
-
-  List<String> rhymes = new List();
-
-  getRhymeWord() {
-    if(lastString != null && lastString.isNotEmpty) {
-      setState(() {
-        rhymes = Dictionary.instance.getRhymeWord(lastString);
-      });
+  listenForText(WritingPageController controller) {
+    List<String> rime = controller.listenForText(textController);
+    if(rime != null && rime.isNotEmpty) {
+      setState(() { rhymes = rime; });
     }
   }
 
@@ -251,7 +189,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       rhymes.forEach((element) {
         listOfButtons.add(
           FlatButton(
-            child: Text(element, style: Theme.of(context).textTheme.body1,),
+            child: Text(element),
             onPressed: () => { addTheRhyme(rhymes.indexOf(element)) },
           )
         );
@@ -259,4 +197,5 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     }
     return listOfButtons;
   }
+
 }

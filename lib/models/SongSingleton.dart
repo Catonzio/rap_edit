@@ -23,8 +23,10 @@ class SongSingleton {
         name = beatPath.substring(beatPath.lastIndexOf("/") + 1, beatPath.lastIndexOf(".wav")).toLowerCase();
       else if(beatPath.startsWith("https://"))
         name = "YouTube video";
-      else
+      else if(beatPath.contains("/"))
         name = beatPath.substring(beatPath.indexOf("/") + 1);
+      else
+        name = beatPath;
     }
     else
       name = "";
