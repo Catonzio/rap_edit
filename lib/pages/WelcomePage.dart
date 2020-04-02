@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 

@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../models/SongSingleton.dart';
-import '../pages/WritingPage/WritingPage.dart';
+import '../pages/WritingPage.dart';
 import '../support/MyColors.dart';
 import 'CstmTextField.dart';
 

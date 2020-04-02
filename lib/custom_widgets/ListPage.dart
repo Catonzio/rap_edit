@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -32,6 +33,7 @@ class ListPage extends StatelessWidget {
           //serve per non permettere di tornare indietro dall'appbar
           //automaticallyImplyLeading: false,
         ),
+      drawer: CstmDrawer(null),
       body: CstmBackGround(
           body: Center(
             child: Container(

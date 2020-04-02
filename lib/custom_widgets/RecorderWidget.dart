@@ -135,7 +135,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
   void startStopRecording() async {
     if(_recording.status == RecordingStatus.Recording) {
       stopRecording();
-      mySetState("stopped");
+      mySetState("saved");
     }
     else if(_recording.status == RecordingStatus.Initialized) {
       startRecording();

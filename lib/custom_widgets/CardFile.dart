@@ -11,7 +11,7 @@ class CardFile extends StatelessWidget {
 
   CardFile({
     @required this.title,
-    @required this.text,
+    this.text,
     @required this.bottomButtons
   });
 
@@ -24,9 +24,9 @@ class CardFile extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [MyColors.endElementColor, MyColors.primaryColor]
+                colors: [MyColors.endElementColor, MyColors.primaryColor],
             ),
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
           //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           child: Column(
@@ -39,16 +39,16 @@ class CardFile extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     child: Text(title, style: CstmTextTheme.cardHeader),
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 0.0),
                   )
                 ],
               ),
-              //SizedBox(height: 10.0,),
-              //Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
               Row(
                 children: <Widget>[
                   Container(
-                    child: Text(text, maxLines: 1, style: CstmTextTheme.cardText, textAlign: TextAlign.end,),
+                    child: text != null
+                            ? Text(text, maxLines: 1, style: CstmTextTheme.cardText, textAlign: TextAlign.end,)
+                            : null,
                     padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
                   )
                 ],

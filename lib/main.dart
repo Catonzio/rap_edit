@@ -3,19 +3,21 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
 import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
+import 'package:rap_edit/controllers/ChoosingBeatsController.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/MixingAudioPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPageController.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/support/MyColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/FileController.dart';
 import 'pages/FileLoadingPage.dart';
-import 'pages/WritingPage/WritingPage.dart';
+import 'pages/WritingPage.dart';
 
 var initScreen;
 
@@ -41,15 +43,17 @@ class PageMain extends StatelessWidget {
           ? WelcomePage.routeName
           : WritingPage.routeName,
       routes: {
+        WelcomePage.routeName: (context) => WelcomePage(),
         FileLoadingPage.routeName: (context) => FileLoadingPage(),
         WritingPage.routeName: (context) => ChangeNotifierProvider(
                                               create: (context) => WritingPageController(),
                                               child: WritingPage(),
                                             ),
-        //WritingPage.routeName: (context) => WritingPage(),
-        ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
-        WelcomePage.routeName: (context) => WelcomePage(),
-        //TabbedLoading.routeName: (context) => TabbedLoading(),
+        ChoosingBeatsPage.routeName: (context) => ChangeNotifierProvider(
+                                                    create: (context) => ChoosingBeatsController(),
+                                                    child: ChoosingBeatsPage(),
+                                                  ),
+        MixingAudioPage.routeName: (context) => MixingAudioPage(),
         ChoosingBeatsDurationPage.routeName: (context) => ChoosingBeatsDurationPage(),
         RegistrationsPageDuration.routeName: (context) => RegistrationsPageDuration(),
       },

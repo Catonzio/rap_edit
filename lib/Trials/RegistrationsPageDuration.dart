@@ -7,7 +7,7 @@ import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
 
@@ -55,10 +55,6 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
                   debugPrint("Snapshot datas length: ${snapshot.data.length}");
                   return CardFile(
                     title: getOnlyRegistrationName(registrationsPath[index]),
-                    text: //snapshot.data.length == 0
-                          true
-                          ? ""
-                          : "Duration: ${snapshot.data[index]}",
                     bottomButtons: <Widget>[
                       ButtonCstmCard(
                         icon: Icons.delete,

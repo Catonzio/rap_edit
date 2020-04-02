@@ -15,15 +15,16 @@ import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/FileLoadingPage.dart';
+import 'package:rap_edit/pages/MixingAudioPage.dart';
 import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPageController.dart';
+import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
-import '../../models/SongFile.dart';
-import '../../models/SongSingleton.dart';
-import '../../support/MyColors.dart';
+import '../models/SongFile.dart';
+import '../models/SongSingleton.dart';
+import '../support/MyColors.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
@@ -91,7 +92,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    //loadSongButton,
+                    CstmButton(
+                     text: "Mix",
+                     pressed: () => { Navigator.popAndPushNamed(context, MixingAudioPage.routeName) },
+                    ),
                     RecorderWidget()
                   ],
                 ),

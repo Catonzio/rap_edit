@@ -7,7 +7,7 @@ import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/drawer/CstmDrawerLine.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
-import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
+import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 class CstmDrawer extends StatefulWidget {
@@ -40,7 +40,7 @@ class CstmDrawerState extends State<CstmDrawer> {
               RawMaterialButton(
                 padding: EdgeInsets.fromLTRB(0, 0, 25, 0),
                 shape: CircleBorder(),
-                child: Icon(Icons.cancel, size: 40,),
+                child: Icon(Icons.cancel, size: 30,),
                 onPressed: () {
                   setState(() {
                     Navigator.pop(context);
