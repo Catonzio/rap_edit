@@ -11,7 +11,14 @@ class CstmAlertDialog extends StatelessWidget {
   final Function pressed;
   final double height;
 
-  CstmAlertDialog({Key key, this.dialogTitle, this.body, this.continueText, this.pressed, this.height});
+  CstmAlertDialog({
+    Key key,
+    this.dialogTitle,
+    this.body,
+    this.continueText,
+    this.pressed,
+    this.height
+  });
 
   @override
   Widget build(BuildContext context) {

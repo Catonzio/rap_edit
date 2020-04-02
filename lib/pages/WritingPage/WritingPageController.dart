@@ -3,6 +3,8 @@ import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 class WritingPageController extends ChangeNotifier {
 
@@ -10,9 +12,9 @@ class WritingPageController extends ChangeNotifier {
 
   Widget setTitleText() {
     if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty) {
-      return Text(SongSingleton.instance.currentSong.title, textAlign: TextAlign.center);
+      return Text(SongSingleton.instance.currentSong.title, textAlign: TextAlign.center, style: CstmTextTheme.pageTitle);
     } else {
-      return Text("RapEdit", textAlign: TextAlign.center,);
+      return Text("RapEdit", textAlign: TextAlign.center, style: CstmTextTheme.pageTitle);
     }
   }
 

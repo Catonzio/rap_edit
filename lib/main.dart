@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
+import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
@@ -48,8 +49,9 @@ class PageMain extends StatelessWidget {
         //WritingPage.routeName: (context) => WritingPage(),
         ChoosingBeatsPage.routeName: (context) => ChoosingBeatsPage(),
         WelcomePage.routeName: (context) => WelcomePage(),
-        TabbedLoading.routeName: (context) => TabbedLoading(),
+        //TabbedLoading.routeName: (context) => TabbedLoading(),
         ChoosingBeatsDurationPage.routeName: (context) => ChoosingBeatsDurationPage(),
+        RegistrationsPageDuration.routeName: (context) => RegistrationsPageDuration(),
       },
       theme: ThemeData(
           brightness: Brightness.dark,
@@ -57,12 +59,6 @@ class PageMain extends StatelessWidget {
           primaryColor: MyColors.electricBlue,
           accentColor: MyColors.electricBlue,
           fontFamily: 'Montserrat',
-          textTheme: TextTheme(
-            headline: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
-            title: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
-            subtitle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: MyColors.textColor),
-            body1: TextStyle(fontSize: 20.0, color: MyColors.textColor),
-          ),
       ),
     );
   }

@@ -105,7 +105,7 @@ class FloatingButtonsCarouselState extends State<FloatingButtonsCarousel> with T
             backgroundColor: Colors.transparent,
             mini: true,
             child: new Icon(icons[0], color: MyColors.textColor),
-            onPressed: () { writingPage.loadFiles(); },
+            onPressed: () { writingPage.loadTexts(); },
           ),
         )
       ),

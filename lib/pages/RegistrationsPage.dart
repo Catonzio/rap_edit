@@ -41,7 +41,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
           return CardFile(
             title: getOnlyRegistrationName(registrationsPath[index]),
             text: "Duration: ${getSongDuration(registrationsPath[index])}",
-            buttomButtons: <Widget>[
+            bottomButtons: <Widget>[
               ButtonCstmCard(
                 icon: Icons.delete,
                 pressed: () => { deleteRegistration(index) },
@@ -62,7 +62,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
           );
         },
       ),
-      buttomRowButtons: <Widget>[
+      bottomRowButtons: <Widget>[
         CstmButton(
           iconData: Icons.home,
           pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName) },

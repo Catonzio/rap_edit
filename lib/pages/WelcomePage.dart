@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/pages/WritingPage/WritingPage.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -44,7 +45,7 @@ class WelcomePage extends StatelessWidget {
                                 "To see other options, click on the button at the bottom-right.\n" +
                             "Enjoy!\n\n"
                                 "Important: DO NOT USE back navigation of your phone. Use ONLY buttons in the app.\n",
-                        style: TextStyle(fontSize: 20, color: MyColors.textColor),
+                        style: CstmTextTheme.welcomePage,
                       ),
                       //SizedBox(height: 10,),
                       Text(

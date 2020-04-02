@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 class CstmButton extends StatelessWidget {
@@ -35,7 +36,9 @@ class CstmButton extends StatelessWidget {
           //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           child: text == null
               ? Icon(iconData, color: MyColors.textColor, size: 30,)
-              : Text(text, textAlign: TextAlign.center, style: Theme.of(context).textTheme.body1),
+              : Text(text, textAlign: TextAlign.center,
+              style: CstmTextTheme.buttonText
+          ),
           onPressed: pressed,
         ),
       ),

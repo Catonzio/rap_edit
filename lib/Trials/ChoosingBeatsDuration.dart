@@ -57,7 +57,7 @@ class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
                     text: snapshot.data.length == 0
                         ? ""
                         : "Duration: ${snapshot.data[index]}",
-                    buttomButtons: <Widget>[
+                    bottomButtons: <Widget>[
                       ButtonCstmCard(
                         icon: Icons.file_upload,
                         pressed: () => { loadAsset(songs[index]) },
@@ -88,7 +88,7 @@ class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
           }
         },
       ),
-      buttomRowButtons: <Widget>[
+      bottomRowButtons: <Widget>[
         CstmButton(
           text: "File System",
           pressed: () => { loadFromFileSystem(context) },

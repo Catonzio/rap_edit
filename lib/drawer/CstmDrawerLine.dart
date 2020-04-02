@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 
 class CstmDrawerLine extends StatelessWidget {
 
@@ -10,31 +11,41 @@ class CstmDrawerLine extends StatelessWidget {
 
   CstmDrawerLine({
    Key key,
-   this.icon,
-   this.text,
-   this.pressed,
-   this.padding
+   @required this.icon,
+   @required this.text,
+   @required this.pressed,
+   @required this.padding
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        MaterialButton(
+    return
+        Container(
           padding: padding,
+          //color: Colors.red,
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Icon(icon),
-              Container(width: 10,),
-              Text(text, style: TextStyle(fontSize: 20),)
+              MaterialButton(
+                child: Text(text, style: CstmTextTheme.snackBar,),
+                onPressed: pressed,
+              )
             ],
           ),
-          onPressed: () => { debugPrint("Save") },
-        ),
-      ],
-    );
+//          child: MaterialButton(
+//            padding: padding,
+//            child: Row(
+//              children: <Widget>[
+//                Icon(icon),
+//                Container(width: 10,),
+//                Text(text, style: CstmTextTheme.drawerLine,)
+//              ],
+//            ),
+//            onPressed: pressed,
+//          ),
+        );
   }
 
 }

@@ -51,7 +51,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
           return CardFile(
             title: getOnlySongName(songs[index]),
             text: "",
-            buttomButtons: <Widget>[
+            bottomButtons: <Widget>[
               ButtonCstmCard(
                 icon: Icons.file_upload,
                 pressed: () => { loadAsset(songs[index]) },
@@ -64,7 +64,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
           );
         },
       ),
-      buttomRowButtons: <Widget>[
+      bottomRowButtons: <Widget>[
         CstmButton(
           text: "File System",
           pressed: () => { loadFromFileSystem(context) },

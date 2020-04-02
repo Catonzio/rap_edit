@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../models/SongSingleton.dart';
@@ -25,7 +26,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   static IconData playPauseIcon = Icons.play_circle_outline;
 
-  TextStyle textStyle = new TextStyle(color: MyColors.textColor, fontSize: 15);
+  TextStyle textStyle = CstmTextTheme.beatPositionAndDuration;
   bool loopSelected = true;
 
   @override
@@ -129,7 +130,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                       child: Text(
                         controller.getSongName(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: MyColors.textColor, fontSize: 20),
+                        style: CstmTextTheme.displayingBeatName,
                       )
                   )
                 ],

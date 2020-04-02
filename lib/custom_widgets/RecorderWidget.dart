@@ -11,13 +11,13 @@ import '../controllers/FileController.dart';
 import 'CstmAlertDialog.dart';
 import 'CstmTextField.dart';
 
-class OtherRecorderWidget extends StatefulWidget {
+class RecorderWidget extends StatefulWidget {
 
   @override
-  OtherRecorderWidgetState createState() => OtherRecorderWidgetState();
+  RecorderWidgetState createState() => RecorderWidgetState();
 }
 
-class OtherRecorderWidgetState extends State<OtherRecorderWidget> {
+class RecorderWidgetState extends State<RecorderWidget> {
 
   String cuntdownString = "";
   Timer cuntdownTimer;

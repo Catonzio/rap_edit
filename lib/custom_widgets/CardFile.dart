@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/support/MyColors.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 
 class CardFile extends StatelessWidget {
 
   final String title;
   final String text;
-  final List<Widget> buttomButtons;
+  final List<Widget> bottomButtons;
 
   CardFile({
     @required this.title,
     @required this.text,
-    @required this.buttomButtons
+    @required this.bottomButtons
   });
 
   @override
@@ -37,7 +38,7 @@ class CardFile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    child: Text(title, style: TextStyle(color: MyColors.textColor, fontSize: 25)),
+                    child: Text(title, style: CstmTextTheme.cardHeader),
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
                   )
                 ],
@@ -47,7 +48,7 @@ class CardFile extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    child: Text(text, maxLines: 1, style: TextStyle(color: MyColors.textColor, fontSize: 15), textAlign: TextAlign.end,),
+                    child: Text(text, maxLines: 1, style: CstmTextTheme.cardText, textAlign: TextAlign.end,),
                     padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
                   )
                 ],
@@ -55,7 +56,7 @@ class CardFile extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: buttomButtons
+                children: bottomButtons
               )
             ],
           ),

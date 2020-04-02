@@ -17,4 +17,7 @@ class MyColors {
   static Color textColor = Color(0xFFFFFFFF);
   static Color softGrey = Colors.grey[800];
   static Color softPurple = Color(0xFF7030A0);
+
+  static Color startAppBar = backGroundGrey;
+  static Color endAppBar = endElementColor;
 }

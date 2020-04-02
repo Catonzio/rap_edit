@@ -36,7 +36,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
           return CardFile(
             title: file[index].title,
             text: getOnlyFirstLine(file[index].text),
-            buttomButtons: <Widget>[
+            bottomButtons: <Widget>[
               ButtonCstmCard(
                 icon: Icons.delete,
                 pressed: () => { deleteFile(index) },
@@ -53,7 +53,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
           );
         },
       ),
-      buttomRowButtons: <Widget>[
+      bottomRowButtons: <Widget>[
         CstmButton(
           iconData: Icons.home,
           pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },

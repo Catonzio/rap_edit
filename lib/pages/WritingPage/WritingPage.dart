@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/FloatingButtonsCarouselPage.dart';
-import 'package:rap_edit/custom_widgets/OtherRecorderWidget.dart';
+import 'package:rap_edit/custom_widgets/FloatingDeleteButton.dart';
+import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/FileLoadingPage.dart';
+import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/WritingPage/WritingPageController.dart';
+import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../../models/SongFile.dart';
@@ -67,12 +72,12 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       appBar: GradientAppBar(
         title: controller.setTitleText(),
         centerTitle: true,
-        backgroundColorStart: MyColors.primaryColor,
-        backgroundColorEnd: MyColors.endElementColor,
+        backgroundColorStart: MyColors.startAppBar,
+        backgroundColorEnd: MyColors.endAppBar,
         //serve per non permettere di tornare indietro dall'appbar
         //automaticallyImplyLeading: false,
       ),
-        drawer: CstmDrawer(),
+        drawer: CstmDrawer(this),
         body: CstmBackGround(
           body: Center(
             child: Column(
@@ -86,8 +91,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    loadSongButton,
-                    OtherRecorderWidget()
+                    //loadSongButton,
+                    RecorderWidget()
                   ],
                 ),
                 Container(
@@ -112,7 +117,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
             ),
           ),
         ),
-        floatingActionButton: FloatingButtonsCarousel(this),
+        //floatingActionButton: FloatingButtonsCarousel(this),
+        floatingActionButton: FloatingDeleteButton(writingPage: this,),
         );
   }
 
@@ -139,22 +145,22 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   static displaySnackbar(String message, BuildContext context) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: TextStyle(color: MyColors.textColor),),
+        content: Text(message, style: CstmTextTheme.snackBar),
         backgroundColor: MyColors.darkGrey,
       )
     );
   }
 
   /// Loads the page of Song Loading
-  void loadFiles() => loadOtherPage(TabbedLoading.routeName);
+  void loadTexts() => loadOtherPage(FileLoadingPage.routeName);
+
+  void loadRecs() => loadOtherPage(RegistrationsPageDuration.routeName);
 
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() => textController.text = Provider.of<WritingPageController>(context, listen: false).setCurrentText();
 
-
   /// Loads the page of Beats Loading
   loadSong() => loadOtherPage(ChoosingBeatsPage.routeName);
-
 
   /// Given a routeName, saves in the currentSong of the SongSingleton
   /// the current Title and Text written in the fields and then navigates to the routeName

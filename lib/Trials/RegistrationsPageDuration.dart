@@ -12,7 +12,7 @@ import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
 
 class RegistrationsPageDuration extends StatefulWidget {
-
+  static String routeName = "/registrationsPageDuration";
   @override
   RegistrationsPageDurationState createState() => RegistrationsPageDurationState();
 }
@@ -59,7 +59,7 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
                           true
                           ? ""
                           : "Duration: ${snapshot.data[index]}",
-                    buttomButtons: <Widget>[
+                    bottomButtons: <Widget>[
                       ButtonCstmCard(
                         icon: Icons.delete,
                         pressed: () => { deleteRegistration(index) },
@@ -88,7 +88,7 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
           }
         },
       ),
-      buttomRowButtons: <Widget>[
+      bottomRowButtons: <Widget>[
         CstmButton(
           iconData: Icons.home,
           pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName) },
