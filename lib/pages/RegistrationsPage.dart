@@ -7,17 +7,22 @@ import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
 
+import 'ChoosingBeatsPage.dart';
+
 class RegistrationsPage extends StatefulWidget {
+  static String routeName = "/registrationsPage";
 
   @override
   RegistrationsPageState createState() => RegistrationsPageState();
 }
 
-class RegistrationsPageState extends State<RegistrationsPage> {
+class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterface{
 
   List<String> registrationsPath = List();
   ListenAssetSupport listenAssetSupport;
@@ -65,7 +70,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
       bottomRowButtons: <Widget>[
         CstmButton(
           iconData: Icons.home,
-          pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName) },
+          pressed: () => { loadWritingPage() },
         ),
       ],
     );
@@ -100,7 +105,7 @@ class RegistrationsPageState extends State<RegistrationsPage> {
     SongSingleton.instance.beatPath = registrationsPath;
     SongSingleton.instance.isLocal = true;
     SongSingleton.instance.isAsset = false;
-    Navigator.popAndPushNamed(context, WritingPage.routeName);
+    loadWritingPage();
   }
 
   deleteRegistration(int index) {
@@ -115,5 +120,22 @@ class RegistrationsPageState extends State<RegistrationsPage> {
   }
 
   getSongDuration(String registrationsPath) {}
+
+  @override
+  void loadPage(String routeName) {
+    Navigator.popAndPushNamed(context, routeName);
+  }
+
+  @override
+  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
+
+  @override
+  void loadRegistrationsPage() => null;
+
+  @override
+  void loadTextsPage() => loadPage(TextsPage.routeName);
+
+  @override
+  void loadWritingPage() => loadPage(WritingPage.routeName);
 
 }

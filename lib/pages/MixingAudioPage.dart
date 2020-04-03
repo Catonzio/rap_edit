@@ -23,6 +23,7 @@ class MixingAudioPageState extends State<MixingAudioPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
+
                 children: <Widget>[
                   Row(
                     children: <Widget>[

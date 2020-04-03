@@ -5,18 +5,18 @@ import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
 import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/controllers/ChoosingBeatsController.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/MixingAudioPage.dart';
-import 'package:rap_edit/pages/TabbedLoading.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
-import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/support/MyColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/FileController.dart';
-import 'pages/FileLoadingPage.dart';
+import 'pages/RegistrationsPage.dart';
+import 'pages/TextsPage.dart';
 import 'pages/WritingPage.dart';
 
 var initScreen;
@@ -44,7 +44,7 @@ class PageMain extends StatelessWidget {
           : WritingPage.routeName,
       routes: {
         WelcomePage.routeName: (context) => WelcomePage(),
-        FileLoadingPage.routeName: (context) => FileLoadingPage(),
+        TextsPage.routeName: (context) => TextsPage(),
         WritingPage.routeName: (context) => ChangeNotifierProvider(
                                               create: (context) => WritingPageController(),
                                               child: WritingPage(),
@@ -54,8 +54,7 @@ class PageMain extends StatelessWidget {
                                                     child: ChoosingBeatsPage(),
                                                   ),
         MixingAudioPage.routeName: (context) => MixingAudioPage(),
-        ChoosingBeatsDurationPage.routeName: (context) => ChoosingBeatsDurationPage(),
-        RegistrationsPageDuration.routeName: (context) => RegistrationsPageDuration(),
+        RegistrationsPage.routeName: (context) => RegistrationsPage(),
       },
       theme: ThemeData(
           brightness: Brightness.dark,

@@ -6,17 +6,20 @@ import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:share_extend/share_extend.dart';
 
-class FileLoadingPage extends StatefulWidget {
-  static const routeName = '/filesPage';
+class TextsPage extends StatefulWidget {
+  static const routeName = '/textsPage';
 
   @override
-  State createState() => FileLoadingPageState();
+  State createState() => TextsPageState();
 }
 
-class FileLoadingPageState extends State<FileLoadingPage> {
+class TextsPageState extends State<TextsPage> with MyPageInterface{
 
   List<SongFile> file = new List();
 
@@ -56,7 +59,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
       bottomRowButtons: <Widget>[
         CstmButton(
           iconData: Icons.home,
-          pressed: () => { Navigator.pushNamed(context, WritingPage.routeName) },
+          pressed: () => { loadWritingPage() },
         ),
       ],
     );
@@ -73,7 +76,7 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   /// Loads the selected Song from the file system and displays its Title and Text in the WritingPage
   loadFile(int index) {
     SongSingleton.instance.currentSong = file[index];
-    Navigator.popAndPushNamed(context, WritingPage.routeName);
+    loadWritingPage();
   }
 
   /// Returns only the first line of the string
@@ -87,6 +90,23 @@ class FileLoadingPageState extends State<FileLoadingPage> {
   shareText(SongFile file) {
     ShareExtend.share(file.title + "\n\n" + file.text, "text");
   }
+
+  @override
+  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
+
+  @override
+  void loadPage(String routeName) {
+    Navigator.popAndPushNamed(context, routeName);
+  }
+
+  @override
+  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
+
+  @override
+  void loadTextsPage() => null;
+
+  @override
+  void loadWritingPage() => loadPage(WritingPage.routeName);
 
 
 }

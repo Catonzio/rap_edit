@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -61,22 +59,22 @@ class CstmDrawerState extends State<CstmDrawer> {
             text: "Load beats",
             icon: Icons.file_upload,
             padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            pressed: () => { widget.writingPage.loadSong() },
+            pressed: () => { widget.writingPage.loadChoosingBeatsPage() },
           ),
           SizedBox(height: 10,),
           CstmDrawerLine(
             text: "Load texts",
             padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
             icon: Icons.file_upload,
-            pressed: () => { widget.writingPage.loadTexts() },
+            pressed: () => { widget.writingPage.loadTextsPage() },
           ),
           SizedBox(height: 10,),
           CstmDrawerLine(
             text: "Load recs",
-            pressed: () => { widget.writingPage.loadRecs() },
+            pressed: () => { widget.writingPage.loadRegistrationsPage() },
             icon: Icons.file_upload,
             padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-          )
+          ),
         ],
       ),
     );

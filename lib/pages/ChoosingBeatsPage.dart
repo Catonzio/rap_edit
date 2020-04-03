@@ -1,16 +1,15 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/controllers/ChoosingBeatsController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
-import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
-import 'package:rap_edit/support/ListenAssetSupport.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 
@@ -20,7 +19,7 @@ class ChoosingBeatsPage extends StatefulWidget {
   ChoosingBeatsPageState createState() => ChoosingBeatsPageState();
 }
 
-class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
+class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterface {
 
   IconData playPauseIcon = Icons.play_arrow;
   ChoosingBeatsController controller;
@@ -48,14 +47,14 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
 
   loadFromFileSystem(BuildContext context) async {
     if(await controller.loadFromFileSystem())
-      Navigator.popAndPushNamed(context, WritingPage.routeName);
+      loadWritingPage();
   }
 
   listenPreview(String song) { updateIcon(controller.listenAssetPreview(song)); }
 
   loadAsset(String song) {
     controller.loadAsset(song);
-    Navigator.popAndPushNamed(context, WritingPage.routeName);
+    loadWritingPage();
   }
 
   loadFromYoutubeAlertDialog(BuildContext context) {
@@ -79,7 +78,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
         pressed: () async {
           await controller.loadFromYoutube(urlController.text.trim());
           Navigator.pop(context);
-          Navigator.popAndPushNamed(context, WritingPage.routeName);
+          loadWritingPage();
         }
     );
     showDialog(
@@ -123,7 +122,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
         //Container(width: 10.0,),
         CstmButton(
           iconData: Icons.home,
-          pressed: () => { Navigator.popAndPushNamed(context, WritingPage.routeName, arguments: null) },
+          pressed: () => { loadWritingPage() },
         ),
         //Container(width: 10.0,),
         CstmButton(
@@ -135,5 +134,22 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> {
       ],
     );
   }
+
+  @override
+  void loadChoosingBeatsPage() => null;
+
+  @override
+  void loadPage(String routeName) {
+    Navigator.popAndPushNamed(context, routeName);
+  }
+
+  @override
+  void loadRegistrationsPage() => loadPage(RegistrationsPageDuration.routeName);
+
+  @override
+  void loadTextsPage() => loadPage(TextsPage.routeName);
+
+  @override
+  void loadWritingPage() => loadPage(WritingPage.routeName);
 
 }

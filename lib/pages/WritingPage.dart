@@ -4,27 +4,26 @@ import 'package:provider/provider.dart';
 import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
+import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
-import 'package:rap_edit/custom_widgets/FloatingButtonsCarouselPage.dart';
 import 'package:rap_edit/custom_widgets/FloatingDeleteButton.dart';
 import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
-import 'package:rap_edit/pages/FileLoadingPage.dart';
+import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/MixingAudioPage.dart';
-import 'package:rap_edit/pages/RegistrationsPage.dart';
-import 'package:rap_edit/pages/TabbedLoading.dart';
-import 'package:rap_edit/controllers/WritingPageController.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 import '../models/SongFile.dart';
 import '../models/SongSingleton.dart';
 import '../support/MyColors.dart';
+import 'RegistrationsPage.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";
@@ -33,7 +32,7 @@ class WritingPage extends StatefulWidget {
   WritingPageState createState() => WritingPageState();
 }
 
-class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin {
+class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin, MyPageInterface {
 
   TextEditingController textController;
   AudioPlayerWidget player;
@@ -63,11 +62,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       maxLines: 20,
     );
 
-    final loadSongButton = CstmButton(
-      text: "Beats",
-      pressed: () => { loadSong() },
-    );
-
     return Scaffold(
       //key: secondPageScaffold,
       appBar: GradientAppBar(
@@ -94,7 +88,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   children: <Widget>[
                     CstmButton(
                      text: "Mix",
-                     pressed: () => { Navigator.popAndPushNamed(context, MixingAudioPage.routeName) },
+                     pressed: () => { loadPage(MixingAudioPage.routeName) },
                     ),
                     RecorderWidget()
                   ],
@@ -155,27 +149,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     );
   }
 
-  /// Loads the page of Song Loading
-  void loadTexts() => loadOtherPage(FileLoadingPage.routeName);
-
-  void loadRecs() => loadOtherPage(RegistrationsPageDuration.routeName);
-
   /// Sets the Title and the Text fields content as the ones of the currentSong of the SongSingleton
   setTitleAndText() => textController.text = Provider.of<WritingPageController>(context, listen: false).setCurrentText();
-
-  /// Loads the page of Beats Loading
-  loadSong() => loadOtherPage(ChoosingBeatsPage.routeName);
-
-  /// Given a routeName, saves in the currentSong of the SongSingleton
-  /// the current Title and Text written in the fields and then navigates to the routeName
-  loadOtherPage(String routeName) {
-    if(SongSingleton.instance.currentSong != null)
-      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
-    else
-      SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
-    player.pauseSong();
-    Navigator.pushNamed(context, routeName);
-  }
 
   listenForText(WritingPageController controller) {
     List<String> rime = controller.listenForText(textController);
@@ -206,6 +181,28 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       });
     }
     return listOfButtons;
+  }
+
+  @override
+  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
+
+  @override
+  void loadTextsPage() => loadPage(TextsPage.routeName);
+  
+  @override
+  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
+
+  @override
+  void loadWritingPage() => null;
+
+  @override
+  void loadPage(String routeName) {
+    if(SongSingleton.instance.currentSong != null)
+      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
+    else
+      SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
+    player.pauseSong();
+    Navigator.pushNamed(context, routeName);
   }
 
 }

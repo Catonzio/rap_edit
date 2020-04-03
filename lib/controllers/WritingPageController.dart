@@ -4,7 +4,6 @@ import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
-import 'package:rap_edit/support/MyColors.dart';
 
 class WritingPageController extends ChangeNotifier {
 

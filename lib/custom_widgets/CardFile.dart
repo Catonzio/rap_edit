@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rap_edit/support/MyColors.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 class CardFile extends StatelessWidget {
 
