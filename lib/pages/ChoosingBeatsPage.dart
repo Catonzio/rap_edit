@@ -12,6 +12,7 @@ import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 
 import '../custom_widgets/CtsmButton.dart';
+import 'RegistrationsPage.dart';
 
 class ChoosingBeatsPage extends StatefulWidget {
   static String routeName = "/choosingBeats";
@@ -95,6 +96,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
 
     return ListPage(
       title: "Beats",
+      pageInterface: this,
       listView: ListView.builder(
         itemCount: controller.songs.length,
         shrinkWrap: true,
@@ -144,7 +146,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
   }
 
   @override
-  void loadRegistrationsPage() => loadPage(RegistrationsPageDuration.routeName);
+  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
 
   @override
   void loadTextsPage() => loadPage(TextsPage.routeName);

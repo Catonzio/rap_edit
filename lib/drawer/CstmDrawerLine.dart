@@ -14,14 +14,14 @@ class CstmDrawerLine extends StatelessWidget {
    @required this.icon,
    @required this.text,
    @required this.pressed,
-   @required this.padding
+   this.padding
   });
 
   @override
   Widget build(BuildContext context) {
     return
         Container(
-          padding: padding,
+          padding: padding??EdgeInsets.fromLTRB(20, 0, 0, 0),
           //color: Colors.red,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

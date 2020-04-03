@@ -40,12 +40,13 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
     //FileController.deleteAllRegistrations();
     return ListPage(
       title: "Registrations",
+      pageInterface: this,
       listView: ListView.builder(
         itemCount: registrationsPath.length,
         itemBuilder: (BuildContext context, int index) {
           return CardFile(
             title: getOnlyRegistrationName(registrationsPath[index]),
-            text: "Duration: ${getSongDuration(registrationsPath[index])}",
+            //text: "Duration: ${getSongDuration(registrationsPath[index])}",
             bottomButtons: <Widget>[
               ButtonCstmCard(
                 icon: Icons.delete,

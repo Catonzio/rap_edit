@@ -33,6 +33,7 @@ class TextsPageState extends State<TextsPage> with MyPageInterface{
   Widget build(BuildContext context) {
     return ListPage(
       title: "Texts",
+      pageInterface: this,
       listView: ListView.builder(
         itemCount: file.length,
         itemBuilder: (BuildContext context, int index) {

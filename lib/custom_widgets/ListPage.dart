@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -13,13 +14,15 @@ class ListPage extends StatelessWidget {
   final ListView listView;
   final FutureBuilder<List<int>> futureBuilder;
   final List<Widget> bottomRowButtons;
+  final MyPageInterface pageInterface;
 
   ListPage({
     Key key,
     @required this.title,
     this.listView,
     @required this.bottomRowButtons,
-    this.futureBuilder
+    this.futureBuilder,
+    @required this.pageInterface
   });
 
   @override
@@ -33,7 +36,7 @@ class ListPage extends StatelessWidget {
           //serve per non permettere di tornare indietro dall'appbar
           //automaticallyImplyLeading: false,
         ),
-      drawer: CstmDrawer(null),
+      drawer: CstmDrawer(pageInterface),
       body: CstmBackGround(
           body: Center(
             child: Container(
