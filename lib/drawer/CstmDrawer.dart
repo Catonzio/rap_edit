@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/drawer/CstmDrawerLine.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/MixingAudioPage.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/RegistrationsPage.dart';
+import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -22,11 +27,19 @@ class CstmDrawer extends StatefulWidget {
 class CstmDrawerState extends State<CstmDrawer> {
 
   bool visible = false;
+  List<Widget> buttonsList;
+
+  @override
+  void initState() {
+    super.initState();
+    buttonsList = List();
+    createButtons().forEach((key, val) => buttonsList.add(val));
+  }
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: DrawerPainter(),
+      painter: DrawerPainter(buttonsList),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -35,68 +48,84 @@ class CstmDrawerState extends State<CstmDrawer> {
     );
   }
 
-
-
-  alertSaveText(BuildContext context) {
-    TextEditingController titleController = new TextEditingController();
-
-    if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty)
-      titleController.text = SongSingleton.instance.currentSong.title;
-
-    Widget alert = CstmAlertDialog(
-      dialogTitle: "Saving",
-      continueText: "Save",
-      height: 100,
-      body: Column(
-        children: <Widget>[
-          Text("How to save?"),
-          SizedBox(height: 20.0,),
-          CstmTextField(
-            maxLines: 1,
-            controller: titleController,
-            hintText: "insert title",
-          )
-        ],
-      ),
-      pressed: () {
-        if(widget.page != null && widget.page is WritingPageState) {
-          WritingPageState write = widget.page as WritingPageState;
-          write.saveFile(context, titleController.text.trim());
-          Navigator.pop(context);
-        }
-      },
-    );
-
-    // show the dialog
-    showMyDialog(context, alert);
-  }
-
-  showMyDialog(BuildContext context, Widget alert) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   List<Widget> getButtons() {
+    var buttonsMap = createButtons();
     List<Widget> buttons = List();
-    createButtons().forEach((key, val) => buttons.add(val));
+    buttons.add(buttonsMap[ButtonsNames.buttonCancel]);
+
+    if(widget.page is WritingPageState) {
+      WritingPageState state = widget.page as WritingPageState;
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonWrite && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else if(widget.page is ChoosingBeatsPageState) {
+      ChoosingBeatsPageState state = widget.page as ChoosingBeatsPageState;
+      buttons.add(
+          CstmDrawerLine(
+            text: "Load YouTube",
+            icon: Icons.play_circle_filled,
+            pressed: () => { state.loadFromYoutubeAlertDialog(context) },
+          )
+      );
+      buttons.add(
+          CstmDrawerLine(
+            text: "Load File System",
+            icon: Icons.library_music,
+            pressed: () => { state.loadFromFileSystem() },
+          )
+      );
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonLoadBeats && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else if(widget.page is RegistrationsPageState) {
+      RegistrationsPageState state = widget.page as RegistrationsPageState;
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonLoadRecs && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else if(widget.page is TextsPageState) {
+      TextsPageState state = widget.page as TextsPageState;
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonLoadTexts && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else if(widget.page is MixingAudioPageState) {
+      MixingAudioPageState state = widget.page as MixingAudioPageState;
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonMixing && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else {
+      buttonsMap.forEach((key, value) => { buttons.add(value) });
+    }
+
     return buttons;
   }
 
   Map createButtons() {
     var buttonsMap = Map();
-    buttonsMap[ButtonsNames.sized30] = SizedBox(height: 30,);
-    buttonsMap[ButtonsNames.sized10] = SizedBox(height: 10,);
+
+    //buttonsMap[ButtonsNames.sized30] = SizedBox(height: 30,);
+    //buttonsMap[ButtonsNames.sized10] = SizedBox(height: 10,);
 
     buttonsMap[ButtonsNames.buttonCancel] = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         RawMaterialButton(
-          padding: EdgeInsets.fromLTRB(0, 0, 25, 0),
+          padding: EdgeInsets.fromLTRB(0, 30, 25, 30),
           shape: CircleBorder(),
           child: Icon(Icons.cancel, size: 30,),
           onPressed: () {
@@ -106,12 +135,6 @@ class CstmDrawerState extends State<CstmDrawer> {
           },
         ),
       ],
-    );
-
-    buttonsMap[ButtonsNames.buttonSave] = CstmDrawerLine(
-      text: "Save text",
-      icon: Icons.save,
-      pressed: () => { alertSaveText(context) },
     );
 
     buttonsMap[ButtonsNames.buttonLoadBeats] = CstmDrawerLine(
@@ -138,6 +161,12 @@ class CstmDrawerState extends State<CstmDrawer> {
       icon: Icons.edit,
     );
 
+    buttonsMap[ButtonsNames.buttonMixing] = CstmDrawerLine(
+      text: "Mix audio",
+      pressed: () => { widget.page.loadMixingAudioPage() },
+      icon: Icons.library_music,
+    );
+
     return buttonsMap;
   }
 }
@@ -146,23 +175,31 @@ class ButtonsNames {
   static String sized30 = 'sized30';
   static String sized10 = 'sized10';
   static String buttonCancel = 'buttonCancel';
-  static String buttonSave = 'buttonSave';
   static String buttonLoadBeats = 'buttonLoadBeats';
   static String buttonLoadTexts = 'buttonLoadTexts';
   static String buttonLoadRecs = 'buttonLoadRecs';
   static String buttonWrite = 'buttonWrite';
+  static String buttonMixing = 'buttonMixing';
 }
 
 class DrawerPainter extends CustomPainter{
+
+  List<Widget> buttonsList;
+
+  DrawerPainter(this.buttonsList);
+
   @override
   void paint(Canvas canvas, Size size) {
     Paint arc = Paint()
-        ..color = MyColors.electricBlue
-        ..style = PaintingStyle.fill;
+      ..color = MyColors.electricBlue
+      ..style = PaintingStyle.fill;
 
-    //Rect center2 = Rect.fromLTRB(-size.width, -size.height/2, size.width/2, size.height/2);
+    double height =
+    buttonsList == null || buttonsList.isEmpty
+        ? size.height
+        : (size.height - 90)/(11.5/buttonsList.length);
 
-    RRect center2 = RRect.fromLTRBR(0, 0, size.width/2, size.height/2, Radius.circular(40));
+    RRect center2 = RRect.fromLTRBR(0, 0, size.width/2, height, Radius.circular(40));
 
     LinearGradient gradient = LinearGradient(
         begin: Alignment.topRight,
@@ -180,4 +217,3 @@ class DrawerPainter extends CustomPainter{
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
-

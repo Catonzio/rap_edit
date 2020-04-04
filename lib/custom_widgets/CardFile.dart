@@ -26,8 +26,10 @@ class CardFile extends StatelessWidget {
                 end: Alignment.bottomLeft,
                 colors: [MyColors.endElementColor, MyColors.primaryColor],
             ),
+
             borderRadius: BorderRadius.circular(10.0),
           ),
+
           //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,

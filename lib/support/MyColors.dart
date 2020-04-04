@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class MyColors {
   
-  static Color primaryColor = electricBlue;
+  static Color primaryColor = electricBlue.withOpacity(0.5);
   static Color secondaryColor = softPurple;
-  static Color endElementColor = Color(0xFF000000);
+  static Color endElementColor = Color(0xFF000000).withOpacity(0.5);
 
   static Color backGroundGrey = Color(0xFF202020);
-  static Color backGroundWhite = Color(0xFF303030);
+  static Color backGroundWhite = Color(0xFF303030).withOpacity(0.5);
 
   static Color electricBlue = Color(0xFF2C75FF);
   static Color darkGrey = Color(0xFF151515);
@@ -18,6 +18,6 @@ class MyColors {
   static Color softGrey = Colors.grey[800];
   static Color softPurple = Color(0xFF7030A0);
 
-  static Color startAppBar = backGroundGrey;
+  static Color startAppBar = primaryColor;
   static Color endAppBar = endElementColor;
 }

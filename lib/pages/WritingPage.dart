@@ -5,6 +5,7 @@ import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/controllers/WritingPageController.dart';
+import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
@@ -86,10 +87,6 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CstmButton(
-                     text: "Mix",
-                     pressed: () => { loadPage(MixingAudioPage.routeName) },
-                    ),
                     RecorderWidget()
                   ],
                 ),
@@ -99,11 +96,24 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        IconButton(
+                          padding: EdgeInsets.all(2.0),
+                          icon: Icon(Icons.delete_forever, color: MyColors.darkRed,),
+                          onPressed: () => { alertDeleteText(context) },
+                        ),
                         Expanded(
                           child: ListView(
                             children: getRhymesButtons(),
                             scrollDirection: Axis.horizontal,
                           )
+                        ),
+                        Builder(
+                          builder: (context) =>
+                              IconButton(
+                                padding: EdgeInsets.all(2.0),
+                                icon: Icon(Icons.save, color: MyColors.electricBlue),
+                                onPressed: () => { alertSaveText(context) },
+                              ),
                         )
                       ],
                   ),
@@ -116,7 +126,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
           ),
         ),
         //floatingActionButton: FloatingButtonsCarousel(this),
-        floatingActionButton: FloatingDeleteButton(writingPage: this,),
+        //floatingActionButton: FloatingDeleteButton(writingPage: this,),
         );
   }
 
@@ -175,6 +185,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
         listOfButtons.add(
           FlatButton(
             child: Text(element),
+            visualDensity: VisualDensity.compact,
             onPressed: () => { addTheRhyme(rhymes.indexOf(element)) },
           )
         );
@@ -183,14 +194,59 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     return listOfButtons;
   }
 
-  @override
-  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
+  alertSaveText(BuildContext context) {
+    TextEditingController titleController = new TextEditingController();
 
-  @override
-  void loadTextsPage() => loadPage(TextsPage.routeName);
-  
-  @override
-  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
+    if(SongSingleton.instance.currentSong != null && SongSingleton.instance.currentSong.title.isNotEmpty)
+      titleController.text = SongSingleton.instance.currentSong.title;
+
+    Widget alert = CstmAlertDialog(
+      dialogTitle: "Saving",
+      continueText: "Save",
+      height: 100,
+      body: Column(
+        children: <Widget>[
+          Text("How to save?"),
+          SizedBox(height: 20.0,),
+          CstmTextField(
+            maxLines: 1,
+            controller: titleController,
+            hintText: "insert title",
+          )
+        ],
+      ),
+      pressed: () {
+        saveFile(context, titleController.text.trim());
+        Navigator.pop(context);
+      },
+    );
+
+    // show the dialog
+    showMyDialog(context, alert);
+  }
+
+  alertDeleteText(BuildContext context) {
+    Widget alert = CstmAlertDialog(
+      body: Text("Are you sure you want to delete the text?"),
+      continueText: "Delete",
+      dialogTitle: "Deleting",
+      pressed: () {
+        deleteText();
+        Navigator.pop(context);
+      },
+    );
+    // show the dialog
+    showMyDialog(context, alert);
+  }
+
+  showMyDialog(BuildContext context, Widget alert) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   void loadWritingPage() => null;

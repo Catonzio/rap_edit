@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
@@ -27,7 +28,11 @@ Future<void> main() async {
   initScreen = prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
   print('initScreen $initScreen');
-  runApp(PageMain());
+  //to prevent landscape
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(PageMain());
+  });
 }
 
 class PageMain extends StatelessWidget {

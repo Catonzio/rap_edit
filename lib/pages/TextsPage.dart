@@ -57,12 +57,6 @@ class TextsPageState extends State<TextsPage> with MyPageInterface{
           );
         },
       ),
-      bottomRowButtons: <Widget>[
-        CstmButton(
-          iconData: Icons.home,
-          pressed: () => { loadWritingPage() },
-        ),
-      ],
     );
   }
 
@@ -93,21 +87,12 @@ class TextsPageState extends State<TextsPage> with MyPageInterface{
   }
 
   @override
-  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
-
-  @override
   void loadPage(String routeName) {
     Navigator.popAndPushNamed(context, routeName);
   }
 
   @override
-  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
-
-  @override
   void loadTextsPage() => null;
-
-  @override
-  void loadWritingPage() => loadPage(WritingPage.routeName);
 
 
 }

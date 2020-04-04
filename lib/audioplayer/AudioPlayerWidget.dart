@@ -149,7 +149,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.repeat, color: controller.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
+                    icon: Icon(Icons.threesixty, color: controller.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
                     onPressed: () => { setLoop(controller) },
                   ),
                   IconButton(

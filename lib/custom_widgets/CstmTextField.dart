@@ -19,23 +19,26 @@ class CstmTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return TextField(
-     textCapitalization: TextCapitalization.none,
-     obscureText: false,
-     cursorColor: MyColors.textColor,
-     style: CstmTextTheme.textField,
-     maxLines: maxLines,
-     //style: style,
-     decoration: InputDecoration(
-       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-       hintText: hintText,
-       border: OutlineInputBorder(
-           borderSide: BorderSide(color: MyColors.primaryColor, width: 2.0),
-           borderRadius: BorderRadius.circular(8.0)
+   return Container(
+     //color: MyColors.darkGrey,
+     child: TextFormField(
+       textCapitalization: TextCapitalization.none,
+       obscureText: false,
+       cursorColor: MyColors.textColor,
+       style: CstmTextTheme.textField,
+       maxLines: maxLines,
+       //style: style,
+       decoration: InputDecoration(
+         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+         hintText: hintText,
+         border: OutlineInputBorder(
+             borderSide: BorderSide(color: MyColors.primaryColor, width: 2.0),
+             borderRadius: BorderRadius.circular(8.0)
+         ),
        ),
+       controller: controller,
+       autocorrect: false,
      ),
-     controller: controller,
-     autocorrect: false,
    );
   }
 

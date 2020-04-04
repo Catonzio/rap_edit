@@ -22,7 +22,7 @@ class ChoosingBeatsPage extends StatefulWidget {
 
 class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterface {
 
-  IconData playPauseIcon = Icons.play_arrow;
+  List<IconData> playPauseIcons = List();
   ChoosingBeatsController controller;
 
   @override
@@ -30,6 +30,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
     super.initState();
     controller = Provider.of<ChoosingBeatsController>(context, listen: false);
     controller.init();
+    controller.songs?.forEach((element) { playPauseIcons.add(Icons.play_arrow); });
   }
 
   @override
@@ -38,20 +39,31 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
     controller.stopPreview();
   }
 
-  updateIcon(IconData data) {
+  updateIcon(IconData data, int index) {
     if(mounted) {
       setState(() {
-        playPauseIcon = data;
+        playPauseIcons[index] = data;
       });
     }
   }
 
-  loadFromFileSystem(BuildContext context) async {
+  loadFromFileSystem() async {
     if(await controller.loadFromFileSystem())
       loadWritingPage();
   }
 
-  listenPreview(String song) { updateIcon(controller.listenAssetPreview(song)); }
+  listenPreview(int index) {
+    if(playPauseIcons[index] == Icons.play_arrow) {
+     updateIcon(Icons.stop, index);
+    } else if(playPauseIcons[index] == Icons.stop) {
+      updateIcon(Icons.play_arrow, index);
+    }
+    for(int i = 0; i<playPauseIcons.length; i++) {
+      if(i!=index)
+        playPauseIcons[i] = Icons.play_arrow;
+    }
+    controller.listenAssetPreview(controller.songs[index]);
+  }
 
   loadAsset(String song) {
     controller.loadAsset(song);
@@ -92,7 +104,6 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
 
   @override
   Widget build(BuildContext context) {
-    final ChoosingBeatsController controllerListen = Provider.of<ChoosingBeatsController>(context);
 
     return ListPage(
       title: "Beats",
@@ -109,31 +120,13 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
                 pressed: () => { loadAsset(controller.songs[index]) },
               ),
               ButtonCstmCard(
-                icon: playPauseIcon,
-                pressed: () => { listenPreview(controller.songs[index]) },
+                icon: playPauseIcons[index],
+                pressed: () => { listenPreview(index) },
               )
-            ],
+            ]
           );
         },
       ),
-      bottomRowButtons: <Widget>[
-        CstmButton(
-          text: "File System",
-          pressed: () => { loadFromFileSystem(context) },
-        ),
-        //Container(width: 10.0,),
-        CstmButton(
-          iconData: Icons.home,
-          pressed: () => { loadWritingPage() },
-        ),
-        //Container(width: 10.0,),
-        CstmButton(
-          text: "YouTube",
-          pressed: () => { 
-            loadFromYoutubeAlertDialog(context)
-          },
-        )
-      ],
     );
   }
 
@@ -144,14 +137,5 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
   void loadPage(String routeName) {
     Navigator.popAndPushNamed(context, routeName);
   }
-
-  @override
-  void loadRegistrationsPage() => loadPage(RegistrationsPage.routeName);
-
-  @override
-  void loadTextsPage() => loadPage(TextsPage.routeName);
-
-  @override
-  void loadWritingPage() => loadPage(WritingPage.routeName);
 
 }

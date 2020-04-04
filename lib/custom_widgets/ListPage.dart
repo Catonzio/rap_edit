@@ -20,7 +20,7 @@ class ListPage extends StatelessWidget {
     Key key,
     @required this.title,
     this.listView,
-    @required this.bottomRowButtons,
+    this.bottomRowButtons,
     this.futureBuilder,
     @required this.pageInterface
   });
@@ -43,7 +43,6 @@ class ListPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
               child: Column(
                   children: <Widget>[
-
                     Expanded(
                       child: listView??futureBuilder
                     ),
@@ -51,7 +50,13 @@ class ListPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: bottomRowButtons
+                      children: bottomRowButtons??
+                          <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.home),
+                              onPressed: () => pageInterface.loadWritingPage(),
+                            )
+                          ]
                     )
                     //SizedBox(height: 10,)
                   ]

@@ -26,55 +26,21 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
 
   List<String> registrationsPath = List();
   ListenAssetSupport listenAssetSupport;
-  IconData playPauseIcon = Icons.play_arrow;
+  List<IconData> playPauseIcons = List();
+
 
   @override
   void initState() {
     super.initState();
     loadRegistrations();
     listenAssetSupport = ListenAssetSupport();
+    registrationsPath?.forEach((element) { playPauseIcons.add(Icons.play_arrow); });
   }
 
   @override
-  Widget build(BuildContext context) {
-    //FileController.deleteAllRegistrations();
-    return ListPage(
-      title: "Registrations",
-      pageInterface: this,
-      listView: ListView.builder(
-        itemCount: registrationsPath.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CardFile(
-            title: getOnlyRegistrationName(registrationsPath[index]),
-            //text: "Duration: ${getSongDuration(registrationsPath[index])}",
-            bottomButtons: <Widget>[
-              ButtonCstmCard(
-                icon: Icons.delete,
-                pressed: () => { deleteRegistration(index) },
-              ),
-              ButtonCstmCard(
-                icon: Icons.share,
-                pressed: () => { shareSong(registrationsPath[index]) },
-              ),
-              ButtonCstmCard(
-                icon: Icons.file_upload,
-                pressed: () => { loadRegistration(registrationsPath[index]) },
-              ),
-              ButtonCstmCard(
-                icon: playPauseIcon,
-                pressed: () => { listenPreview(registrationsPath[index]) },
-              )
-            ],
-          );
-        },
-      ),
-      bottomRowButtons: <Widget>[
-        CstmButton(
-          iconData: Icons.home,
-          pressed: () => { loadWritingPage() },
-        ),
-      ],
-    );
+  void dispose() {
+    super.dispose();
+    listenAssetSupport.stopPreview();
   }
 
   loadRegistrations() {
@@ -90,16 +56,25 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
     return registrationsPath.substring(registrationsPath.lastIndexOf("/") + 1, registrationsPath.lastIndexOf("."));
   }
 
-  updateIcon(IconData data) {
+  updateIcon(IconData data, int index) {
     if(mounted) {
       setState(() {
-        playPauseIcon = data;
+        playPauseIcons[index] = data;
       });
     }
   }
 
-  listenPreview(String path) {
-    updateIcon(listenAssetSupport.listenPreview(path.trim()));
+  listenPreview(int index) {
+    if(playPauseIcons[index] == Icons.play_arrow) {
+      updateIcon(Icons.stop, index);
+    } else if(playPauseIcons[index] == Icons.stop) {
+      updateIcon(Icons.play_arrow, index);
+    }
+    for(int i = 0; i<playPauseIcons.length; i++) {
+      if(i!=index)
+        playPauseIcons[i] = Icons.play_arrow;
+    }
+    listenAssetSupport.listenPreview(registrationsPath[index]);
   }
 
   loadRegistration(String registrationsPath) {
@@ -128,15 +103,41 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
   }
 
   @override
-  void loadChoosingBeatsPage() => loadPage(ChoosingBeatsPage.routeName);
-
-  @override
   void loadRegistrationsPage() => null;
 
   @override
-  void loadTextsPage() => loadPage(TextsPage.routeName);
-
-  @override
-  void loadWritingPage() => loadPage(WritingPage.routeName);
-
+  Widget build(BuildContext context) {
+    //FileController.deleteAllRegistrations();
+    return ListPage(
+      title: "Registrations",
+      pageInterface: this,
+      listView: ListView.builder(
+        itemCount: registrationsPath.length,
+        itemBuilder: (BuildContext context, int index) {
+          return CardFile(
+            title: getOnlyRegistrationName(registrationsPath[index]),
+            //text: "Duration: ${getSongDuration(registrationsPath[index])}",
+            bottomButtons: <Widget>[
+              ButtonCstmCard(
+                icon: Icons.delete,
+                pressed: () => { deleteRegistration(index) },
+              ),
+              ButtonCstmCard(
+                icon: Icons.share,
+                pressed: () => { shareSong(registrationsPath[index]) },
+              ),
+              ButtonCstmCard(
+                icon: Icons.file_upload,
+                pressed: () => { loadRegistration(registrationsPath[index]) },
+              ),
+              ButtonCstmCard(
+                icon: playPauseIcons[index],
+                pressed: () => { listenPreview(index) },
+              )
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

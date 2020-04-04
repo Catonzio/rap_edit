@@ -7,6 +7,7 @@ class ListenAssetSupport {
   AudioPlayer player;
   AudioCache cache;
   AudioPlayerState playerState;
+  String lastSongPlayed;
 
   ListenAssetSupport() {
     player = AudioPlayer();
@@ -15,32 +16,34 @@ class ListenAssetSupport {
       if(player != null)
         playerState = s;
     });
-    /*player.onPlayerCompletion.listen((void) {
-      ;
-    });*/
   }
 
-  IconData listenAssetPreview(String song) {
-    if (playerState == AudioPlayerState.PLAYING) {
-      player.stop();
+  listenAssetPreview(String song) {
+    if(lastSongPlayed == song) {
+      if (playerState == AudioPlayerState.PLAYING) {
+        player.stop();
+      } else {
+        cache.play(song);
+      }
     } else {
+      player.stop();
       cache.play(song);
     }
-    if(playerState == AudioPlayerState.COMPLETED)
-      return Icons.play_arrow;
-    return playerState != AudioPlayerState.PLAYING ? Icons.stop : Icons.play_arrow;
+    lastSongPlayed = song;
   }
 
-  IconData listenPreview(String song) {
-    if(playerState == AudioPlayerState.PLAYING) {
+  listenPreview(String song) {
+    if(lastSongPlayed == song) {
+      if (playerState == AudioPlayerState.PLAYING) {
+        player.stop();
+      } else {
+        player.play(song);
+      }
+    } else {
       player.stop();
-      return Icons.play_arrow;
+      player.play(song);
     }
-    else {
-      player.play(song, isLocal: true);
-      return Icons.stop;
-    }
-
+    lastSongPlayed = song;
   }
 
   stopPreview() {

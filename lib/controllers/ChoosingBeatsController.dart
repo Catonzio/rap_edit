@@ -23,7 +23,7 @@ class ChoosingBeatsController extends ChangeNotifier {
     SongSingleton.instance.isLocal = false;
   }
 
-  IconData listenAssetPreview(String song) { return listenAssetSupport.listenAssetPreview(song); }
+  listenAssetPreview(String song) { listenAssetSupport.listenAssetPreview(song); }
 
   loadFromYoutube(String text) async {
     var id = YoutubeExplode.parseVideoId(text);
