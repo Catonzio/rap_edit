@@ -5,6 +5,7 @@ import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/PageStyle.dart';
 import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
@@ -24,45 +25,27 @@ class MixingAudioPageState extends State<MixingAudioPage> with MyPageInterface{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: GradientAppBar(
-          title: Text("Mix audio", style: CstmTextTheme.pageTitle,),
-          centerTitle: true,
-          backgroundColorStart: MyColors.startAppBar,
-          backgroundColorEnd: MyColors.endAppBar,
-          //serve per non permettere di tornare indietro dall'appbar
-          //automaticallyImplyLeading: false,
+    return PageStyle(
+      pageTitle: "Mixing Audio",
+      body: <Widget>[
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("First song: $firstSongPath", style: CstmTextTheme.textField,textAlign: TextAlign.center,),
+          ],
         ),
-        drawer: CstmDrawer(this),
-        body: CstmBackGround(
-          body: Center(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("First song: $firstSongPath", style: CstmTextTheme.textField,textAlign: TextAlign.center,),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.home),
-                        onPressed: () => loadWritingPage(),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () => loadWritingPage(),
+            )
+          ],
         )
+      ],
     );
   }
 

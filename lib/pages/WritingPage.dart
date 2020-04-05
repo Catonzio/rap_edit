@@ -68,7 +68,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       appBar: GradientAppBar(
         title: controller.setTitleText(),
         centerTitle: true,
-        backgroundColorStart: MyColors.startAppBar,
+        backgroundColorStart: MyColors.deepPurple,
         backgroundColorEnd: MyColors.endAppBar,
         //serve per non permettere di tornare indietro dall'appbar
         //automaticallyImplyLeading: false,

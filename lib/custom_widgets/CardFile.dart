@@ -24,12 +24,11 @@ class CardFile extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [MyColors.endElementColor, MyColors.primaryColor],
+                colors: [MyColors.endElementColor, MyColors.deepPurple.withOpacity(0.5)],
             ),
-
             borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: MyColors.softPurple, width: 0.5)
           ),
-
           //padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
