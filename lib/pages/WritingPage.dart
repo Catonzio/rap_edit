@@ -66,6 +66,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
 
     return PageStyle(
       pageTitle: "WritingPage",
+      page: this,
       body: <Widget>[
         SizedBox(height: 10.0,),
         ChangeNotifierProvider(
@@ -169,7 +170,7 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
         listOfButtons.add(
           FlatButton(
             child: Text(element),
-            visualDensity: VisualDensity.compact,
+            //visualDensity: VisualDensity.compact,
             onPressed: () => { addTheRhyme(rhymes.indexOf(element)) },
           )
         );

@@ -168,6 +168,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                   IconButton(
                     icon: Icon(Icons.stop, color: MyColors.primaryColor),
                     onPressed: () => { stopSong(controller) },
+                    tooltip: "Hello",
                   ),
                   Container(
                     width: 50,

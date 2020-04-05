@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
+import 'package:rap_edit/pages/PageStyle.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -27,43 +28,28 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: GradientAppBar(
-          title: Text(title, style: CstmTextTheme.pageTitle,),
-          centerTitle: true,
-          backgroundColorStart: MyColors.deepPurple,
-          backgroundColorEnd: MyColors.endAppBar,
-          //serve per non permettere di tornare indietro dall'appbar
-          //automaticallyImplyLeading: false,
+    return PageStyle(
+      page: pageInterface,
+      pageTitle: title,
+      body: <Widget>[
+        Expanded(
+            child: listView??futureBuilder
         ),
-      drawer: CstmDrawer(pageInterface),
-      body: CstmBackGround(
-          body: Center(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: listView??futureBuilder
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: bottomRowButtons??
-                          <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.home),
-                              onPressed: () => pageInterface.loadWritingPage(),
-                            )
-                          ]
-                    )
-                    //SizedBox(height: 10,)
-                  ]
-              ),
-            )
-          )
-      )
+        SizedBox(height: 10,),
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: bottomRowButtons??
+                <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.home),
+                    onPressed: () => pageInterface.loadWritingPage(),
+                  )
+                ]
+        )
+        //SizedBox(height: 10,)
+      ],
+
     );
   }
 

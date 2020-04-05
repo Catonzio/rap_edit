@@ -52,7 +52,8 @@ class CstmDrawerState extends State<CstmDrawer> {
     var buttonsMap = createButtons();
     List<Widget> buttons = List();
 
-    buttons.add(SizedBox(height: MediaQuery.of(context).size.height/2,));
+    buttons.add(SizedBox(height: MediaQuery.of(context).size.height/6,));
+    //buttons.add(SizedBox(width: MediaQuery.of(context).size.width/2,));
     //buttons.add(buttonsMap[ButtonsNames.buttonCancel]);
 
     if(widget.page is WritingPageState) {
@@ -201,7 +202,7 @@ class DrawerPainter extends CustomPainter{
         ? size.height
         : (size.height - 90)/(11.5/buttonsList.length);
 
-    RRect center2 = RRect.fromLTRBR(0, size.height - height, size.width/2, size.height, Radius.circular(40));
+    RRect center2 = RRect.fromLTRBR(size.width/2, 0, size.width, height, Radius.circular(40));
 
     LinearGradient gradient = LinearGradient(
         begin: Alignment.topRight,

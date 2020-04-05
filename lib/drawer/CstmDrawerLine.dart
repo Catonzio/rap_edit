@@ -21,11 +21,11 @@ class CstmDrawerLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return
         Container(
-          padding: padding??EdgeInsets.fromLTRB(20, 0, 0, 0),
+          padding: padding??EdgeInsets.fromLTRB(0, 0, 30, 0),
           //color: Colors.red,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Icon(icon),
               MaterialButton(

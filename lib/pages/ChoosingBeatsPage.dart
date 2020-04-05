@@ -10,6 +10,7 @@ import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
+import 'package:rap_edit/support/MyColors.dart';
 
 import '../custom_widgets/CtsmButton.dart';
 import 'RegistrationsPage.dart';
@@ -127,6 +128,30 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
           );
         },
       ),
+       bottomRowButtons: <Widget>[
+         Material(
+           color: MyColors.deepPurple.withOpacity(0.5),
+           borderRadius: BorderRadius.circular(20),
+           child: FlatButton(
+             child: Text("File system"),
+             onPressed: () => loadFromFileSystem(),
+           ),
+           elevation: 20,
+         ),
+         IconButton(
+           icon: Icon(Icons.home),
+           onPressed: () => loadWritingPage(),
+         ),
+         Material(
+           color: MyColors.deepPurple.withOpacity(0.5),
+           borderRadius: BorderRadius.circular(20),
+           child: FlatButton(
+             child: Text("YouTube"),
+             onPressed: () => loadFromYoutubeAlertDialog(context),
+           ),
+           elevation: 20,
+         ),
+       ],
     );
   }
 

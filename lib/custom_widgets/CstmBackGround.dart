@@ -13,19 +13,19 @@ class CstmBackGround extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topLeft,
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
               stops: [
-                0.3,
-                0.6,
+                0.02,
+                0.5,
                 0.9
               ],
               //colors: [MyColors.backGroundWhite, MyColors.endElementColor]
-            colors: [
-              MyColors.softPurple.withOpacity(0.3),
-              MyColors.deepPurple,
-              MyColors.deepPurple,
-            ]
+              colors: [
+                MyColors.softPurple.withOpacity(0.2),
+                MyColors.deepPurple,
+                MyColors.deepPurple,
+              ]
           )
       ),
       //color: MyColors.deepPurple,

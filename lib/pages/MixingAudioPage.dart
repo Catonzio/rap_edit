@@ -27,6 +27,7 @@ class MixingAudioPageState extends State<MixingAudioPage> with MyPageInterface{
   Widget build(BuildContext context) {
     return PageStyle(
       pageTitle: "Mixing Audio",
+      page: this,
       body: <Widget>[
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/drawer/CstmDrawer.dart';
+import 'package:rap_edit/drawer/CstmPopupMenu.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
@@ -10,11 +11,13 @@ class PageStyle extends StatefulWidget {
 
   final String pageTitle;
   final List<Widget> body;
+  final MyPageInterface page;
 
   PageStyle({
     Key key,
-    this.pageTitle,
-    this.body
+    @required this.pageTitle,
+    @required this.body,
+    @required this.page
   });
 
   @override
@@ -23,30 +26,13 @@ class PageStyle extends StatefulWidget {
 
 class PageStyleState extends State<PageStyle> with MyPageInterface {
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  //GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      bottomNavigationBar: Material(
-        //elevation: 10,
-        child: BottomAppBar(
-          color: MyColors.deepPurple.withOpacity(1),
-          elevation: 1000,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () => { _scaffoldKey.currentState.openDrawer() },
-              )
-            ],
-          ),
-        ),
-      ),
-      drawer: CstmDrawer(this),
+      //key: _scaffoldKey,
+      //drawer: CstmDrawer(widget.page),
       body: CstmBackGround(
         body: Center(
           child: Container(
@@ -54,10 +40,11 @@ class PageStyleState extends State<PageStyle> with MyPageInterface {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width,
+                  //width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 2.0, color: MyColors.softPurple),
+                      bottom: BorderSide(width: 2.0, color: MyColors.softPurple.withOpacity(0.5)),
                     ),
                   ),
                   child: Row(
@@ -66,10 +53,9 @@ class PageStyleState extends State<PageStyle> with MyPageInterface {
                     children: <Widget>[
                       Text("${widget.pageTitle}", style: CstmTextTheme.pageTitle,
                         textAlign: TextAlign.center,),
-                      IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () => { _scaffoldKey.currentState.openDrawer() },
-                      )
+                      //SizedBox(width: 70,),
+                      Expanded(child: Text("")),
+                      CstmPopupMenu(page: widget.page,)
                     ],
                   )
                 ),
