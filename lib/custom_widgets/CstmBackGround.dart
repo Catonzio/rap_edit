@@ -11,7 +11,7 @@ class CstmBackGround extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      /*decoration: BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topLeft,
@@ -22,13 +22,13 @@ class CstmBackGround extends StatelessWidget {
               ],
               //colors: [MyColors.backGroundWhite, MyColors.endElementColor]
             colors: [
-              MyColors.endElementColor,
+              MyColors.softPurple.withOpacity(0.3),
               MyColors.deepPurple,
               MyColors.deepPurple,
             ]
           )
-      ),*/
-      color: MyColors.deepPurple,
+      ),
+      //color: MyColors.deepPurple,
       child: body,
     );
   }

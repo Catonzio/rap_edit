@@ -24,6 +24,7 @@ import 'package:rap_edit/support/MyColors.dart';
 import '../models/SongFile.dart';
 import '../models/SongSingleton.dart';
 import '../support/MyColors.dart';
+import 'PageStyle.dart';
 import 'RegistrationsPage.dart';
 
 class WritingPage extends StatefulWidget {
@@ -63,71 +64,54 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       maxLines: 20,
     );
 
-    return Scaffold(
-      //key: secondPageScaffold,
-      appBar: GradientAppBar(
-        title: controller.setTitleText(),
-        centerTitle: true,
-        backgroundColorStart: MyColors.deepPurple,
-        backgroundColorEnd: MyColors.endAppBar,
-        //serve per non permettere di tornare indietro dall'appbar
-        //automaticallyImplyLeading: false,
-      ),
-        drawer: CstmDrawer(this),
-        body: CstmBackGround(
-          body: Center(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 10.0,),
-                ChangeNotifierProvider(
-                  create: (context) => AudioPlayerController(),
-                  child: player,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    RecorderWidget()
-                  ],
-                ),
-                Container(
-                  height: 30,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        IconButton(
-                          padding: EdgeInsets.all(2.0),
-                          icon: Icon(Icons.delete_forever, color: MyColors.darkRed,),
-                          onPressed: () => { alertDeleteText(context) },
-                        ),
-                        Expanded(
-                          child: ListView(
-                            children: getRhymesButtons(),
-                            scrollDirection: Axis.horizontal,
-                          )
-                        ),
-                        Builder(
-                          builder: (context) =>
-                              IconButton(
-                                padding: EdgeInsets.all(2.0),
-                                icon: Icon(Icons.save, color: MyColors.electricBlue),
-                                onPressed: () => { alertSaveText(context) },
-                              ),
-                        )
-                      ],
-                  ),
-                ),
-                Expanded(
-                  child: textText,
-                ),
-              ],
-            ),
+    return PageStyle(
+      pageTitle: "WritingPage",
+      body: <Widget>[
+        SizedBox(height: 10.0,),
+        ChangeNotifierProvider(
+          create: (context) => AudioPlayerController(),
+          child: player,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RecorderWidget()
+          ],
+        ),
+        Container(
+          height: 30,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                padding: EdgeInsets.all(2.0),
+                icon: Icon(Icons.delete_forever, color: MyColors.darkRed,),
+                onPressed: () => { alertDeleteText(context) },
+              ),
+              Expanded(
+                  child: ListView(
+                    children: getRhymesButtons(),
+                    scrollDirection: Axis.horizontal,
+                  )
+              ),
+              Builder(
+                builder: (context) =>
+                    IconButton(
+                      padding: EdgeInsets.all(2.0),
+                      icon: Icon(Icons.save, color: MyColors.electricBlue),
+                      onPressed: () => { alertSaveText(context) },
+                    ),
+              )
+            ],
           ),
         ),
-        //floatingActionButton: FloatingButtonsCarousel(this),
-        //floatingActionButton: FloatingDeleteButton(writingPage: this,),
-        );
+        Expanded(
+          child: textText,
+        ),
+      ],
+    );
   }
 
   /// Deletes the current song of the SongSingleton and clears the TextFields
