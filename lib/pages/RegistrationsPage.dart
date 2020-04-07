@@ -4,16 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
-import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
-import 'package:rap_edit/pages/TextsPage.dart';
-import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
-
-import 'ChoosingBeatsPage.dart';
 
 class RegistrationsPage extends StatefulWidget {
   static String routeName = "/registrationsPage";
@@ -46,7 +41,7 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
   loadRegistrations() {
     Directory downloadDirectory = Directory(FileController.filePath);
     downloadDirectory.listSync().forEach((file) => {
-      if(file.path.endsWith(".wav")) {
+      if(file.path.endsWith(".wav") || file.path.endsWith(".mp3")) {
         registrationsPath.add(file.path)
       }
     });

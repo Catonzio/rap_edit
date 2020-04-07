@@ -1,19 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/controllers/ChoosingBeatsController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
-import 'package:rap_edit/pages/TextsPage.dart';
-import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/MyColors.dart';
-
-import '../custom_widgets/CtsmButton.dart';
-import 'RegistrationsPage.dart';
 
 class ChoosingBeatsPage extends StatefulWidget {
   static String routeName = "/choosingBeats";

@@ -9,6 +9,10 @@ buildscript {
     }
 }
 
+ext {
+    flutterFFmpegPackage  = "audio"
+}
+
 allprojects {
     repositories {
         google()

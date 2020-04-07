@@ -7,7 +7,6 @@ import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/pages/RegistrationsPage.dart';
 import 'package:rap_edit/pages/TextsPage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
-import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
 

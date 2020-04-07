@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
 import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
-import 'package:rap_edit/custom_widgets/CstmBackGround.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
-import 'package:rap_edit/custom_widgets/CtsmButton.dart';
-import 'package:rap_edit/custom_widgets/FloatingDeleteButton.dart';
 import 'package:rap_edit/custom_widgets/RecorderWidget.dart';
-import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/models/SongFile.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
-import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
-import 'package:rap_edit/pages/TextsPage.dart';
-import 'package:rap_edit/pages/MixingAudioPage.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/support/CstmTextTheme.dart';
 import 'package:rap_edit/support/MyColors.dart';
@@ -25,7 +16,6 @@ import '../models/SongFile.dart';
 import '../models/SongSingleton.dart';
 import '../support/MyColors.dart';
 import 'PageStyle.dart';
-import 'RegistrationsPage.dart';
 
 class WritingPage extends StatefulWidget {
   static String routeName = "/";

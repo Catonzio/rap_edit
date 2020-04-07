@@ -1,13 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
-import 'package:rap_edit/drawer/CstmDrawer.dart';
 import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/pages/PageStyle.dart';
-import 'package:rap_edit/support/CstmTextTheme.dart';
-import 'package:rap_edit/support/MyColors.dart';
-
-import 'CstmBackGround.dart';
 
 class ListPage extends StatelessWidget {
 

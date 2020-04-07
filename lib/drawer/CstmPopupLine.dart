@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rap_edit/pages/MyPageInterface.dart';
 
 class CstmPopupLine extends PopupMenuItem {
 

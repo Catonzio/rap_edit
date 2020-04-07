@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:rap_edit/Trials/ChoosingBeatsDuration.dart';
-import 'package:rap_edit/Trials/RegistrationsPageDuration.dart';
 import 'package:rap_edit/controllers/ChoosingBeatsController.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/WritingPageController.dart';

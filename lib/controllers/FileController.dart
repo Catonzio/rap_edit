@@ -1,16 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/models/SongFile.dart';
 
 class FileController {
 
   static String filePath;
+  static String temporaryPath;
 
   ///Sets the directory path of files written on the phone in this application
   static setDirectoryPath() async {
     filePath = (await getApplicationDocumentsDirectory()).path;
+    temporaryPath = (await getTemporaryDirectory()).path;
   }
 
   /// Read the content of the text of the song named as title
@@ -22,6 +26,17 @@ class FileController {
       debugPrint(e.toString());
       return null;
     }
+  }
+
+  /// Loads the assets files to a temporary files.
+  /// TO IMPROVE (now must be updated for each new file in assets folder)
+  static void prepareAssets() {
+    copyFileAssets("assets/Hip_Hop_Instrumental_Beat.mp3", "Hip_Hop_Instrumental_Beat.mp3");
+    copyFileAssets("assets/metronome_100bpm_4-4.mp3", "metronome_100bpm_4-4.mp3");
+    copyFileAssets("assets/metronome_100bpm_6-8.mp3", "metronome_100bpm_6-8.mp3");
+    copyFileAssets("assets/Rap_Instrumental_Beat.mp3", "Rap_Instrumental_Beat.mp3");
+    copyFileAssets("assets/Trap_Instrumental_Beat.mp3", "Trap_Instrumental_Beat.mp3");
+    copyFileAssets("assets/Gemitaiz - Gigante (instrumental).mp3", "Gemitaiz - Gigante (instrumental).mp3");
   }
 
   /// Writes a file named as the song title (.txt) which content is the text of the song
@@ -47,15 +62,23 @@ class FileController {
     }
   }
 
-  /*static getListDownloads() async {
-    Directory dir = await DownloadsPathProvider.downloadsDirectory;
-    List<FileSystemEntity> file = dir.listSync();
-    file.forEach((file) {
-      if(file.path.contains("aaaa")) {
-        debugPrint("ooooooooooooooooooo " + file.path);
-      }
-    });
-  }*/
+  /// returns the full path of the asset with given Name
+  static String assetPath(String assetName) {
+    return join(temporaryPath, assetName);
+  }
+
+  /// Creates a temporary file to load the asset for ffmpeg
+  static Future<File> copyFileAssets(String assetName, String localName) async {
+    final ByteData assetByteData = await rootBundle.load(assetName);
+
+    final List<int> byteList = assetByteData.buffer
+        .asUint8List(assetByteData.offsetInBytes, assetByteData.lengthInBytes);
+
+    final String fullTemporaryPath = join(temporaryPath, localName);
+
+    return new File(fullTemporaryPath)
+        .writeAsBytes(byteList, mode: FileMode.writeOnly, flush: true);
+  }
 
   /// Given the directory path, extracts the list of FileSystemEntity that are there
   static List<FileSystemEntity> getListOfFilesFromDirectory(String directory) {
