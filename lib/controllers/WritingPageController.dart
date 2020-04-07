@@ -32,8 +32,15 @@ class WritingPageController extends ChangeNotifier {
       return -1;
     } else {
       SongSingleton.instance.currentSong = new SongFile(
-          title.trim(), text.trim(), null);
+          title: title.trim(),
+          text: text.trim(),
+          path: null,
+          beatPath: SongSingleton.instance.beatPath,
+          beatIsLocal: SongSingleton.instance.isLocal,
+          beatIsAsset: SongSingleton.instance.isAsset
+      );
       if (!SongSingleton.instance.currentSong.isEmpty()) {
+        debugPrint(SongSingleton.instance.currentSong.toJsonFormat());
         FileController.writeFile(SongSingleton.instance.currentSong);
         return 1;
       }

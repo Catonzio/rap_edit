@@ -67,6 +67,11 @@ class TextsPageState extends State<TextsPage> with MyPageInterface{
   /// Loads the selected Song from the file system and displays its Title and Text in the WritingPage
   loadFile(int index) {
     SongSingleton.instance.currentSong = file[index];
+    if(file[index].beatPath != null) {
+      SongSingleton.instance.beatPath = file[index].beatPath;
+      SongSingleton.instance.isAsset = file[index].beatIsAsset;
+      SongSingleton.instance.isLocal = file[index].beatIsLocal;
+    }
     loadWritingPage();
   }
 

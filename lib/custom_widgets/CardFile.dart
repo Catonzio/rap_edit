@@ -38,9 +38,11 @@ class CardFile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    child: Text(title, style: CstmTextTheme.cardHeader),
-                    padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 0.0),
+                  Expanded(
+                    child: Container(
+                      child: Text(title, style: CstmTextTheme.cardHeader),
+                      padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 0.0),
+                    ),
                   )
                 ],
               ),

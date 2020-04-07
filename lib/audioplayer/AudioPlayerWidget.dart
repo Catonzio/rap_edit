@@ -52,19 +52,19 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
     switch(state) {
       case AppLifecycleState.resumed:
         debugPrint("App state: resumed");
-        controller.initPlayer();
+        //controller.initPlayer();
         break;
       case AppLifecycleState.inactive:
         debugPrint("App state: inactive");
-        controller.pauseSong();
+        pauseSong();
         break;
       case AppLifecycleState.paused:
         debugPrint("App state: paused");
-        controller.pauseSong();
+        pauseSong();
         break;
       case AppLifecycleState.detached:
         debugPrint("App state: detached");
-        controller.pauseSong();
+        pauseSong();
         break;
     }
   }
@@ -95,6 +95,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   pauseSong() {
     Provider.of<AudioPlayerController>(context, listen: false).pauseSong();
+    updateIcon(Icons.play_circle_outline);
   }
 
   /// Sets the player in pause or in play, depending on the current state

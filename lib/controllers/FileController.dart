@@ -9,18 +9,26 @@ import 'package:rap_edit/models/SongFile.dart';
 class FileController {
 
   static String filePath;
+  static String textsFilePath;
+  static String registrationsPath;
   static String temporaryPath;
 
   ///Sets the directory path of files written on the phone in this application
   static setDirectoryPath() async {
     filePath = (await getApplicationDocumentsDirectory()).path;
     temporaryPath = (await getTemporaryDirectory()).path;
+    textsFilePath = filePath + "/texts/";
+    registrationsPath = filePath + "/registrations/";
+
+    //create the folders if there aren't
+    Directory(textsFilePath).createSync();
+    Directory(registrationsPath).createSync();
   }
 
   /// Read the content of the text of the song named as title
-  static String readFile(String title) {
+  static String readFile(String path) {
     try {
-      File file = new File(filePath + "/" + title);
+      File file = new File(path);
       return file.readAsStringSync();
     } catch(e) {
       debugPrint(e.toString());
@@ -41,10 +49,14 @@ class FileController {
 
   /// Writes a file named as the song title (.txt) which content is the text of the song
   static void writeFile(SongFile song) {
-    song.lastModified = DateTime.now();
-    song.path = filePath + "/" + song.title + ".txt";
+    song.path = textsFilePath + song.title + ".txt";
     File file = new File(song.path);
-    file.writeAsStringSync(song.text);
+    try {
+      file.writeAsStringSync(song.toJsonFormat());
+    } catch (ex) {
+      Directory(textsFilePath).createSync();
+      file.writeAsStringSync(song.toJsonFormat());
+    }
   }
 
   /// Given the path, extracts the name of the file (with extension)
@@ -91,9 +103,8 @@ class FileController {
   /// Extracts the list of SongFiles from the current FilePath
   static List<SongFile> getListOfFiles() {
     List<FileSystemEntity> file = new List();
-    file = Directory("$filePath").listSync();
+    file = Directory("$textsFilePath").listSync();
     debugPrint("$filePath");
-    //file.removeRange(0, 2);
     return getSongsFromFiles(file);
   }
 
@@ -126,10 +137,8 @@ class FileController {
   static SongFile saveSongFromEntity(FileSystemEntity song) {
     String name = getOnlyFileName(song.path);
     SongFile newSong;
-    //DA AGGIUSTARE IL FATTO CHE QUANDO VIENE CREATA UNA NUOVA CANZONE (OVVERO QUANDO SI CARICA LA LISTA DI FILE),
-    // LA DATA SI MODIFICA
     if(name.contains(".txt"))
-      newSong = new SongFile(name.substring(0, name.lastIndexOf(".txt")), readFile(name), song.path);
+      newSong = new SongFile().fromJsonFormat(readFile(song.path));
     return newSong;
   }
 
@@ -144,7 +153,7 @@ class FileController {
       result = text.substring(0, text.indexOf(str)) +
       "(" + number.toString() + ")";
     } else {
-      int number = numberOfOccurrences(text);
+      int number = numberOfOccurrences(registrationsPath, text);
       if(number == 0)
         return result;
       else
@@ -153,12 +162,12 @@ class FileController {
     return result;
   }
 
-  static int numberOfOccurrences(String text) {
+  static int numberOfOccurrences(String path, String text) {
     int number = 0;
     // if text is like "/data/user/0/.../test.wav"; otherwise, is like "test.wav" or "test"
     if(text.startsWith("/"))
       text = text.substring(text.lastIndexOf("/") + 1);
-    Directory dir = Directory(filePath);
+    Directory dir = Directory(path);
     dir.listSync().forEach((file) {
       String path = file.path;
       if(path.startsWith("/"))
@@ -170,7 +179,7 @@ class FileController {
   }
 
   static bool existsRecord(String text) {
-    return numberOfOccurrences(text) != 0;
+    return numberOfOccurrences(registrationsPath, text) != 0;
   }
 
   static void deleteAllRegistrations() {

@@ -39,7 +39,7 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
   }
 
   loadRegistrations() {
-    Directory downloadDirectory = Directory(FileController.filePath);
+    Directory downloadDirectory = Directory(FileController.registrationsPath);
     downloadDirectory.listSync().forEach((file) => {
       if(file.path.endsWith(".wav") || file.path.endsWith(".mp3")) {
         registrationsPath.add(file.path)

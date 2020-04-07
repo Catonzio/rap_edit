@@ -41,9 +41,8 @@ class RecorderWidgetState extends State<RecorderWidget> {
   }
 
   _init() async {
-    String appDocDirectory = FileController.filePath + "/";
     // can add extension like ".mp4" ".wav" ".m4a" ".aac"
-    String customPath = appDocDirectory + recordingName;
+    String customPath = FileController.registrationsPath + recordingName;
 
     _recorder = FlutterAudioRecorder(customPath,
         audioFormat: AudioFormat.WAV);
@@ -53,12 +52,12 @@ class RecorderWidgetState extends State<RecorderWidget> {
   _prepare() async {
     var hasPermission = await FlutterAudioRecorder.hasPermissions;
     if (hasPermission) {
-    startCountdown();
-    await _init();
-    var result = await _recorder.current();
-    setState(() {
-      _recording = result;
-    });
+      startCountdown();
+      await _init();
+      var result = await _recorder.current();
+      setState(() {
+        _recording = result;
+      });
     }
   }
 
@@ -136,6 +135,9 @@ class RecorderWidgetState extends State<RecorderWidget> {
     if(_recording.status == RecordingStatus.Recording) {
       stopRecording();
       mySetState("saved");
+      SongSingleton.instance.beatPath = FileController.registrationsPath + recordingName + ".wav";
+      SongSingleton.instance.isLocal = true;
+      SongSingleton.instance.isAsset = false;
     }
     else if(_recording.status == RecordingStatus.Initialized) {
       startRecording();

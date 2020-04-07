@@ -229,9 +229,15 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
   @override
   void loadPage(String routeName) {
     if(SongSingleton.instance.currentSong != null)
-      SongSingleton.instance.currentSong = new SongFile(SongSingleton.instance.currentSong.title.trim(), textController.text.trim(), null);
+      SongSingleton.instance.currentSong = new SongFile(
+          title: SongSingleton.instance.currentSong.title.trim(),
+          text: textController.text.trim(),
+      );
     else
-      SongSingleton.instance.currentSong = new SongFile("", textController.text, null);
+      SongSingleton.instance.currentSong = new SongFile(
+          title: "",
+          text: textController.text
+      );
     player.pauseSong();
     Navigator.pushNamed(context, routeName);
   }
