@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 
@@ -15,7 +16,7 @@ class ChoosingBeatsDurationPage extends StatefulWidget {
   ChoosingBeatsDurationPageState createState() => ChoosingBeatsDurationPageState();
 }
 
-class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
+class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> with MyPageInterface {
 
   List<String> songs = new List();
   List<Widget> songsCards = new List();
@@ -43,6 +44,7 @@ class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
   Widget build(BuildContext context) {
     return ListPage(
       title: "Beats",
+      pageInterface: this,
       futureBuilder: FutureBuilder<List<int>>(
         future: durations,
         builder: (context, snapshot) {
@@ -138,6 +140,11 @@ class ChoosingBeatsDurationPageState extends State<ChoosingBeatsDurationPage> {
     SongSingleton.instance.isAsset = true;
     SongSingleton.instance.isLocal = false;
     Navigator.popAndPushNamed(context, WritingPage.routeName);
+  }
+
+  @override
+  void loadPage(String routeName) {
+    Navigator.popAndPushNamed(context, routeName);
   }
 
 }

@@ -25,7 +25,7 @@ class WelcomePage extends StatelessWidget {
                 Center(
                   child: Text(
                       "Welcome to RapEdit!",
-                      style: Theme.of(context).textTheme.title
+                      style: CstmTextTheme.pageTitle
                   ),
                 ),
                 //SizedBox(height: 20,),

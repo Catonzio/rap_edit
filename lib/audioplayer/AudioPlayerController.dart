@@ -8,12 +8,14 @@ class AudioPlayerController extends ChangeNotifier {
 
   static AudioPlayer player;
   static AudioCache cache;
-  String previousSongPath;
-  AudioPlayerState playerState;
-  Duration duration;
-  Duration position;
-  RangeValues rangeValues;
-  bool loopSelected;
+  static bool loopSelected;
+  static String previousSongPath;
+  static AudioPlayerState playerState;
+  static Duration duration;
+  static Duration position;
+  static RangeValues rangeValues;
+  Function widgetFunction;
+
 
   void initPlayer() {
     loopSelected = loopSelected??true;
@@ -25,11 +27,17 @@ class AudioPlayerController extends ChangeNotifier {
         cache = AudioCache(fixedPlayer: player);
       }
 
-      duration = new Duration();
-      position = new Duration();
-
-      if (SongSingleton.instance.beatIsReady() && player != null) {
+      if (SongSingleton.instance.beatIsReady() && player != null && previousSongPath != SongSingleton.instance.beatPath) {
         playSong();
+        duration = new Duration();
+        position = new Duration();
+        rangeValues = RangeValues(0,0);
+        previousSongPath = SongSingleton.instance.beatPath;
+        if(widgetFunction != null)
+          widgetFunction(Icons.pause_circle_outline);
+      } else {
+        duration = duration??new Duration();
+        position = position??new Duration();
       }
 
       player.onDurationChanged.listen((Duration d) {
@@ -46,10 +54,13 @@ class AudioPlayerController extends ChangeNotifier {
       player.onAudioPositionChanged.listen((Duration p) {
           position = p;
           if (positionSeconds() >= rangeValues.end || positionSeconds() >= durationSeconds()) {
-            debugPrint("Start: ${rangeValues.start}");
+            //debugPrint("Start: ${rangeValues.start}");
             seekToSecond(rangeValues.start.toInt());
-            if(!loopSelected)
-              pauseSong();
+            if(!loopSelected) {
+              stopSong();
+              if(widgetFunction != null)
+                widgetFunction(Icons.play_circle_outline);
+            }
           }
           notifyListeners();
       });
@@ -58,6 +69,8 @@ class AudioPlayerController extends ChangeNotifier {
           playerState = s;
           notifyListeners();
       });
+
+      //pauseSong();
 
     } catch(ex) { debugPrint("ooooooooooooooooooo porco diooo"); }
   }
@@ -149,5 +162,7 @@ class AudioPlayerController extends ChangeNotifier {
     String pos = dur?.toString() ?? Duration().toString();
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
+
+  void setWidgetFunction(void Function(IconData data) updateIcon) { widgetFunction = updateIcon; }
 
 }

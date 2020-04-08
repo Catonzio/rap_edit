@@ -34,8 +34,8 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     var controller = Provider.of<AudioPlayerController>(context, listen: false);
+    controller.setWidgetFunction(updateIcon);
     controller.initPlayer();
-    playPause(controller);
   }
 
   @override
@@ -52,7 +52,6 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
     switch(state) {
       case AppLifecycleState.resumed:
         debugPrint("App state: resumed");
-        //controller.initPlayer();
         break;
       case AppLifecycleState.inactive:
         debugPrint("App state: inactive");
@@ -76,17 +75,11 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
     });
   }
 
-  setLoop(AudioPlayerController controller) {
-    controller.setLoop();
-  }
+  setLoop(AudioPlayerController controller) => controller.setLoop();
 
-  fastRewind(AudioPlayerController controller) {
-    controller.fastMoving(-5);
-  }
+  fastRewind(AudioPlayerController controller) => controller.fastMoving(-5);
 
-  fastForward(AudioPlayerController controller) {
-    controller.fastMoving(5);
-  }
+  fastForward(AudioPlayerController controller) => controller.fastMoving(5);
 
   stopSong(AudioPlayerController controller) {
     controller.stopSong();
@@ -101,8 +94,8 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
   /// Sets the player in pause or in play, depending on the current state
   playPause(AudioPlayerController controller) {
     controller.playPause();
-    if(controller.playerState != null) {
-      controller.playerState == AudioPlayerState.PLAYING
+    if(AudioPlayerController.playerState != null) {
+      AudioPlayerController.playerState == AudioPlayerState.PLAYING
           ? updateIcon(Icons.play_circle_outline)
           : updateIcon(Icons.pause_circle_outline);
     } else if (SongSingleton.instance.beatPath != null) {
@@ -144,13 +137,13 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                   Container(
                     width: 50,
                     child: Text(
-                      controller.getDurationFormatted(controller.position),
+                      controller.getDurationFormatted(AudioPlayerController.position),
                       style: textStyle,
                       textAlign: TextAlign.center,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.threesixty, color: controller.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
+                    icon: Icon(Icons.threesixty, color: AudioPlayerController.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
                     onPressed: () => { setLoop(controller) },
                   ),
                   IconButton(
@@ -174,7 +167,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                   Container(
                     width: 50,
                     child: Text(
-                      controller.getDurationFormatted(controller.duration),
+                      controller.getDurationFormatted(AudioPlayerController.duration),
                       style: textStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -186,9 +179,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(width: 10,),
                   AudioPlayerSlider(controller),
-                  Container(width: 10,),
                 ],
               ),
             ],

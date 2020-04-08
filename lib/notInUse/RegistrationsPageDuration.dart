@@ -7,6 +7,7 @@ import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/CtsmButton.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
+import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
@@ -17,7 +18,7 @@ class RegistrationsPageDuration extends StatefulWidget {
   RegistrationsPageDurationState createState() => RegistrationsPageDurationState();
 }
 
-class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
+class RegistrationsPageDurationState extends State<RegistrationsPageDuration> with MyPageInterface {
 
   List<String> registrationsPath = List();
   ListenAssetSupport listenAssetSupport;
@@ -42,6 +43,7 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
     //FileController.deleteAllRegistrations();
     return ListPage(
       title: "Registrations",
+      pageInterface: this,
       futureBuilder: FutureBuilder<List<int>>(
         future: registrationsDurations,
         builder: (context, snapshot) {
@@ -137,5 +139,10 @@ class RegistrationsPageDurationState extends State<RegistrationsPageDuration> {
   }
 
   getSongDuration(String registrationsPath) {}
+
+  @override
+  void loadPage(String routeName) {
+    Navigator.popAndPushNamed(context, routeName);
+  }
 
 }
