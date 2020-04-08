@@ -17,7 +17,8 @@ class ChoosingBeatsController extends ChangeNotifier {
       "Trap_Instrumental_Beat.mp3",
       "metronome_100bpm_4-4.mp3", "metronome_100bpm_6-8.mp3",
       "Gemitaiz - Gigante (instrumental).mp3"
-    ];
+    ]
+      ..sort((a,b) => a.compareTo(b));
     listenAssetSupport = ListenAssetSupport();
   }
 

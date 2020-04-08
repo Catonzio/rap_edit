@@ -1,0 +1,74 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
+
+import 'FileController.dart';
+
+class RecorderController extends ChangeNotifier {
+
+  FlutterAudioRecorder _recorder;
+  Recording _recording;
+  Timer _t;
+  String recordingName;
+
+  init() async {
+    // can add extension like ".mp4" ".wav" ".m4a" ".aac"
+    String customPath = FileController.registrationsPath + recordingName;
+
+    _recorder = FlutterAudioRecorder(customPath,
+        audioFormat: AudioFormat.WAV);
+    await _recorder.initialized;
+  }
+
+  Future<bool> prepare() async {
+    try {
+      var hasPermission = await FlutterAudioRecorder.hasPermissions;
+      if (hasPermission) {
+        await init();
+        _recording = await _recorder.current();
+      }
+      return true;
+    } catch (ex) {
+      return false;
+    }
+  }
+
+  Future<bool> stopRecording() async {
+    if(_recording.status == RecordingStatus.Recording) {
+      _recording = await _recorder.stop();
+      _t.cancel();
+      SongSingleton.instance.beatPath = FileController.registrationsPath + recordingName + ".wav";
+      SongSingleton.instance.isLocal = true;
+      SongSingleton.instance.isAsset = false;
+      return true;
+    }
+    return false;
+  }
+
+  startRecording() async {
+    if(_recording.status == RecordingStatus.Initialized) {
+      debugPrint("Start recording");
+      await _recorder.start();
+      _recording = await _recorder.current();
+
+      _t = Timer.periodic(Duration(milliseconds: 10), (Timer t) async {
+        _recording = await _recorder.current();
+        _t = t;
+      });
+    }
+  }
+
+  getRecordingDuration() {
+    return _recording?.duration;
+  }
+
+  isRecording() {
+    try {
+      return _recording.status == RecordingStatus.Recording;
+    } catch(ex) {
+      return false;
+    }
+  }
+}

@@ -45,6 +45,7 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
         registrationsPath.add(file.path)
       }
     });
+    registrationsPath.sort((a,b) => a.compareTo(b));
   }
 
   String getOnlyRegistrationName(String registrationsPath) {

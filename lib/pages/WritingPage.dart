@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerController.dart';
 import 'package:rap_edit/audioplayer/AudioPlayerWidget.dart';
+import 'package:rap_edit/controllers/RecorderController.dart';
 import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/custom_widgets/CstmAlertDialog.dart';
 import 'package:rap_edit/custom_widgets/CstmTextField.dart';
@@ -67,7 +68,10 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RecorderWidget()
+            ChangeNotifierProvider(
+              create: (context) => RecorderController(),
+              child: RecorderWidget(),
+            ),
           ],
         ),
         Container(

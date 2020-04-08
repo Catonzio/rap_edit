@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
+import 'package:provider/provider.dart';
 import 'package:rap_edit/controllers/FileController.dart';
+import 'package:rap_edit/controllers/RecorderController.dart';
 import 'package:rap_edit/models/SongSingleton.dart';
 import 'package:rap_edit/support/MyColors.dart';
 
@@ -21,12 +23,8 @@ class RecorderWidgetState extends State<RecorderWidget> {
 
   String cuntdownString = "";
   Timer cuntdownTimer;
+  RecorderController controller;
   //IconData registerIcon;
-
-  FlutterAudioRecorder _recorder;
-  Recording _recording;
-  Timer _t;
-  String recordingName;
 
   @override
   void initState() {
@@ -40,29 +38,10 @@ class RecorderWidgetState extends State<RecorderWidget> {
     super.dispose();
   }
 
-  _init() async {
-    // can add extension like ".mp4" ".wav" ".m4a" ".aac"
-    String customPath = FileController.registrationsPath + recordingName;
-
-    _recorder = FlutterAudioRecorder(customPath,
-        audioFormat: AudioFormat.WAV);
-    await _recorder.initialized;
-  }
-
-  _prepare() async {
-    var hasPermission = await FlutterAudioRecorder.hasPermissions;
-    if (hasPermission) {
-      startCountdown();
-      await _init();
-      var result = await _recorder.current();
-      setState(() {
-        _recording = result;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    controller = Provider.of<RecorderController>(context, listen: true);
 
     final registerButton = RawMaterialButton(
       child: RawMaterialButton(
@@ -100,7 +79,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
     try {
       return int.parse(cuntdownString) != null ? cuntdownString : "";
     } catch(ex) {
-      return cuntdownString + " " + getDurationFormatted(_recording?.duration);
+      return cuntdownString + " " + getDurationFormatted(controller?.getRecordingDuration());
     }
   }
 
@@ -120,62 +99,40 @@ class RecorderWidgetState extends State<RecorderWidget> {
             start = start - 1;
           } else if(start == 0) {
             mySetState("recording");
-            startStopRecording();
+            controller.startRecording();
             start = start - 1;
           }
           else {
             timer.cancel();
           }
         },
-        )
+      )
     );
   }
 
-  void startStopRecording() async {
-    if(_recording.status == RecordingStatus.Recording) {
-      stopRecording();
-      mySetState("saved");
-      SongSingleton.instance.beatPath = FileController.registrationsPath + recordingName + ".wav";
-      SongSingleton.instance.isLocal = true;
-      SongSingleton.instance.isAsset = false;
-    }
-    else if(_recording.status == RecordingStatus.Initialized) {
-      startRecording();
-    }
-  }
-
   stopRecording() async {
-    var result = await _recorder.stop();
-    _t.cancel();
-
-    setState(() {
-      _recording = result;
-    });
+    bool rec = await controller?.stopRecording();
+    if(rec) {
+      mySetState("saved");
+    }
   }
 
-  startRecording() async {
-    debugPrint("Start recording");
-    await _recorder.start();
-    var current = await _recorder.current();
-    setState(() {
-      _recording = current;
-    });
-
-    _t = Timer.periodic(Duration(milliseconds: 10), (Timer t) async {
-      var current = await _recorder.current();
-      setState(() {
-        _recording = current;
-        _t = t;
-      });
-    });
+  prepareRecording(String title) async {
+    !FileController.existsRecord(title)
+        ? controller?.recordingName = title
+        : controller?.recordingName = FileController.manageName(title);
+    if(await controller.prepare()) {
+      startCountdown();
+    }
+    Navigator.pop(context);
   }
 
   displayAlertWhereToSave(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+    TextEditingController editingController = TextEditingController();
     if(SongSingleton.instance.currentSong != null) {
-      controller.text = SongSingleton.instance.currentSong.title;
+      editingController.text = SongSingleton.instance.currentSong.title;
     }
-    if(recordingName == null || _recording?.status == RecordingStatus.Stopped) {
+    if(!controller.isRecording()) {
       Widget alert = CstmAlertDialog(
         dialogTitle: "Recording",
         continueText: "Ok",
@@ -186,22 +143,12 @@ class RecorderWidgetState extends State<RecorderWidget> {
             SizedBox(height: 20.0,),
             CstmTextField(
               maxLines: 1,
-              controller: controller,
+              controller: editingController,
               hintText: "insert title",
             )
           ],
         ),
-        pressed: () {
-          setState(() {
-            !FileController.existsRecord(controller.text)
-            ?
-              recordingName = controller.text
-            :
-              recordingName = FileController.manageName(controller.text);
-            _prepare();
-          });
-          Navigator.pop(context);
-        },
+        pressed: () => { prepareRecording(editingController.text) }
       );
       showDialog(
         context: context,
@@ -209,8 +156,8 @@ class RecorderWidgetState extends State<RecorderWidget> {
           return alert;
         },
       );
-    } else if(_recording?.status == RecordingStatus.Recording) {
-      startStopRecording();
+    } else if(controller.isRecording()) {
+      stopRecording();
     }
   }
 
