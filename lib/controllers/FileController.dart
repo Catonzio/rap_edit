@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rap_edit/models/SongFile.dart';
+import 'package:rap_edit/models/SongSingleton.dart';
 
 class FileController {
 
@@ -114,6 +115,8 @@ class FileController {
   }
 
   static deleteRegistration(String path) {
+    if(SongSingleton.instance.beatPath == path)
+      SongSingleton.instance.beatPath = "";
     File(path).deleteSync();
   }
 

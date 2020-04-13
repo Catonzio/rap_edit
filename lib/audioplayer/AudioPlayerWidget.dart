@@ -22,17 +22,17 @@ class AudioPlayerWidget extends StatefulWidget {
   }
 }
 
-class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
+class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   static IconData playPauseIcon = Icons.play_circle_outline;
 
   TextStyle textStyle = CstmTextTheme.beatPositionAndDuration;
   bool loopSelected = true;
+  AudioPlayerController controller;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     var controller = Provider.of<AudioPlayerController>(context, listen: false);
     controller.setWidgetFunction(updateIcon);
     controller.initPlayer();
@@ -40,60 +40,37 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   @override
   void dispose() {
-    //Provider.of<AudioPlayerController>(context, listen: false).pauseSong();
-    WidgetsBinding.instance.removeObserver(this);
+    pauseSong();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final AudioPlayerController controller = Provider.of<AudioPlayerController>(context, listen: false);
-    super.didChangeAppLifecycleState(state);
-    switch(state) {
-      case AppLifecycleState.resumed:
-        debugPrint("App state: resumed");
-        break;
-      case AppLifecycleState.inactive:
-        debugPrint("App state: inactive");
-        pauseSong();
-        break;
-      case AppLifecycleState.paused:
-        debugPrint("App state: paused");
-        pauseSong();
-        break;
-      case AppLifecycleState.detached:
-        debugPrint("App state: detached");
-        pauseSong();
-        break;
-    }
   }
 
   /// Updates the icon of play/pause
   void updateIcon(IconData data) {
-    setState(() {
-      playPauseIcon = data;
-    });
+    if(mounted)
+      setState(() {
+        playPauseIcon = data;
+      });
   }
 
-  setLoop(AudioPlayerController controller) => controller.setLoop();
+  setLoop() => controller?.setLoop();
 
-  fastRewind(AudioPlayerController controller) => controller.fastMoving(-5);
+  fastRewind() => controller?.fastMoving(-5);
 
-  fastForward(AudioPlayerController controller) => controller.fastMoving(5);
+  fastForward() => controller?.fastMoving(5);
 
-  stopSong(AudioPlayerController controller) {
-    controller.stopSong();
+  stopSong() {
+    controller?.stopSong();
     updateIcon(Icons.play_circle_outline);
   }
 
   pauseSong() {
-    Provider.of<AudioPlayerController>(context, listen: false).pauseSong();
-    updateIcon(Icons.play_circle_outline);
+    controller?.pauseSong();
+    //updateIcon(Icons.play_circle_outline);
   }
 
   /// Sets the player in pause or in play, depending on the current state
-  playPause(AudioPlayerController controller) {
-    controller.playPause();
+  playPause() {
+    controller?.playPause();
     if(AudioPlayerController.playerState != null) {
       AudioPlayerController.playerState == AudioPlayerState.PLAYING
           ? updateIcon(Icons.play_circle_outline)
@@ -105,7 +82,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
 
   @override
   Widget build(BuildContext context) {
-    final AudioPlayerController controller = Provider.of<AudioPlayerController>(context);
+    controller = Provider.of<AudioPlayerController>(context);
     if(controller == null)
       controller.initPlayer();
     return Container(
@@ -144,24 +121,24 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindin
                   ),
                   IconButton(
                     icon: Icon(Icons.threesixty, color: AudioPlayerController.loopSelected ? MyColors.primaryColor : MyColors.secondaryColor),
-                    onPressed: () => { setLoop(controller) },
+                    onPressed: () => { setLoop() },
                   ),
                   IconButton(
                       icon: Icon(Icons.fast_rewind, color: MyColors.primaryColor,),
-                      onPressed: () => { fastRewind(controller) }
+                      onPressed: () => { fastRewind() }
                   ),
                   IconButton(
                     icon: Icon(playPauseIcon, color: MyColors.primaryColor),
                     iconSize: 50,
-                    onPressed: () => { playPause(controller) },
+                    onPressed: () => { playPause() },
                   ),
                   IconButton(
                       icon: Icon(Icons.fast_forward, color: MyColors.primaryColor,),
-                      onPressed: () => { fastForward(controller) }
+                      onPressed: () => { fastForward() }
                   ),
                   IconButton(
                     icon: Icon(Icons.stop, color: MyColors.primaryColor),
-                    onPressed: () => { stopSong(controller) },
+                    onPressed: () => { stopSong() },
                     tooltip: "Hello",
                   ),
                   Container(

@@ -8,10 +8,11 @@ import 'FileController.dart';
 
 class RecorderController extends ChangeNotifier {
 
-  FlutterAudioRecorder _recorder;
-  Recording _recording;
-  Timer _t;
+  static FlutterAudioRecorder _recorder;
+  static Recording _recording;
+  static Timer _t;
   String recordingName;
+  Timer cuntdownTimer;
 
   init() async {
     // can add extension like ".mp4" ".wav" ".m4a" ".aac"
@@ -36,7 +37,7 @@ class RecorderController extends ChangeNotifier {
   }
 
   Future<bool> stopRecording() async {
-    if(_recording.status == RecordingStatus.Recording) {
+    if(_recording?.status == RecordingStatus.Recording) {
       _recording = await _recorder.stop();
       _t.cancel();
       SongSingleton.instance.beatPath = FileController.registrationsPath + recordingName + ".wav";
@@ -70,5 +71,28 @@ class RecorderController extends ChangeNotifier {
     } catch(ex) {
       return false;
     }
+  }
+
+  deleteTimer() {
+    if(cuntdownTimer != null)
+      cuntdownTimer.cancel();
+  }
+
+  startCountdown(Function(String str) mySetState) async {
+    int start = 3;
+    cuntdownTimer = new Timer.periodic(Duration(seconds: 1),
+      (Timer timer) {
+        if (start > 0) {
+            mySetState(start.toString());
+            start = start - 1;
+          } else if(start == 0) {
+            mySetState("recording");
+            startRecording();
+            start = start - 1;
+          }
+          else {
+            timer.cancel();
+          }
+    });
   }
 }

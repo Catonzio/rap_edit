@@ -15,14 +15,19 @@ import 'CstmTextField.dart';
 
 class RecorderWidget extends StatefulWidget {
 
+  final RecorderWidgetState state = RecorderWidgetState();
+
   @override
-  RecorderWidgetState createState() => RecorderWidgetState();
+  RecorderWidgetState createState() => state;
+
+  void stopRecording() {
+    state?.stopRecording();
+  }
 }
 
 class RecorderWidgetState extends State<RecorderWidget> {
 
   String cuntdownString = "";
-  Timer cuntdownTimer;
   RecorderController controller;
   //IconData registerIcon;
 
@@ -33,8 +38,10 @@ class RecorderWidgetState extends State<RecorderWidget> {
 
   @override
   void dispose() {
-    if(cuntdownTimer != null)
-      cuntdownTimer.cancel();
+    if(controller != null) {
+      controller?.deleteTimer();
+    }
+    stopRecording();
     super.dispose();
   }
 
@@ -70,9 +77,10 @@ class RecorderWidgetState extends State<RecorderWidget> {
   }
 
   mySetState(String str) {
-    setState(() {
-      cuntdownString = str ?? "";
-    });
+    if(mounted)
+      setState(() {
+        cuntdownString = str ?? "";
+      });
   }
 
   String getRecordingText() {
@@ -90,30 +98,16 @@ class RecorderWidgetState extends State<RecorderWidget> {
     return pos.contains(":") ? pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf(".")) : pos;
   }
 
-  startCountdown() async {
-    int start = 3;
-    cuntdownTimer = new Timer.periodic(Duration(seconds: 1),
-            (Timer timer) => setState(() {
-          if (start > 0) {
-            mySetState(start.toString());
-            start = start - 1;
-          } else if(start == 0) {
-            mySetState("recording");
-            controller.startRecording();
-            start = start - 1;
-          }
-          else {
-            timer.cancel();
-          }
-        },
-      )
-    );
+  startCountdown() {
+    controller?.startCountdown(mySetState);
   }
 
   stopRecording() async {
-    bool rec = await controller?.stopRecording();
+    bool rec = await controller.stopRecording();
     if(rec) {
       mySetState("saved");
+    } else {
+      debugPrint("oooooooooo can't stop");
     }
   }
 

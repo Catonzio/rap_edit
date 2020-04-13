@@ -25,10 +25,11 @@ class WritingPage extends StatefulWidget {
   WritingPageState createState() => WritingPageState();
 }
 
-class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin, MyPageInterface {
+class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientMixin, MyPageInterface, WidgetsBindingObserver {
 
   TextEditingController textController;
   AudioPlayerWidget player;
+  RecorderWidget recorder;
   List<String> rhymes = new List();
 
   @override
@@ -40,6 +41,30 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
     textController = new TextEditingController();
     setTitleAndText();
     player = AudioPlayerWidget();
+    recorder = RecorderWidget();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    //player?.pauseSong();
+    //recorder?.stopRecording();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state) {
+      case AppLifecycleState.resumed:
+        debugPrint("App state: resumed");
+        break;
+      default:
+        player?.pauseSong();
+        recorder?.stopRecording();
+        break;
+    }
   }
 
   @override
@@ -60,17 +85,17 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
       page: this,
       body: <Widget>[
         SizedBox(height: 10.0,),
-        ChangeNotifierProvider(
-          create: (context) => AudioPlayerController(),
+        ChangeNotifierProvider.value(
+          value: AudioPlayerController(),
           child: player,
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ChangeNotifierProvider(
-              create: (context) => RecorderController(),
-              child: RecorderWidget(),
+            ChangeNotifierProvider.value(
+              value: RecorderController(),
+              child: recorder,
             ),
           ],
         ),
@@ -242,8 +267,8 @@ class WritingPageState extends State<WritingPage> with AutomaticKeepAliveClientM
           title: "",
           text: textController.text
       );
-    player.pauseSong();
-    Navigator.pushNamed(context, routeName);
+    //player.pauseSong();
+    Navigator.popAndPushNamed(context, routeName);
   }
 
 }

@@ -14,7 +14,7 @@ class AudioPlayerController extends ChangeNotifier {
   static Duration duration;
   static Duration position;
   static RangeValues rangeValues;
-  Function widgetFunction;
+  Function updateWidgetIcon;
 
 
   void initPlayer() {
@@ -33,8 +33,8 @@ class AudioPlayerController extends ChangeNotifier {
         position = new Duration();
         rangeValues = RangeValues(0,0);
         previousSongPath = SongSingleton.instance.beatPath;
-        if(widgetFunction != null)
-          widgetFunction(Icons.pause_circle_outline);
+        if(updateWidgetIcon != null)
+          updateWidgetIcon(Icons.pause_circle_outline);
       } else {
         duration = duration??new Duration();
         position = position??new Duration();
@@ -58,8 +58,8 @@ class AudioPlayerController extends ChangeNotifier {
             seekToSecond(rangeValues.start.toInt());
             if(!loopSelected) {
               stopSong();
-              if(widgetFunction != null)
-                widgetFunction(Icons.play_circle_outline);
+              if(updateWidgetIcon != null)
+                updateWidgetIcon(Icons.play_circle_outline);
             }
           }
           notifyListeners();
@@ -163,6 +163,6 @@ class AudioPlayerController extends ChangeNotifier {
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
   }
 
-  void setWidgetFunction(void Function(IconData data) updateIcon) { widgetFunction = updateIcon; }
+  void setWidgetFunction(void Function(IconData data) updateIcon) { updateWidgetIcon = updateIcon; }
 
 }
