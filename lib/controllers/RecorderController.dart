@@ -13,6 +13,8 @@ class RecorderController extends ChangeNotifier {
   static Timer _t;
   String recordingName;
   Timer cuntdownTimer;
+  String cuntdownString = "";
+
 
   init() async {
     // can add extension like ".mp4" ".wav" ".m4a" ".aac"
@@ -40,9 +42,10 @@ class RecorderController extends ChangeNotifier {
     if(_recording?.status == RecordingStatus.Recording) {
       _recording = await _recorder.stop();
       _t.cancel();
-      SongSingleton.instance.beatPath = FileController.registrationsPath + recordingName + ".wav";
+      SongSingleton.instance.beatPath = "${FileController.registrationsPath}$recordingName.wav";
       SongSingleton.instance.isLocal = true;
       SongSingleton.instance.isAsset = false;
+      cuntdownString = "saved";
       return true;
     }
     return false;
@@ -58,6 +61,7 @@ class RecorderController extends ChangeNotifier {
         _recording = await _recorder.current();
         _t = t;
       });
+      startRegistrationTimer();
     }
   }
 
@@ -78,15 +82,15 @@ class RecorderController extends ChangeNotifier {
       cuntdownTimer.cancel();
   }
 
-  startCountdown(Function(String str) mySetState) async {
+  startCountdown() async {
     int start = 3;
     cuntdownTimer = new Timer.periodic(Duration(seconds: 1),
       (Timer timer) {
         if (start > 0) {
-            mySetState(start.toString());
+            cuntdownString = start.toString();
             start = start - 1;
           } else if(start == 0) {
-            mySetState("recording");
+            cuntdownString = "recording";
             startRecording();
             start = start - 1;
           }
@@ -94,5 +98,29 @@ class RecorderController extends ChangeNotifier {
             timer.cancel();
           }
     });
+    getRecordingText();
+  }
+
+  getRecordingText() {
+    try {
+      cuntdownString = int.parse(cuntdownString) != null ? cuntdownString : "";
+    } catch(ex) {
+      cuntdownString = cuntdownString + " " + getDurationFormatted(getRecordingDuration());
+    }
+    notifyListeners();
+  }
+
+  /// Returns the Duration displayed as 'minute':'seconds'
+  String getDurationFormatted(Duration dur) {
+    //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
+    String pos = dur?.toString() ?? "";
+    return pos.contains(":") ? pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf(".")) : pos;
+  }
+
+  void startRegistrationTimer() {
+    Timer.periodic(Duration(seconds: 1),
+            (timer) {
+              getRecordingText();
+            });
   }
 }

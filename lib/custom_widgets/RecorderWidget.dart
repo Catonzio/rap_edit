@@ -27,8 +27,8 @@ class RecorderWidget extends StatefulWidget {
 
 class RecorderWidgetState extends State<RecorderWidget> {
 
-  String cuntdownString = "";
   RecorderController controller;
+  String cuntDownString;
   //IconData registerIcon;
 
   @override
@@ -70,45 +70,18 @@ class RecorderWidgetState extends State<RecorderWidget> {
         children: <Widget>[
           registerButton,
           Container(width: 5,),
-          Text("${getRecordingText()}")
+          Text("${controller?.getRecordingText()}")
         ],
       ),
     );
   }
 
-  mySetState(String str) {
-    if(mounted)
-      setState(() {
-        cuntdownString = str ?? "";
-      });
-  }
-
-  String getRecordingText() {
-    try {
-      return int.parse(cuntdownString) != null ? cuntdownString : "";
-    } catch(ex) {
-      return cuntdownString + " " + getDurationFormatted(controller?.getRecordingDuration());
-    }
-  }
-
-  /// Returns the Duration displayed as 'minute':'seconds'
-  String getDurationFormatted(Duration dur) {
-    //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
-    String pos = dur?.toString() ?? "";
-    return pos.contains(":") ? pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf(".")) : pos;
-  }
-
   startCountdown() {
-    controller?.startCountdown(mySetState);
+    controller?.startCountdown();
   }
 
-  stopRecording() async {
-    bool rec = await controller.stopRecording();
-    if(rec) {
-      mySetState("saved");
-    } else {
-      debugPrint("oooooooooo can't stop");
-    }
+  stopRecording() {
+    controller.stopRecording();
   }
 
   prepareRecording(String title) async {
@@ -142,7 +115,12 @@ class RecorderWidgetState extends State<RecorderWidget> {
             )
           ],
         ),
-        pressed: () => { prepareRecording(editingController.text) }
+        pressed: () {
+          prepareRecording(editingController.text);
+          setState(() {
+            cuntDownString = controller?.cuntdownString;
+          });
+        }
       );
       showDialog(
         context: context,
