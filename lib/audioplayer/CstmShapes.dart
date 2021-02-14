@@ -106,7 +106,7 @@ class CstmSliderThumb extends RangeSliderThumbShape {
   @override
   void paint(PaintingContext context, Offset center,
       {Animation<double> activationAnimation, Animation<double> enableAnimation, bool isDiscrete,
-        bool isEnabled, bool isOnTop, TextDirection textDirection, SliderThemeData sliderTheme, Thumb thumb}) {
+        bool isEnabled, bool isOnTop, bool isPressed, TextDirection textDirection, SliderThemeData sliderTheme, Thumb thumb}) {
 
     final Canvas canvas = context.canvas;
 

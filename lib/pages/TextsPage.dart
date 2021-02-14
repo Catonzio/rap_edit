@@ -30,7 +30,16 @@ class TextsPageState extends State<TextsPage> with MyPageInterface{
     return ListPage(
       title: "Texts",
       pageInterface: this,
-      listView: ListView.builder(
+      listView: file.length == 0 ?
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("No text available")
+            ],
+          )
+          :
+      ListView.builder(
         itemCount: file.length,
         itemBuilder: (BuildContext context, int index) {
           return CardFile(

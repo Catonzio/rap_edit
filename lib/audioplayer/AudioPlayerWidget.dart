@@ -112,9 +112,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: 50,
+                    width: MediaQuery.of(context).size.width*0.12,
                     child: Text(
-                      controller.getDurationFormatted(AudioPlayerController.position),
+                      AudioPlayerController.getDurationFormatted(AudioPlayerController.position),
                       style: textStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -129,7 +129,7 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   ),
                   IconButton(
                     icon: Icon(playPauseIcon, color: MyColors.primaryColor),
-                    iconSize: 50,
+                    iconSize: MediaQuery.of(context).size.width*0.11,
                     onPressed: () => { playPause() },
                   ),
                   IconButton(
@@ -142,9 +142,9 @@ class AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                     tooltip: "Hello",
                   ),
                   Container(
-                    width: 50,
+                    width: MediaQuery.of(context).size.width*0.12,
                     child: Text(
-                      controller.getDurationFormatted(AudioPlayerController.duration),
+                      AudioPlayerController.getDurationFormatted(AudioPlayerController.duration),
                       style: textStyle,
                       textAlign: TextAlign.center,
                     ),

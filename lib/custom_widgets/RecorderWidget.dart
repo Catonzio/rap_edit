@@ -28,12 +28,14 @@ class RecorderWidget extends StatefulWidget {
 class RecorderWidgetState extends State<RecorderWidget> {
 
   RecorderController controller;
-  String cuntDownString;
+  String countdownString;
   //IconData registerIcon;
 
   @override
   void initState() {
     super.initState();
+    controller = Provider.of<RecorderController>(context, listen: false);
+
   }
 
   @override
@@ -47,8 +49,6 @@ class RecorderWidgetState extends State<RecorderWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    controller = Provider.of<RecorderController>(context, listen: true);
 
     final registerButton = RawMaterialButton(
       child: RawMaterialButton(
@@ -64,13 +64,12 @@ class RecorderWidgetState extends State<RecorderWidget> {
       //padding: const EdgeInsets.all(15.0),
     );
 
-
     return Container(
       child: Row(
         children: <Widget>[
           registerButton,
           Container(width: 5,),
-          Text("${controller?.getRecordingText()}")
+          Text("${controller?.countdownString}")
         ],
       ),
     );
@@ -118,7 +117,7 @@ class RecorderWidgetState extends State<RecorderWidget> {
         pressed: () {
           prepareRecording(editingController.text);
           setState(() {
-            cuntDownString = controller?.cuntdownString;
+            //countdownString = controller?.countdownString;
           });
         }
       );

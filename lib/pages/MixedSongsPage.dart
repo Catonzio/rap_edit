@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/custom_widgets/CardFile.dart';
 import 'package:rap_edit/custom_widgets/ListPage.dart';
@@ -11,16 +10,16 @@ import 'package:rap_edit/pages/MyPageInterface.dart';
 import 'package:rap_edit/support/ListenAssetSupport.dart';
 import 'package:share_extend/share_extend.dart';
 
-class RegistrationsPage extends StatefulWidget {
-  static String routeName = "/registrationsPage";
+class MixedSongsPage extends StatefulWidget {
+  static String routeName = "/mixedSongsPage";
 
   @override
-  RegistrationsPageState createState() => RegistrationsPageState();
+  MixedSongsPageState createState() => MixedSongsPageState();
 }
 
-class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterface{
+class MixedSongsPageState extends State<MixedSongsPage> with MyPageInterface{
 
-  List<String> registrationsPath = List();
+  List<String> mixedSongsPath = List();
   ListenAssetSupport listenAssetSupport;
   List<IconData> playPauseIcons = List();
 
@@ -28,9 +27,9 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
   @override
   void initState() {
     super.initState();
-    loadRegistrations();
+    loadMixedSongs();
     listenAssetSupport = ListenAssetSupport();
-    registrationsPath?.forEach((element) { playPauseIcons.add(Icons.play_arrow); });
+    mixedSongsPath?.forEach((element) { playPauseIcons.add(Icons.play_arrow); });
   }
 
   @override
@@ -39,18 +38,18 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
     listenAssetSupport.stopPreview();
   }
 
-  loadRegistrations() {
-    Directory downloadDirectory = Directory(FileController.registrationsPath);
+  loadMixedSongs() {
+    Directory downloadDirectory = Directory(FileController.mixedSongsPath);
     downloadDirectory.listSync().forEach((file) => {
       if(file.path.endsWith(".wav") || file.path.endsWith(".mp3")) {
-        registrationsPath.add(file.path)
+        mixedSongsPath.add(file.path)
       }
     });
-    registrationsPath.sort((a,b) => a.compareTo(b));
+    mixedSongsPath.sort((a,b) => a.compareTo(b));
   }
 
-  String getOnlyRegistrationName(String registrationsPath) {
-    return registrationsPath.substring(registrationsPath.lastIndexOf("/") + 1, registrationsPath.lastIndexOf("."));
+  String getOnlyMixedsongName(String mixedSongsPath) {
+    return mixedSongsPath.substring(mixedSongsPath.lastIndexOf("/") + 1, mixedSongsPath.lastIndexOf("."));
   }
 
   updateIcon(IconData data, int index) {
@@ -71,20 +70,20 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
       if(i!=index)
         playPauseIcons[i] = Icons.play_arrow;
     }
-    listenAssetSupport.listenPreview(registrationsPath[index]);
+    listenAssetSupport.listenPreview(mixedSongsPath[index]);
   }
 
-  loadRegistration(String registrationsPath) {
-    SongSingleton.instance.beatPath = registrationsPath;
+  loadRegistration(String mixedSongsPath) {
+    SongSingleton.instance.beatPath = mixedSongsPath;
     SongSingleton.instance.isLocal = true;
     SongSingleton.instance.isAsset = false;
     loadWritingPage();
   }
 
   deleteRegistration(int index) {
-    FileController.deleteRegistration(registrationsPath[index]);
+    FileController.deleteRegistration(mixedSongsPath[index]);
     setState(() {
-      registrationsPath.remove(registrationsPath[index]);
+      mixedSongsPath.remove(mixedSongsPath[index]);
     });
   }
 
@@ -106,22 +105,22 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
   Widget build(BuildContext context) {
     //FileController.deleteAllRegistrations();
     return ListPage(
-      title: "Registrations",
+      title: "Mixed songs",
       pageInterface: this,
-      listView: registrationsPath.length == 0 ?
+      listView: mixedSongsPath.length == 0 ?
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("No recording available")
+              Text("No mixed song available")
             ],
           )
           :
       ListView.builder(
-        itemCount: registrationsPath.length,
+        itemCount: mixedSongsPath.length,
         itemBuilder: (BuildContext context, int index) {
           return CardFile(
-            title: getOnlyRegistrationName(registrationsPath[index]),
+            title: getOnlyMixedsongName(mixedSongsPath[index]),
             //text: "Duration: ${getSongDuration(registrationsPath[index])}",
             bottomButtons: <Widget>[
               ButtonCstmCard(
@@ -130,11 +129,11 @@ class RegistrationsPageState extends State<RegistrationsPage> with MyPageInterfa
               ),
               ButtonCstmCard(
                 icon: Icons.share,
-                pressed: () => { shareSong(registrationsPath[index]) },
+                pressed: () => { shareSong(mixedSongsPath[index]) },
               ),
               ButtonCstmCard(
                 icon: Icons.file_upload,
-                pressed: () => { loadRegistration(registrationsPath[index]) },
+                pressed: () => { loadRegistration(mixedSongsPath[index]) },
               ),
               ButtonCstmCard(
                 icon: playPauseIcons[index],

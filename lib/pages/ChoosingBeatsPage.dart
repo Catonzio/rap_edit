@@ -124,7 +124,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
       ),
        bottomRowButtons: <Widget>[
          Material(
-           color: MyColors.deepPurple.withOpacity(0.5),
+           color: MyColors.deepPurpleOpac.withOpacity(0.5),
            borderRadius: BorderRadius.circular(20),
            child: FlatButton(
              child: Text("File system"),
@@ -137,7 +137,7 @@ class ChoosingBeatsPageState extends State<ChoosingBeatsPage> with MyPageInterfa
            onPressed: () => loadWritingPage(),
          ),
          Material(
-           color: MyColors.deepPurple.withOpacity(0.5),
+           color: MyColors.deepPurpleOpac.withOpacity(0.5),
            borderRadius: BorderRadius.circular(20),
            child: FlatButton(
              child: Text("YouTube"),

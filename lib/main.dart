@@ -7,6 +7,7 @@ import 'package:rap_edit/controllers/FileController.dart';
 import 'package:rap_edit/controllers/WritingPageController.dart';
 import 'package:rap_edit/models/Dictionary.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
+import 'package:rap_edit/pages/MixedSongsPage.dart';
 import 'package:rap_edit/pages/MixingAudioPage.dart';
 import 'package:rap_edit/pages/WelcomePage.dart';
 import 'package:rap_edit/pages/WritingPage.dart';
@@ -58,6 +59,7 @@ class PageMain extends StatelessWidget {
                                                   ),
         MixingAudioPage.routeName: (context) => MixingAudioPage(),
         RegistrationsPage.routeName: (context) => RegistrationsPage(),
+        MixedSongsPage.routeName: (context) => MixedSongsPage(),
       },
       theme: ThemeData(
           brightness: Brightness.dark,

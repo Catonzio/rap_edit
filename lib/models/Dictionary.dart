@@ -32,8 +32,9 @@ class Dictionary {
   List<String> getRhymeWord(String lastString) {
     List<String> rhymes = new List();
     words.forEach((word) {
-      if(isRhyme(word, lastString))
+      if(isRhyme(word, lastString)) {
         rhymes.add(word);
+      }
     });
     rhymes.shuffle();
     if(rhymes.length > 0 && rhymes.length > 10) {
@@ -43,6 +44,8 @@ class Dictionary {
   }
 
   bool isRhyme(String first, String second) {
+    first = first.toLowerCase().trim();
+    second = second.toLowerCase().trim();
     if(first.isNotEmpty && second.isNotEmpty) {
       if (first.length > 3) {
         if (second.endsWith(first.substring(first.length - 3))) {

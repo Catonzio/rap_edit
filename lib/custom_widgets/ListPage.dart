@@ -6,7 +6,7 @@ import 'package:rap_edit/pages/PageStyle.dart';
 class ListPage extends StatelessWidget {
 
   final String title;
-  final ListView listView;
+  final Widget listView;
   final FutureBuilder<List<int>> futureBuilder;
   final List<Widget> bottomRowButtons;
   final MyPageInterface pageInterface;
@@ -27,7 +27,8 @@ class ListPage extends StatelessWidget {
       pageTitle: title,
       body: <Widget>[
         Expanded(
-            child: listView??futureBuilder
+            //child: listView??futureBuilder
+          child: listView,
         ),
         SizedBox(height: 10,),
         Row(

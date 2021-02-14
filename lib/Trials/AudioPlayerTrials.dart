@@ -439,7 +439,7 @@ class MySliderThumb extends RangeSliderThumbShape {
   @override
   void paint(PaintingContext context, Offset center,
       {Animation<double> activationAnimation, Animation<double> enableAnimation, bool isDiscrete,
-        bool isEnabled, bool isOnTop, TextDirection textDirection, SliderThemeData sliderTheme, Thumb thumb}) {
+        bool isEnabled, bool isOnTop, isPressed, TextDirection textDirection, SliderThemeData sliderTheme, Thumb thumb}) {
     final Canvas canvas = context.canvas;
 
     final rect = Rect.fromCenter(center: center, width: 5.0, height: 20.0);

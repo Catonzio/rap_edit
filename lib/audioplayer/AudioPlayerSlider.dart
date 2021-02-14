@@ -23,7 +23,7 @@ class AudioPlayerSliderState extends State<AudioPlayerSlider> {
     return Expanded(
       child: SliderTheme(
           data: SliderThemeData(
-            trackHeight: 5.0,
+            trackHeight: MediaQuery.of(context).size.width*0.013,
             inactiveTrackColor: MyColors.softGrey,
             activeTrackColor: MyColors.textColor,
             thumbColor: MyColors.electricBlue,
@@ -42,8 +42,8 @@ class AudioPlayerSliderState extends State<AudioPlayerSlider> {
             max: widget.controller.durationSeconds(),
             divisions: 300,
             labels: RangeLabels(
-                widget.controller.getDurationFormatted(Duration(seconds: AudioPlayerController.rangeValues.start.toInt())),
-                widget.controller.getDurationFormatted(Duration(seconds: AudioPlayerController.rangeValues.end.toInt()))
+                AudioPlayerController.getDurationFormatted(Duration(seconds: AudioPlayerController.rangeValues.start.toInt())),
+                AudioPlayerController.getDurationFormatted(Duration(seconds: AudioPlayerController.rangeValues.end.toInt()))
             ),
             onChanged: (RangeValues values) {
               setState(() {

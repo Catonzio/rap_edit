@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rap_edit/pages/MixedSongsPage.dart';
 import 'package:rap_edit/popup_menu/CstmPopupLine.dart';
 import 'package:rap_edit/pages/ChoosingBeatsPage.dart';
 import 'package:rap_edit/pages/MixingAudioPage.dart';
@@ -44,18 +45,6 @@ class CstmPopupMenu extends StatelessWidget {
 
     else if(page is ChoosingBeatsPageState) {
       ChoosingBeatsPageState state = page as ChoosingBeatsPageState;
-      buttons.add(
-          CstmPopupLine(
-            text: "Load YouTube",
-            icon: Icons.play_circle_filled,
-          ).getButton()
-      );
-      buttons.add(
-          CstmPopupLine(
-            text: "Load File System",
-            icon: Icons.library_music,
-          ).getButton()
-      );
       buttonsMap.forEach((key, value) {
         if(key != ButtonsNames.buttonLoadBeats && key != ButtonsNames.buttonCancel)
           buttons.add(value);
@@ -82,6 +71,14 @@ class CstmPopupMenu extends StatelessWidget {
       MixingAudioPageState state = page as MixingAudioPageState;
       buttonsMap.forEach((key, value) {
         if(key != ButtonsNames.buttonMixing && key != ButtonsNames.buttonCancel)
+          buttons.add(value);
+      });
+    }
+
+    else if(page is MixedSongsPageState) {
+      MixedSongsPageState state = page as MixedSongsPageState;
+      buttonsMap.forEach((key, value) {
+        if(key != ButtonsNames.buttonMixedSongs && key != ButtonsNames.buttonCancel)
           buttons.add(value);
       });
     }
@@ -126,6 +123,12 @@ class CstmPopupMenu extends StatelessWidget {
       routeName: MixingAudioPage.routeName,
     ).getButton();
 
+    buttonsMap[ButtonsNames.buttonMixedSongs] = CstmPopupLine(
+      text: "Mixed songs",
+      icon: Icons.mic,
+      routeName: MixedSongsPage.routeName,
+    ).getButton();
+
     return buttonsMap;
   }
 
@@ -133,8 +136,12 @@ class CstmPopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) => getButtons(),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: MyColors.deepPurple.withOpacity(0.95),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: MyColors.softPurple, width: 0.2)
+          //border: Border.all(color: MyColors.softPurple, width: 0.5)
+      ),
+      color: MyColors.deepPurpleOpac.withOpacity(0.95),
       icon: Icon(
         Icons.menu,
         color: MyColors.textColor,
@@ -157,4 +164,5 @@ class ButtonsNames {
   static String buttonLoadRecs = 'buttonLoadRecs';
   static String buttonWrite = 'buttonWrite';
   static String buttonMixing = 'buttonMixing';
+  static String buttonMixedSongs = 'mixedSongs';
 }

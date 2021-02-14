@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+  import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +157,7 @@ class AudioPlayerController extends ChangeNotifier {
   }
 
   /// Returns the Duration displayed as 'minute':'seconds'
-  String getDurationFormatted(Duration dur) {
+  static String getDurationFormatted(Duration dur) {
     //se dur è != null, ritorna dur.toString(); altrimenti, Duration().toString()
     String pos = dur?.toString() ?? Duration().toString();
     return pos.substring(pos.indexOf(":") + 1, pos.lastIndexOf("."));
