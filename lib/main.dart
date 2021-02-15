@@ -35,7 +35,7 @@ Future<void> main() async {
 }
 
 class PageMain extends StatelessWidget {
-  static String routeName = "/main";
+  static String routeName = "/main"; 
 
   @override
   Widget build(BuildContext context) {
