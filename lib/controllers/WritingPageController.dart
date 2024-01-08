@@ -63,6 +63,7 @@ class WritingPageController extends ChangeNotifier {
           if (lastString != possibleRhyme) {
             lastString = possibleRhyme;
             notifyListeners();
+            print("Possible rhyme: $possibleRhyme");
             return getRhymeWord(lastString);
           }
         }

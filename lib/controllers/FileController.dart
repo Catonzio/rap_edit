@@ -12,6 +12,7 @@ class FileController {
   static String filePath;
   static String textsFilePath;
   static String registrationsPath;
+  static String mixedSongsPath;
   static String temporaryPath;
 
   ///Sets the directory path of files written on the phone in this application
@@ -20,10 +21,12 @@ class FileController {
     temporaryPath = (await getTemporaryDirectory()).path;
     textsFilePath = filePath + "/texts/";
     registrationsPath = filePath + "/registrations/";
-
+    mixedSongsPath = filePath + "/mixed/";
+    //mixedSongsPath = "/data/data/com.catonz.rap_edit/code_cache/rap_editHHRLMD/rap_edit/build/flutter_assets/assets/mixed/";
     //create the folders if there aren't
     Directory(textsFilePath).createSync();
     Directory(registrationsPath).createSync();
+    Directory(mixedSongsPath).createSync();
   }
 
   /// Read the content of the text of the song named as title

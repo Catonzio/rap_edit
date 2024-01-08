@@ -6,15 +6,28 @@ class ListenAssetSupport {
   AudioPlayer player;
   AudioCache cache;
   AudioPlayerState playerState;
+  Duration duration;
+  Duration position;
   String lastSongPlayed;
 
   ListenAssetSupport() {
     player = AudioPlayer();
     cache = AudioCache(fixedPlayer: player);
+    //duration = new Duration(days: 0);
     player.onPlayerStateChanged.listen((AudioPlayerState s) {
       if(player != null)
         playerState = s;
     });
+    player.onDurationChanged.listen((Duration d) {
+      duration = d;
+    });
+    player.onAudioPositionChanged.listen((Duration p) {
+      position = p;
+    });
+  }
+
+  void loadAsset(String songPath) {
+    cache.play(songPath);
   }
 
   listenAssetPreview(String song) {

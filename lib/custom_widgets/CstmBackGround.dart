@@ -23,8 +23,8 @@ class CstmBackGround extends StatelessWidget {
               //colors: [MyColors.backGroundWhite, MyColors.endElementColor]
               colors: [
                 MyColors.softPurple.withOpacity(0.2),
-                MyColors.deepPurple,
-                MyColors.deepPurple,
+                MyColors.deepPurpleOpac,
+                MyColors.deepPurpleOpac,
               ]
           )
       ),

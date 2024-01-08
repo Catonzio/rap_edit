@@ -12,8 +12,8 @@ class RecorderController extends ChangeNotifier {
   static Recording _recording;
   static Timer _t;
   String recordingName;
-  Timer cuntdownTimer;
-  String cuntdownString = "";
+  Timer countdownTimer;
+  String countdownString = "";
 
 
   init() async {
@@ -45,7 +45,7 @@ class RecorderController extends ChangeNotifier {
       SongSingleton.instance.beatPath = "${FileController.registrationsPath}$recordingName.wav";
       SongSingleton.instance.isLocal = true;
       SongSingleton.instance.isAsset = false;
-      cuntdownString = "saved";
+      countdownString = "saved";
       return true;
     }
     return false;
@@ -78,36 +78,41 @@ class RecorderController extends ChangeNotifier {
   }
 
   deleteTimer() {
-    if(cuntdownTimer != null)
-      cuntdownTimer.cancel();
+    if(countdownTimer != null)
+      countdownTimer.cancel();
   }
 
   startCountdown() async {
     int start = 3;
-    cuntdownTimer = new Timer.periodic(Duration(seconds: 1),
+    countdownTimer = new Timer.periodic(Duration(seconds: 1),
       (Timer timer) {
         if (start > 0) {
-            cuntdownString = start.toString();
+            countdownString = start.toString();
             start = start - 1;
+            print("Countdown: $start");
+            notifyListeners();
           } else if(start == 0) {
-            cuntdownString = "recording";
+            countdownString = "recording";
             startRecording();
             start = start - 1;
+            print("Countdown: $start");
+            notifyListeners();
           }
           else {
             timer.cancel();
           }
     });
-    getRecordingText();
+    //getRecordingText();
   }
 
   getRecordingText() {
     try {
-      cuntdownString = int.parse(cuntdownString) != null ? cuntdownString : "";
+      countdownString = int.parse(countdownString) != null ? countdownString : "";
     } catch(ex) {
-      cuntdownString = cuntdownString + " " + getDurationFormatted(getRecordingDuration());
+      countdownString = getDurationFormatted(getRecordingDuration());
     }
     notifyListeners();
+    return countdownString;
   }
 
   /// Returns the Duration displayed as 'minute':'seconds'
@@ -121,6 +126,7 @@ class RecorderController extends ChangeNotifier {
     Timer.periodic(Duration(seconds: 1),
             (timer) {
               getRecordingText();
+              notifyListeners();
             });
   }
 }

@@ -33,15 +33,29 @@ class ChoosingBeatsController extends ChangeNotifier {
   listenAssetPreview(String song) { listenAssetSupport.listenAssetPreview(song); }
 
   loadFromYoutube(String text) async {
-    var id = YoutubeExplode.parseVideoId(text);
+    //var id = YoutubeExplode.parseVideoId(text);
     var yt = YoutubeExplode();
-    var mediaStreams = await yt.getVideoMediaStream(id);
-    var audio = mediaStreams.audio;
-    String videoPath = audio[0].url.toString();
-    debugPrint("Video path: $videoPath");
-    SongSingleton.instance.beatPath = videoPath;
-    SongSingleton.instance.isLocal = false;
-    SongSingleton.instance.isAsset = false;
+    var id = text.substring(text.lastIndexOf("/") + 1, text.length);
+    try {
+      // var mediaStreams = await yt.getVideoMediaStream(id);
+      // var audio = mediaStreams.audio;
+      // String videoPath = audio[0].url.toString();
+      // debugPrint("Video path: $videoPath");
+      // SongSingleton.instance.beatPath = videoPath;
+      var manifest = await yt.videos.streamsClient.getManifest(id);
+      var streamInfo = manifest.audioOnly.withHighestBitrate();
+      if (streamInfo != null) {
+        var stream = yt.videos.streamsClient.get(streamInfo);
+        String audioPath = streamInfo.url.toString();
+        debugPrint("Video path: $audioPath");
+        SongSingleton.instance.beatPath = audioPath;
+      }
+      SongSingleton.instance.isLocal = false;
+      SongSingleton.instance.isAsset = false;
+    } catch(ex) {
+      print("Porcoddio");
+    }
+
   }
 
   Future<bool> loadFromFileSystem() async {
