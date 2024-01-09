@@ -18,13 +18,13 @@ class PlayerWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(controller.sourceName),
+              Text(controller.beat?.title ?? "No beat selected"),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 9,
+                    flex: 8,
                     child: Slider(
                       value:
                           controller.currentPosition.inMilliseconds.toDouble(),
@@ -36,7 +36,7 @@ class PlayerWidget extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Text(
                       "${controller.currentPosition.formattedDuration}/${controller.duration.formattedDuration}",
                     ),
@@ -48,13 +48,16 @@ class PlayerWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () => controller.play(),
+                      onPressed:
+                          controller.beat == null ? null : controller.play,
                       child: const Text("Play")),
                   ElevatedButton(
-                      onPressed: () => controller.pause(),
+                      onPressed:
+                          controller.beat == null ? null : controller.pause,
                       child: const Text("Pause")),
                   ElevatedButton(
-                      onPressed: () => controller.stop(),
+                      onPressed:
+                          controller.beat == null ? null : controller.stop,
                       child: const Text("Stop")),
                 ],
               )

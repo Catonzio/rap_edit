@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/data/controllers/file_controller.dart';
+import 'package:rap_edit/data/controllers/writer_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class LyricsController extends GetxController {
@@ -14,12 +16,23 @@ class LyricsController extends GetxController {
   set lyrics(List<Lyric> value) => _lyrics.value = value;
 
   void loadLyrics() async {
+    isLoadingLyrics = true;
+    lyrics = await fileController.readAllFiles();
+    isLoadingLyrics = false;
+  }
+
+  void loadLyric(int index) {
     if (lyrics.isEmpty) {
-      isLoadingLyrics = true;
-      lyrics = await fileController.readAllFiles();
-      isLoadingLyrics = false;
+      loadLyrics();
+    }
+    if (index < lyrics.length) {
+      Get.toNamed(Routes.writing);
+      Get.find<WriterController>().loadLyric(lyrics[index]);
     }
   }
 
-  void loadLyric(int index) {}
+  void deleteLyric(int index) {
+    fileController.deleteFile(lyrics[index].id);
+    lyrics.removeAt(index);
+  }
 }

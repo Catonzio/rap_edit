@@ -16,7 +16,9 @@ class LyricsPage extends StatelessWidget {
       endDrawer: pagesDrawer,
       body: SafeArea(
           child: GetX<LyricsController>(
-        initState: (state) => state.controller?.loadLyrics(),
+        initState: (state) {
+          if (state.mounted) state.controller?.loadLyrics();
+        },
         builder: (controller) {
           return controller.isLoadingLyrics
               ? const Center(child: CircularProgressIndicator())
@@ -26,9 +28,8 @@ class LyricsPage extends StatelessWidget {
                       itemCount: controller.lyrics.length,
                       itemBuilder: (context, index) => LyricTile(
                             lyric: controller.lyrics[index],
-                            onTap: () {
-                              controller.loadLyric(index);
-                            },
+                            onDelete: () => controller.deleteLyric(index),
+                            onLoad: () => controller.loadLyric(index),
                           ));
         },
       )),

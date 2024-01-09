@@ -33,9 +33,6 @@ class HomePage extends StatelessWidget {
                   PlayerWidget(
                     width: context.width * 0.9,
                   ),
-                  ElevatedButton(
-                      onPressed: () => controller.loadBeat(),
-                      child: const Text("Load")),
                   WriterWidget(
                     width: context.width * 0.9,
                     height: context.height * 0.5,

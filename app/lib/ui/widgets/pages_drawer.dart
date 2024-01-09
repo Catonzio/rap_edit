@@ -86,7 +86,7 @@ class DrawerItem extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       onTap: () {
-        // Navigator.pop(context);
+        Navigator.pop(context);
         Navigator.pushNamed(context, route);
       },
     );

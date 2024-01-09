@@ -9,7 +9,4 @@ class HomeController extends GetxController {
   HomeController(
       {required this.musicController, required this.writerController});
 
-  void loadBeat() {
-    musicController.setLocalSource("Trap_Instrumental_Beat.mp3");
-  }
 }

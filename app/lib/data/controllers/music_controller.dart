@@ -1,12 +1,18 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
+import 'package:rap_edit/data/models/beat.dart';
 
 class MusicController extends GetxController {
-  final String baseUrl = "beats";
-
-  final RxString _sourceName = "".obs;
-  String get sourceName => _sourceName.value;
-  set sourceName(String value) => _sourceName.value = value;
+  // final String baseUrl = "beats";
+  Rx<Beat?> _beat = null.obs;
+  Beat? get beat => _beat.value;
+  set beat(Beat? value) {
+    if (_beat.value == null) {
+      _beat = value.obs;
+    } else {
+      _beat.value = value;
+    }
+  }
 
   final Rx<Duration> _currentPosition = Duration.zero.obs;
   Duration get currentPosition => _currentPosition.value;
@@ -29,7 +35,7 @@ class MusicController extends GetxController {
   @override
   Future<void> dispose() async {
     super.dispose();
-    sourceName = "";
+    beat = null;
     await audioPlayer.dispose();
   }
 
@@ -39,14 +45,14 @@ class MusicController extends GetxController {
     await dispose();
   }
 
-  Future<void> setLocalSource(String url) async {
-    await audioPlayer.setSource(AssetSource("$baseUrl/$url"));
-    sourceName = url;
+  Future<void> setSource(Beat beat, {bool isLocal = true}) async {
+    if (isLocal) {
+      await audioPlayer.setSource(AssetSource(beat.songUrl));
+    } else {
+      await audioPlayer.setSourceUrl(beat.songUrl);
+    }
+    this.beat = beat;
     duration = (await audioPlayer.getDuration()) ?? Duration.zero;
-  }
-
-  void setRemoteSource(String url) {
-    audioPlayer.setSourceUrl(url);
   }
 
   void play() {

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:rap_edit/configs/routes.dart';
+import 'package:rap_edit/data/controllers/music_controller.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/utils/constants.dart';
 
@@ -19,5 +21,13 @@ class BeatsController extends GetxController {
     }
   }
 
-  void loadBeat(int index) {}
+  void loadBeat(int index) {
+    if (beats.isEmpty) {
+      loadBeats();
+    }
+    if (index < beats.length) {
+      Get.toNamed(Routes.writing);
+      Get.find<MusicController>().setSource(beats[index]);
+    }
+  }
 }

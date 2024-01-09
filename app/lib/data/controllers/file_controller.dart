@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rap_edit/data/models/lyric.dart';
@@ -13,17 +14,36 @@ class FileController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isCreatingStorage = true;
-    await GetStorage.init("Lyrics");
     box = GetStorage("Lyrics");
     isCreatingStorage = false;
   }
 
-  Future<void> saveFile(Lyric lyric) async {
-    await box.write(lyric.id, lyric.toJson());
+  StreamSubscription<bool> addCreatingStorageListener(
+      void Function(bool) listener,
+      {bool? cancelOnError,
+      void Function()? onDone,
+      Function? onError}) {
+    return _isCreatingStorage.listen(listener);
   }
 
-  Future<void> deleteFile(String id) async {
-    await box.remove(id);
+  Future<bool> saveFile(Lyric lyric) async {
+    try {
+      await box.write(lyric.id, lyric.toJson());
+      return true;
+    } catch (e) {
+      e.printError();
+      return false;
+    }
+  }
+
+  Future<bool> deleteFile(String id) async {
+    try {
+      await box.remove(id);
+      return true;
+    } catch (e) {
+      e.printError();
+      return false;
+    }
   }
 
   Future<Lyric> readFile(String id) async {
@@ -32,6 +52,13 @@ class FileController extends GetxController {
   }
 
   Future<List<Lyric>> readAllFiles() async {
-    return await box.getKeys().map((key) async => await readFile(key)).toList();
+    List<String> keys = box.getKeys().toList();
+    List<Lyric> l = <Lyric>[];
+
+    for (String k in keys) {
+      l.add(await readFile(k));
+    }
+
+    return l;
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  static const Color red = Color.fromARGB(255, 139, 4, 4);
-  static const Color blue = Color.fromARGB(255, 35, 35, 216);
-
+  static const Color red = Color(0xFFF44141);
+  static const Color blue = Color(0xFF55a5d0);
+  static const Color yellow = Color(0xFFe4ce9f);
+  
   static const AppBarTheme appBarTheme = AppBarTheme(
     centerTitle: true,
     backgroundColor: Colors.red,
