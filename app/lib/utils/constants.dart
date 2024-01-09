@@ -3,6 +3,9 @@ import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/ui/widgets/pages_drawer.dart';
 import 'package:uuid/uuid.dart';
 
+const String lyricsStorageName = "Lyrics";
+const String settingsStorageName = "Settings";
+
 Uuid uuid = const Uuid();
 
 List<Beat> assetsBeats = [

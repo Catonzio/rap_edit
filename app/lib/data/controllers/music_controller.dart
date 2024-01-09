@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
 
 class MusicController extends GetxController {
+  static MusicController get to => Get.find<MusicController>();
+
   // final String baseUrl = "beats";
   Rx<Beat?> _beat = null.obs;
   Beat? get beat => _beat.value;
@@ -21,6 +23,10 @@ class MusicController extends GetxController {
   final Rx<Duration> _duration = Duration.zero.obs;
   Duration get duration => _duration.value;
   set duration(Duration value) => _duration.value = value;
+
+  final RxBool _isPlaying = false.obs;
+  bool get isPlaying => _isPlaying.value;
+  set isPlaying(bool value) => _isPlaying.value = value;
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -56,15 +62,32 @@ class MusicController extends GetxController {
   }
 
   void play() {
+    isPlaying = true;
     audioPlayer.resume();
   }
 
   void pause() {
+    isPlaying = false;
     audioPlayer.pause();
   }
 
   void stop() {
+    isPlaying = false;
     audioPlayer.stop();
+  }
+
+  void forwardFiveSeconds() {
+    Duration newDuration = currentPosition + const Duration(seconds: 5);
+    if (newDuration < duration) {
+      seek(newDuration);
+    }
+  }
+
+  void backwardFiveSeconds() {
+    Duration newDuration = currentPosition - const Duration(seconds: 5);
+    if (newDuration > Duration.zero) {
+      seek(newDuration);
+    }
   }
 
   void seek(Duration duration) {

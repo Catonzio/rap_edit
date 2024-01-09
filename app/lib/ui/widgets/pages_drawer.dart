@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
+import 'package:rap_edit/data/controllers/beat_preview_controller.dart';
 
 class PagesDrawer extends StatelessWidget {
   const PagesDrawer({super.key});
@@ -27,6 +28,7 @@ class PagesDrawer extends StatelessWidget {
               title: "Writing",
               route: Routes.writing,
             ),
+            const Divider(),
             const DrawerItem(
               icon: Icons.queue_music,
               title: "Load beat",
@@ -42,6 +44,7 @@ class PagesDrawer extends StatelessWidget {
               title: "Load recs",
               route: Routes.writing,
             ),
+            const Divider(),
             const DrawerItem(
               icon: Icons.multitrack_audio,
               title: "Mix audio",
@@ -53,7 +56,7 @@ class PagesDrawer extends StatelessWidget {
               route: Routes.writing,
             ),
             const Spacer(),
-            const Divider(),
+            const Divider(thickness: 5),
             const DrawerItem(
               icon: Icons.settings,
               title: "Settings",
@@ -86,8 +89,18 @@ class DrawerItem extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       onTap: () {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, route);
+        if (route == Routes.writing) {
+          Get.offAllNamed(route,
+              predicate: ModalRoute.withName(Routes.writing));
+          // Get.offAndToNamed(route);
+        } else {
+          if (Get.currentRoute == Routes.beats) {
+            BeatPreviewController.to.pause();
+          }
+          Get.toNamed(route)?.then((value) => Get.back());
+        }
+        // Navigator.pop(context);
+        // Navigator.pushNamed(context, route);
       },
     );
   }

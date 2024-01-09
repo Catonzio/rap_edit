@@ -6,6 +6,8 @@ class Lyric {
   String songUrl;
   String text;
 
+  String get songName => songUrl.split("/").last;
+
   Lyric({
     required this.id,
     required this.title,

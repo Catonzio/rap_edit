@@ -2,6 +2,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 
 class BeatPreviewController extends GetxController {
+  static BeatPreviewController get to => Get.find<BeatPreviewController>();
+  
   final RxString _sourceName = "".obs;
   String get sourceName => _sourceName.value;
   set sourceName(String value) => _sourceName.value = value;
@@ -17,9 +19,9 @@ class BeatPreviewController extends GetxController {
   }
 
   @override
-  void onClose() {
-    super.onClose();
-    dispose();
+  InternalFinalCallback<void> get onDelete {
+    pause();
+    return super.onDelete;
   }
 
   void play(String url) {

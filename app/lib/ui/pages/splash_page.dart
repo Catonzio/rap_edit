@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:rap_edit/data/controllers/splash_controller.dart';
 
 class SplashPage extends StatelessWidget {
@@ -11,7 +10,7 @@ class SplashPage extends StatelessWidget {
         body: SafeArea(
             child: Center(
       child: ElevatedButton(
-          onPressed: () => Get.find<SplashController>().goHome(),
+          onPressed: () => SplashController.to.goHome(),
           child: const Text("Go Home")),
     )));
   }

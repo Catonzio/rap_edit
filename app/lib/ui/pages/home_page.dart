@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/home_controller.dart';
 import 'package:rap_edit/ui/widgets/player_widget.dart';
 import 'package:rap_edit/ui/widgets/writer_widget.dart';
 import 'package:rap_edit/utils/constants.dart';
 
 class HomePage extends StatelessWidget {
-  final HomeController controller = Get.find<HomeController>();
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

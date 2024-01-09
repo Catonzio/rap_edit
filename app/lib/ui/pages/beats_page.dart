@@ -20,11 +20,13 @@ class BeatsPage extends StatelessWidget {
         builder: (controller) {
           return controller.isLoadingBeats
               ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  itemCount: controller.beats.length,
-                  itemBuilder: (context, index) => BeatTile(
-                      beat: controller.beats[index],
-                      onTap: () => controller.loadBeat(index)));
+              : controller.beats.isEmpty
+                  ? const Center(child: Text("No beats available"))
+                  : ListView.builder(
+                      itemCount: controller.beats.length,
+                      itemBuilder: (context, index) => BeatTile(
+                          beat: controller.beats[index],
+                          onTap: () => controller.loadBeat(index)));
         },
       )),
     );

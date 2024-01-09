@@ -6,10 +6,12 @@ import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/configs/themes.dart';
 import 'package:rap_edit/data/bindings/splash_bindings.dart';
 import 'package:rap_edit/ui/pages/splash_page.dart';
+import 'package:rap_edit/utils/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init("Lyrics");
+  await GetStorage.init(settingsStorageName);
+  await GetStorage.init(lyricsStorageName);
   runApp(const App());
 }
 
@@ -21,7 +23,7 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.splash,
-      theme: Themes.darkTheme,
+      theme: Themes.lightTheme,
       defaultTransition: Transition.fade,
       initialBinding: SplashBindings(),
       getPages: Pages.pages,

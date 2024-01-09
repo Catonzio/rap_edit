@@ -8,7 +8,11 @@ class LyricTile extends StatelessWidget {
   final Lyric lyric;
   final Function() onDelete;
   final Function() onLoad;
-  const LyricTile({super.key, required this.lyric, required this.onDelete, required this.onLoad});
+  const LyricTile(
+      {super.key,
+      required this.lyric,
+      required this.onDelete,
+      required this.onLoad});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +22,24 @@ class LyricTile extends StatelessWidget {
           horizontal: context.width * 0.05, vertical: context.height * 0.01),
       child: ListTile(
           title: Text(lyric.title),
-          subtitle: AutoSizeText(
-            lyric.text,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          subtitle: Row(
+            children: [
+              Expanded(
+                flex: 6,
+                child: AutoSizeText(
+                  lyric.text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Expanded(
+                  flex: 4,
+                  child: AutoSizeText(
+                    lyric.songName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ))
+            ],
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

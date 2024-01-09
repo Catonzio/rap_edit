@@ -2,10 +2,13 @@ import 'package:get/get.dart';
 import 'package:rap_edit/data/bindings/beats_bindings.dart';
 import 'package:rap_edit/data/bindings/home_bindings.dart';
 import 'package:rap_edit/data/bindings/lyrics_bindings.dart';
+import 'package:rap_edit/data/bindings/settings_bindings.dart';
 import 'package:rap_edit/data/bindings/splash_bindings.dart';
+import 'package:rap_edit/ui/pages/about_page.dart';
 import 'package:rap_edit/ui/pages/beats_page.dart';
 import 'package:rap_edit/ui/pages/home_page.dart';
 import 'package:rap_edit/ui/pages/lyrics_page.dart';
+import 'package:rap_edit/ui/pages/settings_page.dart';
 import 'package:rap_edit/ui/pages/splash_page.dart';
 
 import 'routes.dart';
@@ -19,7 +22,7 @@ class Pages {
     ),
     GetPage(
       name: Routes.writing,
-      page: () => HomePage(),
+      page: () => const HomePage(),
       binding: HomeBindings(),
     ),
     GetPage(
@@ -32,5 +35,14 @@ class Pages {
       page: () => const BeatsPage(),
       binding: BeatsBindings(),
     ),
+    GetPage(
+      name: Routes.settings,
+      page: () => const SettingsPage(),
+      binding: SettingsBindings(),
+    ),
+    GetPage(
+      name: Routes.about,
+      page: () => const AboutPage(),
+    )
   ];
 }

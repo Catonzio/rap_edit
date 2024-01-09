@@ -4,37 +4,37 @@ import 'package:rap_edit/configs/themes.dart';
 import 'package:rap_edit/data/controllers/writer_controller.dart';
 
 class WriterWidget extends StatelessWidget {
-  final WriterController controller = Get.find<WriterController>();
   final double width;
   final double height;
 
-  WriterWidget({super.key, required this.width, required this.height});
+  const WriterWidget({super.key, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {
+    final WriterController controller = WriterController.to;
     return SizedBox(
         width: width,
         height: height,
         child: Column(
           children: [
-            Obx(
-              () => Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    controller.isLyricLoaded
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(
+                    () => controller.isLyricLoaded
                         ? Text("Title: ${controller.currentLyric.title}")
                         : const Text("No lyric loaded"),
-                    TextButton(
-                        onPressed: controller.newLyric,
-                        child: const Row(
-                          children: [
-                            Icon(Icons.add),
-                            Text("New lyric"),
-                          ],
-                        ))
-                  ]),
-            ),
+                  ),
+                  TextButton(
+                      onPressed: controller.newLyric,
+                      child: const Row(
+                        children: [
+                          Icon(Icons.add),
+                          Text("New lyric"),
+                        ],
+                      ))
+                ]),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -44,6 +44,7 @@ class WriterWidget extends StatelessWidget {
                     onPressed: () => controller.emptyText(),
                     icon: const Icon(Icons.delete_forever),
                     color: Themes.red,
+                    tooltip: "Delete all lyric",
                   ),
                 ),
                 const Expanded(
@@ -62,6 +63,7 @@ class WriterWidget extends StatelessWidget {
                     },
                     icon: const Icon(Icons.save),
                     color: Themes.blue,
+                    tooltip: "Save lyric",
                   ),
                 ),
               ],

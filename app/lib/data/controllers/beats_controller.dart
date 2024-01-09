@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/data/controllers/music_controller.dart';
+import 'package:rap_edit/data/controllers/writer_controller.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/utils/constants.dart';
 
@@ -27,7 +28,8 @@ class BeatsController extends GetxController {
     }
     if (index < beats.length) {
       Get.toNamed(Routes.writing);
-      Get.find<MusicController>().setSource(beats[index]);
+      MusicController.to.setSource(beats[index]);
+      WriterController.to.currentLyric.songUrl = beats[index].songUrl;
     }
   }
 }

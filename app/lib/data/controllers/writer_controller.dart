@@ -4,7 +4,9 @@ import 'package:rap_edit/data/controllers/file_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class WriterController extends GetxController {
-  final FileController fileController = Get.find<FileController>();
+  static WriterController get to => Get.find<WriterController>();
+
+  final FileController fileController = FileController.to;
   final TextEditingController textEditingController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
 

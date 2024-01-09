@@ -2,8 +2,11 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rap_edit/data/models/lyric.dart';
+import 'package:rap_edit/utils/constants.dart';
 
 class FileController extends GetxController {
+  static FileController get to => Get.find<FileController>();
+
   final RxBool _isCreatingStorage = false.obs;
   bool get isCreatingStorage => _isCreatingStorage.value;
   set isCreatingStorage(bool value) => _isCreatingStorage.value = value;
@@ -14,7 +17,7 @@ class FileController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isCreatingStorage = true;
-    box = GetStorage("Lyrics");
+    box = GetStorage(lyricsStorageName);
     isCreatingStorage = false;
   }
 

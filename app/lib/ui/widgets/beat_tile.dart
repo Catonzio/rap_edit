@@ -11,7 +11,7 @@ class BeatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BeatPreviewController controller = Get.find<BeatPreviewController>();
+    final BeatPreviewController controller = BeatPreviewController.to;
     return Card(
         elevation: 1,
         margin: EdgeInsets.symmetric(

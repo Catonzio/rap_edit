@@ -5,7 +5,7 @@ import 'package:rap_edit/data/controllers/writer_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class LyricsController extends GetxController {
-  final FileController fileController = Get.find<FileController>();
+  final FileController fileController = FileController.to;
 
   final RxBool _isLoadingLyrics = false.obs;
   bool get isLoadingLyrics => _isLoadingLyrics.value;
@@ -14,6 +14,21 @@ class LyricsController extends GetxController {
   final RxList<Lyric> _lyrics = <Lyric>[].obs;
   List<Lyric> get lyrics => _lyrics;
   set lyrics(List<Lyric> value) => _lyrics.value = value;
+
+  Function() _disposeListen = () {};
+
+  @override
+  void onReady() {
+    super.onReady();
+    loadLyrics();
+    _disposeListen = fileController.box.listen(() => loadLyrics());
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    _disposeListen.call();
+  }
 
   void loadLyrics() async {
     isLoadingLyrics = true;
@@ -27,7 +42,7 @@ class LyricsController extends GetxController {
     }
     if (index < lyrics.length) {
       Get.toNamed(Routes.writing);
-      Get.find<WriterController>().loadLyric(lyrics[index]);
+      WriterController.to.loadLyric(lyrics[index]);
     }
   }
 

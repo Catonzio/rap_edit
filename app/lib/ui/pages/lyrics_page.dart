@@ -16,9 +16,10 @@ class LyricsPage extends StatelessWidget {
       endDrawer: pagesDrawer,
       body: SafeArea(
           child: GetX<LyricsController>(
-        initState: (state) {
-          if (state.mounted) state.controller?.loadLyrics();
-        },
+        // initState: (state) {
+        //   if (state.mounted) state.controller?.loadLyrics();
+        // },
+        
         builder: (controller) {
           return controller.isLoadingLyrics
               ? const Center(child: CircularProgressIndicator())
