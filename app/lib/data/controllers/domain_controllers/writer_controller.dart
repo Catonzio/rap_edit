@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/file_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/file_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class WriterController extends GetxController {

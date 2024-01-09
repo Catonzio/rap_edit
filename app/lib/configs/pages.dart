@@ -8,6 +8,9 @@ import 'package:rap_edit/ui/pages/about_page.dart';
 import 'package:rap_edit/ui/pages/beats_page.dart';
 import 'package:rap_edit/ui/pages/home_page.dart';
 import 'package:rap_edit/ui/pages/lyrics_page.dart';
+import 'package:rap_edit/ui/pages/mixed_songs_page.dart';
+import 'package:rap_edit/ui/pages/mixer_page.dart';
+import 'package:rap_edit/ui/pages/recordings_page.dart';
 import 'package:rap_edit/ui/pages/settings_page.dart';
 import 'package:rap_edit/ui/pages/splash_page.dart';
 
@@ -34,6 +37,21 @@ class Pages {
       name: Routes.beats,
       page: () => const BeatsPage(),
       binding: BeatsBindings(),
+    ),
+    GetPage(
+      name: Routes.recordings,
+      page: () => const RecordingsPage(),
+      binding: BeatsBindings(),
+    ),
+    GetPage(
+      name: Routes.mix,
+      page: () => const MixerPage(),
+      // binding: HomeBindings(),
+    ),
+    GetPage(
+      name: Routes.mixedSongs,
+      page: () => const MixedSongsPage(),
+      // binding: HomeBindings(),
     ),
     GetPage(
       name: Routes.settings,

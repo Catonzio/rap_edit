@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/themes.dart';
-import 'package:rap_edit/data/controllers/writer_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
 
 class WriterWidget extends StatelessWidget {
   final double width;

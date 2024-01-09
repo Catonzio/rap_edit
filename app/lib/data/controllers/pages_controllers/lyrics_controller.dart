@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
-import 'package:rap_edit/data/controllers/file_controller.dart';
-import 'package:rap_edit/data/controllers/writer_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/file_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class LyricsController extends GetxController {

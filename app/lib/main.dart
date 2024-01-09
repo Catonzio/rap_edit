@@ -24,6 +24,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.splash,
       theme: Themes.lightTheme,
+      darkTheme: Themes.darkTheme,
+      themeMode: ThemeMode.system,
       defaultTransition: Transition.fade,
       initialBinding: SplashBindings(),
       getPages: Pages.pages,

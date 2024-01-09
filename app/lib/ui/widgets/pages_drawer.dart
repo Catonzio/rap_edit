@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
-import 'package:rap_edit/data/controllers/beat_preview_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/beat_preview_controller.dart';
 
 class PagesDrawer extends StatelessWidget {
   const PagesDrawer({super.key});
@@ -9,7 +9,7 @@ class PagesDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        elevation: 1,
+        elevation: 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -42,18 +42,18 @@ class PagesDrawer extends StatelessWidget {
             const DrawerItem(
               icon: Icons.spatial_audio_off,
               title: "Load recs",
-              route: Routes.writing,
+              route: Routes.recordings,
             ),
             const Divider(),
             const DrawerItem(
               icon: Icons.multitrack_audio,
               title: "Mix audio",
-              route: Routes.writing,
+              route: Routes.mix,
             ),
             const DrawerItem(
               icon: Icons.mic_external_on_rounded,
               title: "Mixed songs",
-              route: Routes.writing,
+              route: Routes.mixedSongs,
             ),
             const Spacer(),
             const Divider(thickness: 5),

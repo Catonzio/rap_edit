@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rap_edit/data/controllers/splash_controller.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/splash_controller.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

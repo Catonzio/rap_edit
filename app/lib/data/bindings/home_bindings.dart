@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/home_controller.dart';
-import 'package:rap_edit/data/controllers/music_controller.dart';
-import 'package:rap_edit/data/controllers/writer_controller.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/music_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
 
 class HomeBindings implements Bindings {
   @override

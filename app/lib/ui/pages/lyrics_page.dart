@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/lyrics_controller.dart';
-import 'package:rap_edit/ui/widgets/lyric_tile.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/lyrics_controller.dart';
+import 'package:rap_edit/ui/widgets/tiles/lyric_tile.dart';
 import 'package:rap_edit/utils/constants.dart';
 
 class LyricsPage extends StatelessWidget {

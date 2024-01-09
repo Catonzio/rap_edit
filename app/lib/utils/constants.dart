@@ -3,8 +3,8 @@ import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/ui/widgets/pages_drawer.dart';
 import 'package:uuid/uuid.dart';
 
-const String lyricsStorageName = "Lyrics";
-const String settingsStorageName = "Settings";
+const String lyricsStorageName = "LyricsStorage";
+const String settingsStorageName = "SettingsStorage";
 
 Uuid uuid = const Uuid();
 
@@ -30,3 +30,14 @@ List<Beat> assetsBeats = [
 ];
 
 Widget pagesDrawer = const PagesDrawer();
+
+const Map<String, String> aboutAppInfo = {
+  "name": "Rap Edit",
+  "version": "0.0.1",
+};
+
+const Map<String, String> aboutAuthorInfo = {
+  "author": "Danilo Catone",
+  "email": "danilocatone@gmail.com",
+  "github": "https://github.com/catonzio",
+};

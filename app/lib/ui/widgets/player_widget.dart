@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/music_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/music_controller.dart';
 import 'package:rap_edit/utils/extensions/duration_extension.dart';
 
 class PlayerWidget extends StatelessWidget {
