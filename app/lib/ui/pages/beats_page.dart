@@ -16,7 +16,7 @@ class BeatsPage extends StatelessWidget {
       endDrawer: pagesDrawer,
       body: SafeArea(
           child: GetX<BeatsController>(
-        initState: (state) => state.controller?.loadBeats(),
+        initState: (state) => state.controller?.fetchBeats(),
         builder: (controller) {
           return controller.isLoadingBeats
               ? const Center(child: CircularProgressIndicator())

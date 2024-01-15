@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/data/controllers/domain_controllers/beat_preview_controller.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 
 class PagesDrawer extends StatelessWidget {
   const PagesDrawer({super.key});
@@ -96,6 +97,9 @@ class DrawerItem extends StatelessWidget {
         } else {
           if (Get.currentRoute == Routes.beats) {
             BeatPreviewController.to.pause();
+          }
+          if (Get.currentRoute == Routes.writing) {
+            HomeController.to.pauseSong();
           }
           Get.toNamed(route)?.then((value) => Get.back());
         }

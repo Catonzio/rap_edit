@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/data/controllers/domain_controllers/file_controller.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class LyricsController extends GetxController {
@@ -20,8 +20,8 @@ class LyricsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    loadLyrics();
-    _disposeListen = fileController.box.listen(() => loadLyrics());
+    fetchLyrics();
+    _disposeListen = fileController.box.listen(() => fetchLyrics());
   }
 
   @override
@@ -30,7 +30,7 @@ class LyricsController extends GetxController {
     _disposeListen.call();
   }
 
-  void loadLyrics() async {
+  void fetchLyrics() async {
     isLoadingLyrics = true;
     lyrics = await fileController.readAllFiles();
     isLoadingLyrics = false;
@@ -38,11 +38,11 @@ class LyricsController extends GetxController {
 
   void loadLyric(int index) {
     if (lyrics.isEmpty) {
-      loadLyrics();
+      fetchLyrics();
     }
     if (index < lyrics.length) {
       Get.toNamed(Routes.writing);
-      WriterController.to.loadLyric(lyrics[index]);
+      HomeController.to.loadLyric(lyrics[index]);
     }
   }
 

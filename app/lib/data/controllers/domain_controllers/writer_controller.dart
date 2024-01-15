@@ -39,4 +39,5 @@ class WriterController extends GetxController {
     textEditingController.clear();
     titleController.clear();
   }
+
 }

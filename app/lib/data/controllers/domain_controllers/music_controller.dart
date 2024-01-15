@@ -61,6 +61,12 @@ class MusicController extends GetxController {
     duration = (await audioPlayer.getDuration()) ?? Duration.zero;
   }
 
+  void setEmpty() {
+    beat = null;
+    duration = Duration.zero;
+    audioPlayer.release();
+  }
+
   void play() {
     isPlaying = true;
     audioPlayer.resume();

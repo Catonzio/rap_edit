@@ -15,6 +15,11 @@ class Beat {
     return Beat(id: uuid.v4(), title: "", songUrl: "");
   }
 
+  factory Beat.fromSongUrl(String songUrl) {
+    final String name = songUrl.split('/').last;
+    return Beat(id: uuid.v4(), title: name, songUrl: songUrl);
+  }
+
   factory Beat.fromJson(Map<String, dynamic> json) {
     return Beat(
       id: json['id'],

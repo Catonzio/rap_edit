@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/music_controller.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
+import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/utils/constants.dart';
 
 class BeatsController extends GetxController {
+  static final BeatsController to = Get.find<BeatsController>();
+
   final RxBool _isLoadingBeats = false.obs;
   bool get isLoadingBeats => _isLoadingBeats.value;
   set isLoadingBeats(bool value) => _isLoadingBeats.value = value;
@@ -14,7 +15,10 @@ class BeatsController extends GetxController {
   List<Beat> get beats => _beats;
   set beats(List<Beat> value) => _beats.value = value;
 
-  void loadBeats() async {
+  Beat? getBeatWithUrl(String songUrl) =>
+      beats.where((Beat beat) => beat.songUrl == songUrl).firstOrNull;
+
+  void fetchBeats() async {
     if (beats.isEmpty) {
       isLoadingBeats = true;
       beats = assetsBeats;
@@ -24,12 +28,11 @@ class BeatsController extends GetxController {
 
   void loadBeat(int index) {
     if (beats.isEmpty) {
-      loadBeats();
+      fetchBeats();
     }
     if (index < beats.length) {
       Get.toNamed(Routes.writing);
-      MusicController.to.setSource(beats[index]);
-      WriterController.to.currentLyric.songUrl = beats[index].songUrl;
+      HomeController.to.setSong(beats[index]);
     }
   }
 }
