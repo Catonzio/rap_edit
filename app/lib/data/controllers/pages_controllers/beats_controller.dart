@@ -31,7 +31,7 @@ class BeatsController extends GetxController {
       fetchBeats();
     }
     if (index < beats.length) {
-      Get.toNamed(Routes.writing);
+      Get.offAndToNamed(Routes.writing);
       HomeController.to.setSong(beats[index]);
     }
   }

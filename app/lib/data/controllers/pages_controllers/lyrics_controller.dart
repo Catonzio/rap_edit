@@ -41,7 +41,7 @@ class LyricsController extends GetxController {
       fetchLyrics();
     }
     if (index < lyrics.length) {
-      Get.toNamed(Routes.writing);
+      Get.offAndToNamed(Routes.writing);
       HomeController.to.loadLyric(lyrics[index]);
     }
   }

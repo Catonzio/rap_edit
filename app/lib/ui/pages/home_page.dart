@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/ui/widgets/player_widget.dart';
+import 'package:rap_edit/ui/widgets/player/player_widget.dart';
 import 'package:rap_edit/ui/widgets/writer_widget.dart';
 import 'package:rap_edit/utils/constants.dart';
 
@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   PlayerWidget(
+                    height: context.height * 0.2,
                     width: context.width * 0.9,
                   ),
                   WriterWidget(

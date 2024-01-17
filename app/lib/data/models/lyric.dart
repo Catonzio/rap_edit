@@ -21,10 +21,10 @@ class Lyric {
 
   factory Lyric.fromJson(Map<String, dynamic> json) {
     return Lyric(
-      id: json['id'],
-      title: json['title'],
-      songUrl: json['songUrl'],
-      text: json['text'],
+      id: json['id'] ?? uuid.v4(),
+      title: json['title'] ?? "",
+      songUrl: json['songUrl'] ?? "",
+      text: json['text'] ?? "",
     );
   }
 

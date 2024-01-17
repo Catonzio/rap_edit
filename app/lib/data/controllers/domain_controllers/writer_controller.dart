@@ -25,6 +25,7 @@ class WriterController extends GetxController {
   Future<bool> saveText() async {
     currentLyric.text = textEditingController.text.trim();
     currentLyric.title = titleController.text.trim();
+    currentLyric = currentLyric;
     return await fileController.saveFile(currentLyric);
   }
 
@@ -39,5 +40,4 @@ class WriterController extends GetxController {
     textEditingController.clear();
     titleController.clear();
   }
-
 }

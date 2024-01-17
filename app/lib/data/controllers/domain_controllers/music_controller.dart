@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
+// import 'package:rap_edit/ui/widgets/player/player_slider_widget.dart';
 
 class MusicController extends GetxController {
   static MusicController get to => Get.find<MusicController>();
@@ -24,11 +25,28 @@ class MusicController extends GetxController {
   Duration get duration => _duration.value;
   set duration(Duration value) => _duration.value = value;
 
+  double get sliderFraction => duration == Duration.zero
+      ? 0
+      : currentPosition.inMilliseconds.toDouble() /
+          duration.inMilliseconds.toDouble();
+
   final RxBool _isPlaying = false.obs;
   bool get isPlaying => _isPlaying.value;
   set isPlaying(bool value) => _isPlaying.value = value;
 
+  final RxBool _isLooping = false.obs;
+  bool get isLooping => _isLooping.value;
+  set isLooping(bool value) => _isLooping.value = value;
+
+  final RxBool _isLoadingBeat = false.obs;
+  bool get isLoadingBeat => _isLoadingBeat.value;
+  set isLoadingBeat(bool value) => _isLoadingBeat.value = value;
+
+  bool get isBeatLoaded => beat != null && !isLoadingBeat;
+
   final AudioPlayer audioPlayer = AudioPlayer();
+
+  MusicController();
 
   @override
   void onInit() {
@@ -51,7 +69,8 @@ class MusicController extends GetxController {
     await dispose();
   }
 
-  Future<void> setSource(Beat beat, {bool isLocal = true}) async {
+  Future<void> loadBeat(Beat beat, {bool isLocal = true}) async {
+    isLoadingBeat = true;
     if (isLocal) {
       await audioPlayer.setSource(AssetSource(beat.songUrl));
     } else {
@@ -59,11 +78,14 @@ class MusicController extends GetxController {
     }
     this.beat = beat;
     duration = (await audioPlayer.getDuration()) ?? Duration.zero;
+    isLoadingBeat = false;
   }
 
   void setEmpty() {
+    isLoadingBeat = false;
     beat = null;
     duration = Duration.zero;
+    // duration = Duration.zero;
     audioPlayer.release();
   }
 

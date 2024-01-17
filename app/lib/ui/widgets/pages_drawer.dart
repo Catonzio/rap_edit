@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
 import 'package:rap_edit/data/controllers/domain_controllers/beat_preview_controller.dart';
 import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
+import 'package:rap_edit/utils/extensions/context_extension.dart';
 
 class PagesDrawer extends StatelessWidget {
   const PagesDrawer({super.key});
@@ -91,17 +92,24 @@ class DrawerItem extends StatelessWidget {
       title: Text(title),
       onTap: () {
         if (route == Routes.writing) {
-          Get.offAllNamed(route,
-              predicate: ModalRoute.withName(Routes.writing));
-          // Get.offAndToNamed(route);
+          if (context.mounted) {
+            context.navigator.pushNamedAndRemoveUntil(
+                route, ModalRoute.withName(Routes.writing));
+          }
         } else {
           if (Get.currentRoute == Routes.beats) {
             BeatPreviewController.to.pause();
           }
           if (Get.currentRoute == Routes.writing) {
             HomeController.to.pauseSong();
+            context.navigator.pop();
           }
-          Get.toNamed(route)?.then((value) => Get.back());
+          // Get.toNamed(route)?.then((value) => Get.back());
+          if (context.mounted) {
+            context.navigator
+                .pushNamed(route)
+                .then((value) => context.navigator.pop());
+          }
         }
         // Navigator.pop(context);
         // Navigator.pushNamed(context, route);

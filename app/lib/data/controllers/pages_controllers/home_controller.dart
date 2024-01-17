@@ -19,14 +19,14 @@ class HomeController extends GetxController {
   }
 
   void setSong(Beat beat) {
-    musicController.setSource(beat);
+    musicController.loadBeat(beat);
     writerController.currentLyric.songUrl = beat.songUrl;
   }
 
   void loadLyric(Lyric lyric) {
-    writerController.currentLyric = lyric;
+    writerController.loadLyric(lyric);
     if (lyric.songUrl.isEmpty) {
-      
+      musicController.setEmpty();
       return;
     }
     Beat beat;
@@ -37,6 +37,6 @@ class HomeController extends GetxController {
       print(e.runtimeType);
       beat = Beat.fromSongUrl(lyric.songUrl);
     }
-    musicController.setSource(beat);
+    musicController.loadBeat(beat);
   }
 }
