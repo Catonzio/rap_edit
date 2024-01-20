@@ -43,7 +43,7 @@ class PlayerSliderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double limiterWidth = 10;
+    const double limiterWidth = 10;
     return GetX<PlayerSliderController>(
       init: PlayerSliderController(),
       builder: (controller) {
@@ -67,6 +67,7 @@ class PlayerSliderWidget extends StatelessWidget {
               child: GestureDetector(
                 onPanUpdate: (details) {},
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
                     Container(
                       color: Colors.grey[300],
@@ -75,7 +76,7 @@ class PlayerSliderWidget extends StatelessWidget {
                       top: 0,
                       bottom: 0,
                       left: 0,
-                      width: value * width,
+                      width: adjustWidth(value * width),
                       child: Container(
                         color: Colors.blue,
                       ),
@@ -119,7 +120,8 @@ class PlayerSliderWidget extends StatelessWidget {
                   double newFraction =
                       controller.endPosition + details.delta.dx / width;
                   newFraction = newFraction.clamp(
-                      controller.startPosition + limiterWidth / width * 10, 1);
+                      controller.startPosition + limiterWidth / width * 10,
+                      1);
                   controller.endPosition = newFraction;
                 },
                 child: Container(
@@ -133,6 +135,9 @@ class PlayerSliderWidget extends StatelessWidget {
       },
     );
   }
+
+  double adjustWidth(double width) =>
+      width.isInfinite || width.isNaN ? 0 : width;
 
   // void onTapDown(PlayerSliderController controller, TapDownDetails details) {
   //   controller.currentPosition = Duration(

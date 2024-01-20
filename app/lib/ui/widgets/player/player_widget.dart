@@ -44,15 +44,16 @@ class PlayerWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(() => PlayerSliderWidget(
-                          width: width * 0.8,
+                          width: width * 0.75,
                           fullHeight: height * 0.2,
                           value: (controller.currentPosition.inMilliseconds
                                   .toDouble() /
                               controller.duration.inMilliseconds.toDouble()),
                           canMove: controller.isBeatLoaded,
                         )),
-                    SizedBox(
-                      width: width * 0.2,
+                    Container(
+                      width: width * 0.25,
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
                       // flex: 2,
                       child: Text(
                         "${controller.currentPosition.formattedDuration}/${controller.duration.formattedDuration}",

@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Writing Page"),
-        // automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
       ),
       endDrawer: pagesDrawer,
       body: SafeArea(

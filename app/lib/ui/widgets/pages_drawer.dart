@@ -106,9 +106,11 @@ class DrawerItem extends StatelessWidget {
           }
           // Get.toNamed(route)?.then((value) => Get.back());
           if (context.mounted) {
-            context.navigator
-                .pushNamed(route)
-                .then((value) => context.navigator.pop());
+            context.navigator.pushNamed(route).then((value) {
+              if (context.mounted) {
+                context.navigator.pop();
+              }
+            });
           }
         }
         // Navigator.pop(context);

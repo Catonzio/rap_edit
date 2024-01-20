@@ -16,8 +16,10 @@ class ButtonsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetX<MusicController>(
       builder: (controller) {
-        return SizedBox(
+        return Container(
           width: width * 0.5,
+          alignment: Alignment.center,
+          color: Colors.red,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
