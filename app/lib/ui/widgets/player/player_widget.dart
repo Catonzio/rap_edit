@@ -15,7 +15,7 @@ class PlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double iconSize = Size(context.width, context.height).shortestSide * 0.05;
+    double iconSize = Size(width, height).shortestSide * 0.15;
     return SizedBox(
         height: height,
         width: width,
@@ -43,20 +43,28 @@ class PlayerWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Obx(() => PlayerSliderWidget(
-                          width: width * 0.75,
-                          fullHeight: height * 0.2,
-                          value: (controller.currentPosition.inMilliseconds
-                                  .toDouble() /
-                              controller.duration.inMilliseconds.toDouble()),
-                          canMove: controller.isBeatLoaded,
-                        )),
                     Container(
-                      width: width * 0.25,
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                      // width: width * 0.4,
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                       // flex: 2,
                       child: Text(
-                        "${controller.currentPosition.formattedDuration}/${controller.duration.formattedDuration}",
+                        controller.currentPosition.formattedDuration,
+                      ),
+                    ),
+                    PlayerSliderWidget(
+                      width: width * 0.63,
+                      fullHeight: height * 0.2,
+                      value: (controller.currentPosition.inMilliseconds
+                              .toDouble() /
+                          controller.duration.inMilliseconds.toDouble()),
+                      canMove: controller.isBeatLoaded,
+                    ),
+                    Container(
+                      // width: width * 0.4,
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                      // flex: 2,
+                      child: Text(
+                        controller.duration.formattedDuration,
                       ),
                     )
                   ],

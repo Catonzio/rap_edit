@@ -17,17 +17,19 @@ class ButtonsRow extends StatelessWidget {
     return GetX<MusicController>(
       builder: (controller) {
         return Container(
-          width: width * 0.5,
+          width: width,
           alignment: Alignment.center,
-          color: Colors.red,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: null,
+                  onPressed: () => controller.isLooping = !controller.isLooping,
                   padding: EdgeInsets.zero,
                   tooltip: "Wheter replay or not",
+                  color: controller.isLooping
+                      ? context.theme.colorScheme.primary
+                      : context.theme.iconTheme.color,
                   icon: Icon(
                     Icons.replay_rounded,
                     size: iconSize,

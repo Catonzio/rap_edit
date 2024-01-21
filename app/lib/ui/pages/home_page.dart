@@ -30,11 +30,11 @@ class HomePage extends StatelessWidget {
                 children: [
                   PlayerWidget(
                     height: context.height * 0.2,
-                    width: context.width * 0.9,
+                    width: context.width,
                   ),
                   WriterWidget(
-                    width: context.width * 0.9,
                     height: context.height * 0.5,
+                    width: context.width * 0.9,
                   )
                 ]),
           ],

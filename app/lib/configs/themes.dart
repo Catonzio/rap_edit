@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Themes {
   static const Color red = Color(0xFFF44141);
   static const Color blue = Color(0xFF55a5d0);
-  static const Color yellow = Color(0xFFe4ce9f);
+  static const Color yellow = Color(0xFFFDCA40);
 
   static ThemeData get lightTheme {
     ThemeData baseTheme = ThemeData.light(useMaterial3: true);
@@ -28,6 +28,8 @@ class Themes {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      // colorScheme: ColorScheme.fromSeed(
+      //     seedColor: Color(0xFFFDCA40), brightness: Brightness.dark),
     );
   }
 }

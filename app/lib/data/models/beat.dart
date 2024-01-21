@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:rap_edit/utils/constants.dart';
 
 class Beat {
@@ -18,6 +20,16 @@ class Beat {
   factory Beat.fromSongUrl(String songUrl) {
     final String name = songUrl.split('/').last;
     return Beat(id: uuid.v4(), title: name, songUrl: songUrl);
+  }
+
+  factory Beat.fromPath(String path) {
+    final String name = path.split('/').last;
+    return Beat(id: uuid.v4(), title: name, songUrl: path);
+  }
+
+  factory Beat.fromFile(File file) {
+    return Beat(
+        id: uuid.v4(), title: file.path.split('/').last, songUrl: file.path);
   }
 
   factory Beat.fromJson(Map<String, dynamic> json) {

@@ -34,7 +34,6 @@ class HomeController extends GetxController {
       beat = BeatsController.to.getBeatWithUrl(lyric.songUrl) ??
           Beat.fromSongUrl(lyric.songUrl);
     } catch (e) {
-      print(e.runtimeType);
       beat = Beat.fromSongUrl(lyric.songUrl);
     }
     musicController.loadBeat(beat);

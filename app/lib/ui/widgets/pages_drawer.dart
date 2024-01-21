@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
@@ -10,67 +11,81 @@ class PagesDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-        elevation: 2,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DrawerHeader(
-              decoration:
-                  BoxDecoration(color: context.theme.colorScheme.primary),
-              child: Text(
-                "RapEdit",
-                style: context.textTheme.headlineLarge!.copyWith(
-                    color: context.theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold),
+    return SizedBox(
+      width: (context.width * 0.5).clamp(150, 300),
+      child: Drawer(
+          elevation: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: (context.height * 0.2)
+                    .clamp(50, context.mediaQueryPadding.top + 161),
+                child: DrawerHeader(
+                  decoration:
+                      BoxDecoration(color: context.theme.colorScheme.primary),
+                  child: AutoSizeText(
+                    "RapEdit",
+                    style: context.textTheme.headlineLarge!.copyWith(
+                        color: context.theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                  ),
+                ),
               ),
-            ),
-            const DrawerItem(
-              icon: Icons.draw,
-              title: "Writing",
-              route: Routes.writing,
-            ),
-            const Divider(),
-            const DrawerItem(
-              icon: Icons.queue_music,
-              title: "Load beat",
-              route: Routes.beats,
-            ),
-            const DrawerItem(
-              icon: Icons.upload_file,
-              title: "Load lyric",
-              route: Routes.lyrics,
-            ),
-            const DrawerItem(
-              icon: Icons.spatial_audio_off,
-              title: "Load recs",
-              route: Routes.recordings,
-            ),
-            const Divider(),
-            const DrawerItem(
-              icon: Icons.multitrack_audio,
-              title: "Mix audio",
-              route: Routes.mix,
-            ),
-            const DrawerItem(
-              icon: Icons.mic_external_on_rounded,
-              title: "Mixed songs",
-              route: Routes.mixedSongs,
-            ),
-            const Spacer(),
-            const Divider(thickness: 5),
-            const DrawerItem(
-              icon: Icons.settings,
-              title: "Settings",
-              route: "/settings",
-            ),
-            const DrawerItem(
-              icon: Icons.info,
-              title: "About",
-              route: "/about",
-            ),
-          ],
-        ));
+              Expanded(
+                child: ListView(
+                  children: const [
+                    DrawerItem(
+                      icon: Icons.draw,
+                      title: "Writing",
+                      route: Routes.writing,
+                    ),
+                    Divider(),
+                    DrawerItem(
+                      icon: Icons.queue_music,
+                      title: "Load beat",
+                      route: Routes.beats,
+                    ),
+                    DrawerItem(
+                      icon: Icons.upload_file,
+                      title: "Load lyric",
+                      route: Routes.lyrics,
+                    ),
+                    DrawerItem(
+                      icon: Icons.spatial_audio_off,
+                      title: "Load recs",
+                      route: Routes.recordings,
+                    ),
+                    Divider(),
+                    DrawerItem(
+                      icon: Icons.multitrack_audio,
+                      title: "Mix audio",
+                      route: Routes.mix,
+                    ),
+                    DrawerItem(
+                      icon: Icons.mic_external_on_rounded,
+                      title: "Mixed songs",
+                      route: Routes.mixedSongs,
+                    ),
+                  ],
+                ),
+              ),
+              // const Spacer(),
+              const Divider(thickness: 5),
+              const DrawerItem(
+                icon: Icons.settings,
+                title: "Settings",
+                route: "/settings",
+              ),
+              const DrawerItem(
+                icon: Icons.info,
+                title: "About",
+                route: "/about",
+              ),
+            ],
+          )),
+    );
   }
 }
 
@@ -89,7 +104,10 @@ class DrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon),
-      title: Text(title),
+      title: AutoSizeText(
+        title,
+        maxLines: 1,
+      ),
       onTap: () {
         if (route == Routes.writing) {
           if (context.mounted) {
