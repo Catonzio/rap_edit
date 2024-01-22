@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rap_edit/utils/utility_functions.dart';
 
 class PlayerSliderController extends GetxController {
   static PlayerSliderController get to => Get.find<PlayerSliderController>();
@@ -29,21 +30,23 @@ class PlayerSliderController extends GetxController {
 class PlayerSliderWidget extends StatelessWidget {
   final double width;
   final double fullHeight;
-  final double value;
   final double height;
+  final double value;
   final bool canMove;
+
+  final double limiterWidth;
 
   const PlayerSliderWidget(
       {super.key,
       required this.width,
       required this.fullHeight,
       required this.value,
-      required this.canMove})
+      required this.canMove,
+      this.limiterWidth = 10})
       : height = fullHeight / 2;
 
   @override
   Widget build(BuildContext context) {
-    const double limiterWidth = 10;
     return GetX<PlayerSliderController>(
       init: PlayerSliderController(),
       builder: (controller) {
@@ -76,7 +79,7 @@ class PlayerSliderWidget extends StatelessWidget {
                       top: 0,
                       bottom: 0,
                       left: 0,
-                      width: adjustWidth(value * width),
+                      width: adjustNanWidth(value * width),
                       child: Container(
                         color: Colors.blue,
                       ),
@@ -94,12 +97,7 @@ class PlayerSliderWidget extends StatelessWidget {
               height: fullHeight,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  if (!canMove) return;
-                  double newFraction =
-                      controller.startPosition + details.delta.dx / width;
-                  newFraction = newFraction.clamp(
-                      0, controller.endPosition - limiterWidth / width * 10);
-                  controller.startPosition = newFraction;
+                  leftLimiterPan(controller, details);
                 },
                 child: Container(
                   color: Colors.purple,
@@ -116,13 +114,7 @@ class PlayerSliderWidget extends StatelessWidget {
               child: GestureDetector(
                 onTapDown: (details) => print(controller.endPosition),
                 onPanUpdate: (details) {
-                  if (!canMove) return;
-                  double newFraction =
-                      controller.endPosition + details.delta.dx / width;
-                  newFraction = newFraction.clamp(
-                      controller.startPosition + limiterWidth / width * 10,
-                      1);
-                  controller.endPosition = newFraction;
+                  rightLimiterPan(controller, details);
                 },
                 child: Container(
                   color: Colors.red,
@@ -136,8 +128,23 @@ class PlayerSliderWidget extends StatelessWidget {
     );
   }
 
-  double adjustWidth(double width) =>
-      width.isInfinite || width.isNaN ? 0 : width;
+  void leftLimiterPan(
+      PlayerSliderController controller, DragUpdateDetails details) {
+    if (!canMove) return;
+    double newFraction = controller.startPosition + details.delta.dx / width;
+    newFraction = newFraction.clamp(
+        0, controller.endPosition - limiterWidth / width * 10);
+    controller.startPosition = newFraction;
+  }
+
+  void rightLimiterPan(
+      PlayerSliderController controller, DragUpdateDetails details) {
+    if (!canMove) return;
+    double newFraction = controller.endPosition + details.delta.dx / width;
+    newFraction = newFraction.clamp(
+        controller.startPosition + limiterWidth / width * 10, 1);
+    controller.endPosition = newFraction;
+  }
 
   // void onTapDown(PlayerSliderController controller, TapDownDetails details) {
   //   controller.currentPosition = Duration(

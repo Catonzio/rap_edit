@@ -18,3 +18,6 @@ String extractNameFromPath(String path) {
   }
   return name;
 }
+
+double adjustNanWidth(double width) =>
+    width.isInfinite || width.isNaN ? 0 : width;

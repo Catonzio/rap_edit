@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/utils/enums.dart';
+import 'package:rap_edit/utils/utility_functions.dart';
 
 class MusicController extends GetxController {
   static MusicController get to => Get.find<MusicController>();
@@ -25,10 +26,9 @@ class MusicController extends GetxController {
   Duration get duration => _duration.value;
   set duration(Duration value) => _duration.value = value;
 
-  double get sliderFraction => duration == Duration.zero
-      ? 0
-      : currentPosition.inMilliseconds.toDouble() /
-          duration.inMilliseconds.toDouble();
+  double get sliderFraction =>
+      adjustNanWidth(currentPosition.inMilliseconds.toDouble() /
+          duration.inMilliseconds.toDouble());
 
   final RxBool _isPlaying = false.obs;
   bool get isPlaying => _isPlaying.value;
