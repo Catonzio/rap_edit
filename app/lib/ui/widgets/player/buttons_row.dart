@@ -38,7 +38,7 @@ class ButtonsRow extends StatelessWidget {
                   )),
               IconButton(
                   onPressed: controller.isBeatLoaded &&
-                          controller.currentPosition >
+                          controller.sliderController.currentPosition >
                               const Duration(seconds: 5)
                       ? controller.backwardFiveSeconds
                       : null,
@@ -63,8 +63,8 @@ class ButtonsRow extends StatelessWidget {
                       size: iconSize * 2)),
               IconButton(
                   onPressed: controller.isBeatLoaded &&
-                          controller.currentPosition <
-                              controller.duration - const Duration(seconds: 5)
+                          controller.sliderController.currentPosition <
+                              controller.sliderController.duration - const Duration(seconds: 5)
                       ? controller.forwardFiveSeconds
                       : null,
                   tooltip: "Forward 5 seconds",
@@ -74,7 +74,7 @@ class ButtonsRow extends StatelessWidget {
               IconButton(
                   onPressed: controller.isBeatLoaded &&
                           (controller.isPlaying ||
-                              controller.currentPosition > Duration.zero)
+                              controller.sliderController.currentPosition > Duration.zero)
                       ? controller.stop
                       : null,
                   tooltip: "Stop",

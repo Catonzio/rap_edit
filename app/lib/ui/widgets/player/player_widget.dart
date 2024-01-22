@@ -48,23 +48,27 @@ class PlayerWidget extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                       // flex: 2,
                       child: Text(
-                        controller.currentPosition.formattedDuration,
+                        controller
+                            .sliderController.currentPosition.formattedDuration,
                       ),
                     ),
                     PlayerSliderWidget(
-                      width: width * 0.63,
-                      fullHeight: height * 0.2,
-                      value: (controller.currentPosition.inMilliseconds
-                              .toDouble() /
-                          controller.duration.inMilliseconds.toDouble()),
+                      fullWidth: width * 0.63,
+                      fullHeight: height * 0.4,
+                      // value: (controller.sliderController.currentPosition.inMilliseconds
+                      //         .toDouble() /
+                      //     controller.sliderController.duration.inMilliseconds.toDouble()),
                       canMove: controller.isBeatLoaded,
+                      onPositionChanged: (Duration duration) {
+                        controller.sliderController.currentPosition = duration;
+                      },
                     ),
                     Container(
                       // width: width * 0.4,
                       padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                       // flex: 2,
                       child: Text(
-                        controller.duration.formattedDuration,
+                        controller.sliderController.duration.formattedDuration,
                       ),
                     )
                   ],

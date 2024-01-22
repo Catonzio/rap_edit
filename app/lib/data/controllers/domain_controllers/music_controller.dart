@@ -1,8 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
+import 'package:rap_edit/ui/widgets/player/player_slider_widget.dart';
 import 'package:rap_edit/utils/enums.dart';
-import 'package:rap_edit/utils/utility_functions.dart';
+// import 'package:rap_edit/utils/utility_functions.dart';
 
 class MusicController extends GetxController {
   static MusicController get to => Get.find<MusicController>();
@@ -18,17 +19,19 @@ class MusicController extends GetxController {
     }
   }
 
-  final Rx<Duration> _currentPosition = Duration.zero.obs;
-  Duration get currentPosition => _currentPosition.value;
-  set currentPosition(Duration value) => _currentPosition.value = value;
+  final PlayerSliderController sliderController = PlayerSliderController.to;
 
-  final Rx<Duration> _duration = Duration.zero.obs;
-  Duration get duration => _duration.value;
-  set duration(Duration value) => _duration.value = value;
+  // final Rx<Duration> _sliderController.currentPosition = Duration.zero.obs;
+  // Duration get sliderController.currentPosition => _sliderController.currentPosition.value;
+  // set sliderController.currentPosition(Duration value) => _sliderController.currentPosition.value = value;
 
-  double get sliderFraction =>
-      adjustNanWidth(currentPosition.inMilliseconds.toDouble() /
-          duration.inMilliseconds.toDouble());
+  // final Rx<Duration> _duration = Duration.zero.obs;
+  // Duration get duration => _duration.value;
+  // set duration(Duration value) => _duration.value = value;
+
+  // double get sliderFraction => adjustNanWidth(
+  //     sliderController.currentPosition.inMilliseconds.toDouble() /
+  //         sliderController.duration.inMilliseconds.toDouble());
 
   final RxBool _isPlaying = false.obs;
   bool get isPlaying => _isPlaying.value;
@@ -46,13 +49,11 @@ class MusicController extends GetxController {
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
-  MusicController();
-
   @override
   void onInit() {
     super.onInit();
     audioPlayer.onPositionChanged.listen((Duration duration) {
-      currentPosition = duration;
+      sliderController.currentPosition = duration;
     });
   }
 
@@ -84,15 +85,16 @@ class MusicController extends GetxController {
     }
 
     this.beat = beat;
-    duration = (await audioPlayer.getDuration()) ?? Duration.zero;
+    sliderController.duration =
+        (await audioPlayer.getDuration()) ?? Duration.zero;
     isLoadingBeat = false;
   }
 
   void setEmpty() {
     isLoadingBeat = false;
     beat = null;
-    duration = Duration.zero;
-    // duration = Duration.zero;
+    sliderController.currentPosition = Duration.zero;
+    sliderController.duration = Duration.zero;
     audioPlayer.release();
   }
 
@@ -112,14 +114,16 @@ class MusicController extends GetxController {
   }
 
   void forwardFiveSeconds() {
-    Duration newDuration = currentPosition + const Duration(seconds: 5);
-    if (newDuration < duration) {
+    Duration newDuration =
+        sliderController.currentPosition + const Duration(seconds: 5);
+    if (newDuration < sliderController.duration) {
       seek(newDuration);
     }
   }
 
   void backwardFiveSeconds() {
-    Duration newDuration = currentPosition - const Duration(seconds: 5);
+    Duration newDuration =
+        sliderController.currentPosition - const Duration(seconds: 5);
     if (newDuration > Duration.zero) {
       seek(newDuration);
     }
