@@ -4,8 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 import 'package:rap_edit/utils/constants.dart';
 
-class FileController extends GetxController {
-  static FileController get to => Get.find<FileController>();
+class LyricFileController extends GetxController {
+  static LyricFileController get to => Get.find<LyricFileController>();
 
   final RxBool _isCreatingStorage = false.obs;
   bool get isCreatingStorage => _isCreatingStorage.value;
@@ -21,15 +21,7 @@ class FileController extends GetxController {
     isCreatingStorage = false;
   }
 
-  StreamSubscription<bool> addCreatingStorageListener(
-      void Function(bool) listener,
-      {bool? cancelOnError,
-      void Function()? onDone,
-      Function? onError}) {
-    return _isCreatingStorage.listen(listener);
-  }
-
-  Future<bool> saveFile(Lyric lyric) async {
+  Future<bool> saveLyric(Lyric lyric) async {
     try {
       await box.write(lyric.id, lyric.toJson());
       return true;
@@ -39,7 +31,7 @@ class FileController extends GetxController {
     }
   }
 
-  Future<bool> deleteFile(String id) async {
+  Future<bool> deleteLyric(String id) async {
     try {
       await box.remove(id);
       return true;
@@ -49,17 +41,17 @@ class FileController extends GetxController {
     }
   }
 
-  Future<Lyric> readFile(String id) async {
+  Future<Lyric> readLyric(String id) async {
     final Map<String, dynamic> json = await box.read(id);
     return Lyric.fromJson(json);
   }
 
-  Future<List<Lyric>> readAllFiles() async {
+  Future<List<Lyric>> readAllLyrics() async {
     List<String> keys = box.getKeys().toList();
     List<Lyric> l = <Lyric>[];
 
     for (String k in keys) {
-      l.add(await readFile(k));
+      l.add(await readLyric(k));
     }
 
     return l;

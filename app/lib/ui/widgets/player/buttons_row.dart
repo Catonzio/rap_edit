@@ -24,7 +24,9 @@ class ButtonsRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               IconButton(
-                  onPressed: () => controller.isLooping = !controller.isLooping,
+                  onPressed: controller.isPlaying
+                      ? () => controller.isLooping = !controller.isLooping
+                      : null,
                   padding: EdgeInsets.zero,
                   tooltip: "Wheter replay or not",
                   color: controller.isLooping

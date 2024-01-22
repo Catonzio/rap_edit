@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
-// import 'package:rap_edit/ui/widgets/player/player_slider_widget.dart';
+import 'package:rap_edit/utils/enums.dart';
 
 class MusicController extends GetxController {
   static MusicController get to => Get.find<MusicController>();
@@ -69,13 +69,20 @@ class MusicController extends GetxController {
     await dispose();
   }
 
-  Future<void> loadBeat(Beat beat, {bool isLocal = true}) async {
+  Future<void> loadBeat(Beat beat) async {
     isLoadingBeat = true;
-    if (isLocal) {
-      await audioPlayer.setSource(AssetSource(beat.songUrl));
-    } else {
-      await audioPlayer.setSourceUrl(beat.songUrl);
+    switch (beat.sourceType) {
+      case SourceType.asset:
+        await audioPlayer.setSource(AssetSource(beat.songUrl));
+        break;
+      case SourceType.url:
+        await audioPlayer.setSource(UrlSource(beat.songUrl));
+        break;
+      case SourceType.file:
+        await audioPlayer.setSource(DeviceFileSource(beat.songUrl));
+        break;
     }
+
     this.beat = beat;
     duration = (await audioPlayer.getDuration()) ?? Duration.zero;
     isLoadingBeat = false;

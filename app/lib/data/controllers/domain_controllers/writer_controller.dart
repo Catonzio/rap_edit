@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/file_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/lyric_file_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class WriterController extends GetxController {
   static WriterController get to => Get.find<WriterController>();
 
-  final FileController fileController = FileController.to;
+  final LyricFileController fileController = LyricFileController.to;
   final TextEditingController textEditingController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
 
@@ -26,13 +26,13 @@ class WriterController extends GetxController {
     currentLyric.text = textEditingController.text.trim();
     currentLyric.title = titleController.text.trim();
     currentLyric = currentLyric;
-    return await fileController.saveFile(currentLyric);
+    return await fileController.saveLyric(currentLyric);
   }
 
   void emptyText() {
     textEditingController.clear();
     currentLyric.text = "";
-    fileController.saveFile(currentLyric);
+    fileController.saveLyric(currentLyric);
   }
 
   void newLyric() {

@@ -1,35 +1,53 @@
 import 'dart:io';
 
 import 'package:rap_edit/utils/constants.dart';
+import 'package:rap_edit/utils/enums.dart';
+import 'package:rap_edit/utils/utility_functions.dart';
 
 class Beat {
   final String id;
   String title;
   String songUrl;
+  SourceType sourceType;
 
   Beat({
     required this.id,
     required this.title,
     required this.songUrl,
+    required this.sourceType,
   });
 
   factory Beat.empty() {
-    return Beat(id: uuid.v4(), title: "", songUrl: "");
+    return Beat(
+        id: uuid.v4(), title: "", songUrl: "", sourceType: SourceType.asset);
+  }
+
+  factory Beat.fromAsset(String assetUrl) {
+    return Beat(
+        id: uuid.v4(),
+        title: extractNameFromPath(assetUrl),
+        songUrl: assetUrl,
+        sourceType: SourceType.asset);
   }
 
   factory Beat.fromSongUrl(String songUrl) {
-    final String name = songUrl.split('/').last;
-    return Beat(id: uuid.v4(), title: name, songUrl: songUrl);
+    return Beat(
+        id: uuid.v4(),
+        title: extractNameFromPath(songUrl),
+        songUrl: songUrl,
+        sourceType: SourceType.url);
   }
 
   factory Beat.fromPath(String path) {
-    final String name = path.split('/').last;
-    return Beat(id: uuid.v4(), title: name, songUrl: path);
+    return Beat(
+        id: uuid.v4(),
+        title: extractNameFromPath(path),
+        songUrl: path,
+        sourceType: SourceType.file);
   }
 
   factory Beat.fromFile(File file) {
-    return Beat(
-        id: uuid.v4(), title: file.path.split('/').last, songUrl: file.path);
+    return Beat.fromPath(file.path);
   }
 
   factory Beat.fromJson(Map<String, dynamic> json) {
@@ -37,6 +55,8 @@ class Beat {
       id: json['id'],
       title: json['title'],
       songUrl: json['songUrl'],
+      sourceType: SourceType.values
+          .firstWhere((type) => type.name == json['sourceType']),
     );
   }
 
@@ -45,6 +65,7 @@ class Beat {
       'id': id,
       'title': title,
       'songUrl': songUrl,
+      'sourceType': sourceType.name,
     };
   }
 

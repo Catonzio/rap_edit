@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/file_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/lyric_file_controller.dart';
 import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
 
 class LyricsController extends GetxController {
-  final FileController fileController = FileController.to;
+  final LyricFileController fileController = LyricFileController.to;
 
   final RxBool _isLoadingLyrics = false.obs;
   bool get isLoadingLyrics => _isLoadingLyrics.value;
@@ -32,7 +32,7 @@ class LyricsController extends GetxController {
 
   void fetchLyrics() async {
     isLoadingLyrics = true;
-    lyrics = await fileController.readAllFiles();
+    lyrics = await fileController.readAllLyrics();
     isLoadingLyrics = false;
   }
 
@@ -47,7 +47,7 @@ class LyricsController extends GetxController {
   }
 
   void deleteLyric(int index) {
-    fileController.deleteFile(lyrics[index].id);
+    fileController.deleteLyric(lyrics[index].id);
     lyrics.removeAt(index);
   }
 }

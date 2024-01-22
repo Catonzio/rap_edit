@@ -12,6 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(settingsStorageName);
   await GetStorage.init(lyricsStorageName);
+  await GetStorage.init(beatsStorageName);
   runApp(const App());
 }
 
