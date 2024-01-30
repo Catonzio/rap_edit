@@ -55,13 +55,11 @@ class PlayerWidget extends StatelessWidget {
                     PlayerSliderWidget(
                       fullWidth: width * 0.63,
                       fullHeight: height * 0.4,
-                      // value: (controller.sliderController.currentPosition.inMilliseconds
-                      //         .toDouble() /
-                      //     controller.sliderController.duration.inMilliseconds.toDouble()),
                       canMove: controller.isBeatLoaded,
                       onPositionChanged: (Duration duration) {
-                        controller.sliderController.currentPosition = duration;
+                        controller.seek(duration);
                       },
+                      onReachEnd: controller.onReachEnd,
                     ),
                     Container(
                       // width: width * 0.4,

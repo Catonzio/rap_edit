@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/ui/widgets/player/player_slider_widget.dart';
 import 'package:rap_edit/utils/enums.dart';
+import 'package:rap_edit/utils/extensions/duration_extension.dart';
 // import 'package:rap_edit/utils/utility_functions.dart';
 
 class MusicController extends GetxController {
@@ -52,7 +53,13 @@ class MusicController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    audioPlayer.onPlayerComplete.listen((event) {
+      onReachEnd();
+    });
     audioPlayer.onPositionChanged.listen((Duration duration) {
+      if (duration >= sliderController.getEndDuration) {
+        onReachEnd();
+      }
       sliderController.currentPosition = duration;
     });
   }
@@ -88,6 +95,8 @@ class MusicController extends GetxController {
     sliderController.duration =
         (await audioPlayer.getDuration()) ?? Duration.zero;
     isLoadingBeat = false;
+    sliderController.startPosition = 0.0;
+    sliderController.endPosition = 1.0;
   }
 
   void setEmpty() {
@@ -110,7 +119,9 @@ class MusicController extends GetxController {
 
   void stop() {
     isPlaying = false;
-    audioPlayer.stop();
+    audioPlayer.seek(sliderController.getStartDuration);
+    audioPlayer.pause();
+    // audioPlayer.stop();
   }
 
   void forwardFiveSeconds() {
@@ -130,6 +141,12 @@ class MusicController extends GetxController {
   }
 
   void seek(Duration duration) {
+    duration = duration.clamp(
+        sliderController.getStartDuration, sliderController.getEndDuration);
     audioPlayer.seek(duration);
+  }
+
+  void onReachEnd() {
+    isLooping ? seek(sliderController.getStartDuration) : stop();
   }
 }

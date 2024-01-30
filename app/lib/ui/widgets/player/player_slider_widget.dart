@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/utils/extensions/duration_extension.dart';
@@ -22,24 +23,28 @@ class PlayerSliderController extends GetxController {
   double get endPosition => _endPosition.value;
   set endPosition(double value) => _endPosition.value = value;
 
-  // double get sliderFraction => duration == Duration.zero
-  //     ? 0
-  //     : currentPosition.inMilliseconds.toDouble() /
-  //         duration.inMilliseconds.toDouble();
+  double get posPerc => adjustNanWidth(currentPosition / duration);
+
+  Duration get getStartDuration =>
+      Duration(milliseconds: (startPosition * duration.inMilliseconds).toInt());
+
+  Duration get getEndDuration =>
+      Duration(milliseconds: (endPosition * duration.inMilliseconds).toInt());
 }
 
 class PlayerSliderWidget extends StatelessWidget {
   final double width;
   final double fullWidth;
   final double fullHeight;
-  final double height;
+  final double barHeight;
   final double limiterHeight;
   // final double value;
   final bool canMove;
+  final double limiterWidth;
+  final double percMinDistance;
 
   final Function(Duration) onPositionChanged;
-
-  final double limiterWidth;
+  final Function() onReachEnd;
 
   const PlayerSliderWidget(
       {super.key,
@@ -48,15 +53,19 @@ class PlayerSliderWidget extends StatelessWidget {
       // required this.value,
       required this.canMove,
       required this.onPositionChanged,
+      required this.onReachEnd,
       this.limiterWidth = 10})
-      : height = fullHeight / 4,
+      : barHeight = fullHeight / 4,
         limiterHeight = fullHeight / 2,
-        width = fullWidth - limiterWidth * 2;
+        width = fullWidth - limiterWidth * 2,
+        percMinDistance = 0.10;
 
   @override
   Widget build(BuildContext context) {
     return GetX<PlayerSliderController>(
       // init: PlayerSliderController(),
+      // didChangeDependencies: (state) => print("Did change dependencies"),
+      // didUpdateWidget: (oldWidget, state) => print("Did update widget"),
       builder: (controller) {
         return Container(
           color: Colors.green,
@@ -80,13 +89,13 @@ class PlayerSliderWidget extends StatelessWidget {
 
   Positioned backgroundBar() {
     return Positioned(
-      top: (fullHeight - height) / 2,
-      left: limiterWidth,
-      width: width,
-      height: height,
+      top: (fullHeight - barHeight) / 2,
+      left: limiterWidth * 2,
+      width: width - limiterWidth * 2,
+      height: barHeight * 2,
       child: Container(
         // color: Colors.grey,
-        height: height,
+        height: barHeight,
         color: Colors.grey[800],
       ),
     );
@@ -94,11 +103,11 @@ class PlayerSliderWidget extends StatelessWidget {
 
   Positioned activeBar(PlayerSliderController controller) {
     return Positioned(
-      top: (fullHeight - height) / 2,
-      height: height,
-      left: controller.startPosition * width + limiterWidth,
-      width: (controller.endPosition - controller.startPosition) *
-          (width - limiterWidth * 2),
+      top: (fullHeight - barHeight) / 2,
+      height: barHeight * 1.3,
+      left: controller.startPosition * width + limiterWidth * 2,
+      width: (controller.endPosition - controller.startPosition) * width -
+          limiterWidth * 2,
       child: GestureDetector(
         onPanUpdate: (details) => onPanUpdate(controller, details),
         onTapDown: (details) => onTapDown(controller, details),
@@ -112,10 +121,8 @@ class PlayerSliderWidget extends StatelessWidget {
               top: 0,
               bottom: 0,
               left: 0,
-              width: (adjustNanWidth(
-                          controller.currentPosition / controller.duration) -
-                      controller.startPosition) *
-                  (width + limiterWidth),
+              width: (controller.posPerc - controller.startPosition) *
+                  (width - limiterWidth * 2),
               child: Container(
                 color: Colors.blue,
               ),
@@ -135,9 +142,11 @@ class PlayerSliderWidget extends StatelessWidget {
             limiterWidth, // (controller.endPosition - controller.startPosition) * width,
         height: limiterHeight,
         child: GestureDetector(
-          onPanUpdate: (details) {
-            leftLimiterPan(controller, details);
-          },
+          onPanUpdate: !canMove
+              ? null
+              : (details) {
+                  leftLimiterPan(controller, details);
+                },
           child: Container(
             color: Colors.purple,
             width: limiterWidth,
@@ -147,10 +156,12 @@ class PlayerSliderWidget extends StatelessWidget {
       Positioned(
           top: (fullHeight - limiterHeight) / 2 + limiterHeight,
           left: controller.startPosition * width,
-          width: limiterWidth * 10,
+          width: limiterWidth * 3,
           height: limiterHeight,
-          child: Text((controller.duration * controller.startPosition)
-              .formattedDuration))
+          child: AutoSizeText(
+            (controller.duration * controller.startPosition).formattedDuration,
+            maxLines: 1,
+          ))
     ];
   }
 
@@ -162,9 +173,11 @@ class PlayerSliderWidget extends StatelessWidget {
         width: limiterWidth,
         height: limiterHeight,
         child: GestureDetector(
-          onPanUpdate: (details) {
-            rightLimiterPan(controller, details);
-          },
+          onPanUpdate: !canMove
+              ? null
+              : (details) {
+                  rightLimiterPan(controller, details);
+                },
           child: Container(
             color: Colors.red,
           ),
@@ -172,45 +185,63 @@ class PlayerSliderWidget extends StatelessWidget {
       ),
       Positioned(
           top: (fullHeight - limiterHeight) / 2 + limiterHeight,
-          left: controller.endPosition * width - limiterWidth * 2,
-          width: limiterWidth * 10,
+          left: controller.endPosition * width - limiterWidth,
+          width: limiterWidth * 3,
           height: limiterHeight,
-          child: Text(
-              (controller.duration * controller.endPosition).formattedDuration))
+          child: AutoSizeText(
+            (controller.duration * controller.endPosition).formattedDuration,
+            maxLines: 1,
+          ))
     ];
   }
 
   void leftLimiterPan(
       PlayerSliderController controller, DragUpdateDetails details) {
-    if (!canMove) return;
     double newFraction = controller.startPosition + details.delta.dx / width;
-    newFraction = newFraction.clamp(
-        0, controller.endPosition - limiterWidth / width * 10);
+    // limit distance between start and end
+    newFraction =
+        newFraction.clamp(0, controller.endPosition - percMinDistance);
     controller.startPosition = newFraction;
+
+    // check if current position is less than start position
+    Duration newDuration = controller.getStartDuration;
+    if (controller.currentPosition < newDuration) {
+      onPositionChanged(newDuration);
+    }
   }
 
   void rightLimiterPan(
       PlayerSliderController controller, DragUpdateDetails details) {
-    if (!canMove) return;
     double newFraction = controller.endPosition + details.delta.dx / width;
-    newFraction = newFraction.clamp(
-        controller.startPosition + limiterWidth / width * 10, 1);
+    // limit distance between start and end
+    newFraction =
+        newFraction.clamp(controller.startPosition + percMinDistance, 1);
     controller.endPosition = newFraction;
+
+    // check if current position is greater than end position
+    Duration endDuration = controller.getEndDuration;
+    if (controller.currentPosition > endDuration) {
+      onReachEnd();
+    }
   }
 
   void onTapDown(PlayerSliderController controller, TapDownDetails details) {
+    double posPerc = details.localPosition.dx / (width - limiterWidth * 2) +
+        controller.startPosition;
+    // double posPerc = details.localPosition.dx /
+    //         ((controller.endPosition - controller.startPosition) * width) +
+    //     controller.startPosition;
+    print("${details.localPosition.dx}, ${width - limiterWidth * 2}");
+    print("$posPerc, ${controller.startPosition}, ${controller.endPosition}");
     controller.currentPosition = Duration(
-        milliseconds: (details.localPosition.dx /
-                width *
-                controller.duration.inMilliseconds)
-            .toInt());
+        milliseconds: (posPerc * controller.duration.inMilliseconds).toInt());
     onPositionChanged(controller.currentPosition);
   }
 
   void onPanUpdate(
       PlayerSliderController controller, DragUpdateDetails details) {
     double newFraction = controller.currentPosition / controller.duration +
-        details.delta.dx / width;
+        details.delta.dx / (width - limiterWidth * 2);
     newFraction =
         newFraction.clamp(controller.startPosition, controller.endPosition);
 

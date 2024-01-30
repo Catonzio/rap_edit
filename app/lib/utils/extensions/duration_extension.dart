@@ -14,5 +14,15 @@ extension DurationExtension on Duration {
   double operator *(double other) => adjustNanWidth(
       inMilliseconds.toDouble() * other);
 
+  Duration clamp(Duration min, Duration max) {
+    if (this < min) {
+      return min;
+    } else if (this > max) {
+      return max;
+    } else {
+      return this;
+    }
+  }
+
   double get ms => inMilliseconds.toDouble();
 }
