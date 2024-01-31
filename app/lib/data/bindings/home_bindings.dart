@@ -7,11 +7,11 @@ import 'package:rap_edit/ui/widgets/player/player_slider_widget.dart';
 class HomeBindings implements Bindings {
   @override
   void dependencies() {
-    // PlayerSliderController playerSliderController =
     Get.put<PlayerSliderController>(PlayerSliderController());
 
     MusicController musicController =
         Get.put<MusicController>(MusicController());
+
     WriterController writerController =
         Get.put<WriterController>(WriterController());
 

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/lyric_file_controller.dart';
+import 'package:rap_edit/data/controllers/domain_controllers/music_controller.dart';
+import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/data/models/lyric.dart';
+import 'package:rap_edit/data/repositories/lyrics_repository.dart';
 
 class WriterController extends GetxController {
   static WriterController get to => Get.find<WriterController>();
 
-  final LyricFileController fileController = LyricFileController.to;
+  // final LyricFileController lyricRepository = LyricFileController.to;
+  final LyricsRepository lyricsRepository = LyricsRepository.to;
   final TextEditingController textEditingController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
 
@@ -23,16 +26,19 @@ class WriterController extends GetxController {
   }
 
   Future<bool> saveText() async {
+    Beat? currentBeat = MusicController.to.beat;
     currentLyric.text = textEditingController.text.trim();
     currentLyric.title = titleController.text.trim();
-    currentLyric = currentLyric;
-    return await fileController.saveLyric(currentLyric);
+    currentLyric.songUrl = currentBeat?.songUrl ?? "";
+    currentLyric.beatId = currentBeat?.id ?? "";
+    // currentLyric currentLyric = currentLyric;
+    return await lyricsRepository.saveLyric(currentLyric);
   }
 
   void emptyText() {
     textEditingController.clear();
     currentLyric.text = "";
-    fileController.saveLyric(currentLyric);
+    lyricsRepository.saveLyric(currentLyric);
   }
 
   void newLyric() {

@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/configs/routes.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/lyric_file_controller.dart';
 import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 import 'package:rap_edit/data/models/lyric.dart';
+import 'package:rap_edit/data/repositories/lyrics_repository.dart';
 
 class LyricsController extends GetxController {
-  final LyricFileController fileController = LyricFileController.to;
+  final LyricsRepository lyricsRepository = LyricsRepository.to;
 
   final RxBool _isLoadingLyrics = false.obs;
   bool get isLoadingLyrics => _isLoadingLyrics.value;
@@ -21,7 +21,7 @@ class LyricsController extends GetxController {
   void onReady() {
     super.onReady();
     fetchLyrics();
-    _disposeListen = fileController.box.listen(() => fetchLyrics());
+    // _disposeListen = fileController.box.listen(() => fetchLyrics());
   }
 
   @override
@@ -32,7 +32,7 @@ class LyricsController extends GetxController {
 
   void fetchLyrics() async {
     isLoadingLyrics = true;
-    lyrics = await fileController.readAllLyrics();
+    lyrics = await lyricsRepository.getAllLyrics();
     isLoadingLyrics = false;
   }
 
@@ -47,7 +47,7 @@ class LyricsController extends GetxController {
   }
 
   void deleteLyric(int index) {
-    fileController.deleteLyric(lyrics[index].id);
+    lyricsRepository.deleteLyric(lyrics[index].id);
     lyrics.removeAt(index);
   }
 }

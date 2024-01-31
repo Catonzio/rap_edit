@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rap_edit/utils/constants.dart';
 
 String extractNameFromPath(String path) {
@@ -21,3 +22,9 @@ String extractNameFromPath(String path) {
 
 double adjustNanWidth(double width) =>
     width.isInfinite || width.isNaN ? 0 : width;
+
+bool isConnectionOnline(ConnectivityResult result) => [
+      ConnectivityResult.mobile,
+      ConnectivityResult.wifi,
+      ConnectivityResult.ethernet
+    ].contains(result);

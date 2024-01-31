@@ -1,14 +1,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:rap_edit/data/controllers/domain_controllers/beat_file_controller.dart';
 import 'package:rap_edit/data/controllers/pages_controllers/home_controller.dart';
 import 'package:rap_edit/data/models/beat.dart';
+import 'package:rap_edit/data/repositories/beats_repository.dart';
 import 'package:rap_edit/utils/constants.dart';
 
 class BeatsController extends GetxController {
   static final BeatsController to = Get.find<BeatsController>();
 
-  final BeatFileController fileController = BeatFileController.to;
+  final BeatsRepository beatsRepository = BeatsRepository.to;
 
   final RxBool _isLoadingBeats = false.obs;
   bool get isLoadingBeats => _isLoadingBeats.value;
@@ -25,7 +25,7 @@ class BeatsController extends GetxController {
     if (beats.isEmpty) {
       isLoadingBeats = true;
       beats = assetsBeats;
-      beats = [...beats, ...(await fileController.readAllBeats())];
+      beats = [...beats, ...(await beatsRepository.getAllBeats())];
       isLoadingBeats = false;
     }
   }
@@ -54,7 +54,7 @@ class BeatsController extends GetxController {
               path != null && !beats.map((beat) => beat.songUrl).contains(path))
           .map((path) => Beat.fromPath(path!))
           .toList();
-      fileController.saveBeats(newBeats);
+      beatsRepository.saveBeats(newBeats);
       beats = [...beats, ...newBeats];
     } else {
       // User canceled the picker

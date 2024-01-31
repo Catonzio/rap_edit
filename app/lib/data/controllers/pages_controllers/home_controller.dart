@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:rap_edit/data/controllers/domain_controllers/music_controller.dart';
 import 'package:rap_edit/data/controllers/domain_controllers/writer_controller.dart';
-import 'package:rap_edit/data/controllers/pages_controllers/beats_controller.dart';
 import 'package:rap_edit/data/models/beat.dart';
 import 'package:rap_edit/data/models/lyric.dart';
+import 'package:rap_edit/data/repositories/beats_repository.dart';
 
 class HomeController extends GetxController {
   static final HomeController to = Get.find<HomeController>();
@@ -23,19 +23,24 @@ class HomeController extends GetxController {
     writerController.currentLyric.songUrl = beat.songUrl;
   }
 
-  void loadLyric(Lyric lyric) {
+  void loadLyric(Lyric lyric) async {
     writerController.loadLyric(lyric);
     if (lyric.songUrl.isEmpty) {
       musicController.setEmpty();
       return;
     }
-    Beat beat;
+
     try {
-      beat = BeatsController.to.getBeatWithUrl(lyric.songUrl) ??
-          Beat.fromSongUrl(lyric.songUrl);
+      musicController.loadBeat(await BeatsRepository.to.getBeat(lyric.beatId));
     } catch (e) {
-      beat = Beat.fromSongUrl(lyric.songUrl);
+      musicController.setEmpty();
     }
-    musicController.loadBeat(beat);
+    // try {
+    //   beat = BeatsController.to.getBeatWithUrl(lyric.songUrl) ??
+    //       Beat.fromSongUrl(lyric.songUrl);
+    // } catch (e) {
+    //   beat = Beat.fromSongUrl(lyric.songUrl);
+    // }
+    // musicController.loadBeat(beat);
   }
 }
