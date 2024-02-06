@@ -147,6 +147,11 @@ class MusicController extends GetxController {
   }
 
   void onReachEnd() {
-    isLooping ? seek(sliderController.getStartDuration) : stop();
+    if (isLooping) {
+      seek(sliderController.getStartDuration);
+      play();
+    } else {
+      stop();
+    }
   }
 }

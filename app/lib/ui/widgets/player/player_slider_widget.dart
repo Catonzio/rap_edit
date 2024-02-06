@@ -67,8 +67,7 @@ class PlayerSliderWidget extends StatelessWidget {
       // didChangeDependencies: (state) => print("Did change dependencies"),
       // didUpdateWidget: (oldWidget, state) => print("Did update widget"),
       builder: (controller) {
-        return Container(
-          color: Colors.green,
+        return SizedBox(
           width: fullWidth,
           height: fullHeight,
           child: Stack(
@@ -92,7 +91,7 @@ class PlayerSliderWidget extends StatelessWidget {
       top: (fullHeight - barHeight) / 2,
       left: limiterWidth * 2,
       width: width - limiterWidth * 2,
-      height: barHeight * 2,
+      height: barHeight,
       child: Container(
         // color: Colors.grey,
         height: barHeight,
@@ -104,7 +103,7 @@ class PlayerSliderWidget extends StatelessWidget {
   Positioned activeBar(PlayerSliderController controller) {
     return Positioned(
       top: (fullHeight - barHeight) / 2,
-      height: barHeight * 1.3,
+      height: barHeight,
       left: controller.startPosition * width + limiterWidth * 2,
       width: (controller.endPosition - controller.startPosition) * width -
           limiterWidth * 2,
@@ -248,7 +247,6 @@ class PlayerSliderWidget extends StatelessWidget {
     controller.currentPosition = Duration(
         milliseconds:
             (newFraction * controller.duration.inMilliseconds).toInt());
-
     onPositionChanged(controller.currentPosition);
   }
 }
