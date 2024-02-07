@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rap_edit/ui/widgets/player/player_widget.dart';
+import 'package:rap_edit/ui/widgets/recording_widget.dart';
 import 'package:rap_edit/ui/widgets/writer_widget.dart';
 import 'package:rap_edit/utils/constants.dart';
 
@@ -9,6 +10,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double recordingSize =
+        Size(context.width * 0.1, context.height * 0.1).shortestSide;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Writing Page"),
@@ -32,6 +35,7 @@ class HomePage extends StatelessWidget {
                     height: context.height * 0.2,
                     width: context.width,
                   ),
+                  RecordingWidget(width: recordingSize, height: recordingSize),
                   WriterWidget(
                     height: context.height * 0.5,
                     width: context.width * 0.9,
