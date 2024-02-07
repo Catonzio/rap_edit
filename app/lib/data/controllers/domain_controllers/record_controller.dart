@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:rap_edit/utils/constants.dart';
 
 class RecorderController extends GetxController {
   static final RecorderController to = Get.find<RecorderController>();
@@ -19,30 +20,24 @@ class RecorderController extends GetxController {
   Duration get counter => _counter.value;
   set counter(Duration value) => _counter.value = value;
 
+  bool get isCountingDown =>
+      (counterTimer != null || (counterTimer?.isActive ?? false)) &&
+      !isRecording;
+
   Timer? counterTimer;
-  Timer? countdownTimer;
 
   void startRecording() {
-    const oneSecond = Duration(seconds: 1);
     counterTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (countdown < countdownDuration) {
+      if (countdown <= countdownDuration) {
         countdown = countdown + oneSecond;
       } else {
         isRecording = true;
         counter = counter + oneSecond;
       }
     });
-    // countdownTimer = Timer(const Duration(seconds: countdownDuration), () {
-    //   counterTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-    //     counter = counter + const Duration(seconds: 1);
-    //   });
-    //   isRecording = true;
-    // });
   }
 
   void stopRecording() {
-    countdownTimer?.cancel();
-    countdownTimer = null;
     counterTimer?.cancel();
     counterTimer = null;
     counter = Duration.zero;

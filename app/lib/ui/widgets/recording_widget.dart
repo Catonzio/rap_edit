@@ -12,76 +12,69 @@ class RecordingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RecorderController controller = RecorderController.to;
     double circleInnerFraction = 0.8;
     double squareInnerFraction = 0.65;
     return GetX<RecorderController>(
       builder: (controller) {
-        return Row(
-          children: [
-            Obx(() => Text(
-                (RecorderController.countdownDuration - controller.countdown)
-                    .inSeconds
-                    .toString())),
-            InkWell(
-              onTap: () {
-                // if it's counting down, don't do anything
-                if (controller.countdownTimer?.isActive ?? false) return;
-                controller.isRecording
-                    ? controller.stopRecording()
-                    : controller.startRecording();
-              },
-              child: Stack(
-                children: [
-                  Container(
-                    width: width,
-                    height: height,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
+        return SizedBox(
+          width: width * 3,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  // if it's counting down, don't do anything
+                  if (controller.isCountingDown) return;
+                  controller.isRecording
+                      ? controller.stopRecording()
+                      : controller.startRecording();
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      width: width,
+                      height: height,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                  ),
-                  Obx(() => controller.isRecording
-                      ? Positioned(
-                          top: height * (1 - squareInnerFraction) / 2,
-                          left: width * (1 - squareInnerFraction) / 2,
-                          child: SquareContainer(
-                            width: width * squareInnerFraction,
-                            height: height * squareInnerFraction,
+                    controller.isRecording
+                        ? Positioned(
+                            top: height * (1 - squareInnerFraction) / 2,
+                            left: width * (1 - squareInnerFraction) / 2,
+                            child: SquareContainer(
+                              width: width * squareInnerFraction,
+                              height: height * squareInnerFraction,
+                            ),
+                          )
+                        : Positioned(
+                            top: height * (1 - circleInnerFraction) / 2,
+                            left: width * (1 - circleInnerFraction) / 2,
+                            child: CircularContainer(
+                              width: width * circleInnerFraction,
+                              height: height * circleInnerFraction,
+                            ),
                           ),
-                        )
-                      : Positioned(
-                          top: height * (1 - circleInnerFraction) / 2,
-                          left: width * (1 - circleInnerFraction) / 2,
-                          child: CircularContainer(
-                            width: width * circleInnerFraction,
-                            height: height * circleInnerFraction,
-                          ),
-                        )),
-                  // Obx(() => Positioned(
-                  //     top: height / 2 - 10,
-                  //     left: width / 2 - 5,
-                  //     child: AutoSizeText(
-                  //       "${(RecorderController.countdownDuration - controller.countdown).inSeconds}",
-                  //       maxLines: 1,
-                  //     ))),
-                  controller.counterTimer != null &&
-                          (controller.counterTimer?.isActive ?? false) &&
-                          !controller.isRecording
-                      ? Positioned.fill(
-                          child: AutoSizeText(
-                          "${(RecorderController.countdownDuration - controller.countdown).inSeconds}",
-                          maxLines: 1,
-                        ))
-                      : const SizedBox.shrink()
-                ],
+                    controller.isCountingDown
+                        ? Positioned(
+                            top: height / 2 - 10,
+                            left: width / 2 - 5,
+                            child: AutoSizeText(
+                              "${(RecorderController.countdownDuration - controller.countdown).inSeconds + 1}",
+                              maxLines: 1,
+                            ))
+                        : const SizedBox.shrink()
+                  ],
+                ),
               ),
-            ),
-            Obx(() => AutoSizeText(
-                  controller.counter.formattedDuration,
-                  maxLines: 1,
-                ))
-          ],
+              Obx(() => AutoSizeText(
+                    controller.counter.formattedDuration,
+                    maxLines: 1,
+                  ))
+            ],
+          ),
         );
       },
     );

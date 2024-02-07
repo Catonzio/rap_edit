@@ -9,6 +9,8 @@ const String settingsStorageName = "SettingsStorage";
 
 Uuid uuid = const Uuid();
 
+const oneSecond = Duration(seconds: 1);
+
 List<Beat> assetsBeats = [
   Beat.fromAsset("beats/Gemitaiz - Gigante (instrumental).mp3"),
   Beat.fromAsset("beats/Hip_Hop_Instrumental_Beat.mp3"),
