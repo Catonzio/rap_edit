@@ -11,6 +11,7 @@ class PagesDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentRoute = ModalRoute.of(context)?.settings.name ?? "";
     return SizedBox(
       width: (context.width * 0.5).clamp(150, 300),
       child: Drawer(
@@ -35,53 +36,61 @@ class PagesDrawer extends StatelessWidget {
               ),
               Expanded(
                 child: ListView(
-                  children: const [
+                  children: [
                     DrawerItem(
                       icon: Icons.draw,
                       title: "Writing",
                       route: Routes.writing,
+                      isSelected: currentRoute == Routes.writing,
                     ),
                     Divider(),
                     DrawerItem(
                       icon: Icons.queue_music,
                       title: "Load beat",
                       route: Routes.beats,
+                      isSelected: currentRoute == Routes.beats,
                     ),
                     DrawerItem(
                       icon: Icons.upload_file,
                       title: "Load lyric",
                       route: Routes.lyrics,
+                      isSelected: currentRoute == Routes.lyrics,
                     ),
                     DrawerItem(
                       icon: Icons.spatial_audio_off,
                       title: "Load recs",
                       route: Routes.recordings,
+                      isSelected: currentRoute == Routes.recordings,
                     ),
                     Divider(),
                     DrawerItem(
                       icon: Icons.multitrack_audio,
                       title: "Mix audio",
                       route: Routes.mix,
+                      isSelected: currentRoute == Routes.mix,
                     ),
                     DrawerItem(
                       icon: Icons.mic_external_on_rounded,
                       title: "Mixed songs",
                       route: Routes.mixedSongs,
+                      isSelected: currentRoute == Routes.mixedSongs,
                     ),
                   ],
                 ),
               ),
               // const Spacer(),
               const Divider(thickness: 5),
-              const DrawerItem(
+              DrawerItem(
                 icon: Icons.settings,
                 title: "Settings",
-                route: "/settings",
+                route: Routes.settings,
+                isSelected: currentRoute == Routes.settings,
               ),
-              const DrawerItem(
+              DrawerItem(
                 icon: Icons.info,
                 title: "About",
-                route: "/about",
+                route: Routes.about,
+                isSelected: currentRoute == Routes.about,
               ),
             ],
           )),
@@ -93,16 +102,21 @@ class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String route;
+  final bool isSelected;
 
   const DrawerItem(
       {super.key,
       required this.icon,
       required this.title,
-      required this.route});
+      required this.route,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: isSelected
+          ? context.theme.colorScheme.primary.withOpacity(0.2)
+          : null,
       leading: Icon(icon),
       title: AutoSizeText(
         title,

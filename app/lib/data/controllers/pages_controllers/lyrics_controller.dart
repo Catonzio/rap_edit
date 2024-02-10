@@ -15,7 +15,7 @@ class LyricsController extends GetxController {
   List<Lyric> get lyrics => _lyrics;
   set lyrics(List<Lyric> value) => _lyrics.value = value;
 
-  Function() _disposeListen = () {};
+  // Function() _disposeListen = () {};
 
   @override
   void onReady() {
@@ -27,7 +27,7 @@ class LyricsController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    _disposeListen.call();
+    // _disposeListen.call();
   }
 
   void fetchLyrics() async {
