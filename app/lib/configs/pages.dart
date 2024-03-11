@@ -5,7 +5,7 @@ import 'package:rap_edit/data/bindings/lyrics_bindings.dart';
 import 'package:rap_edit/data/bindings/settings_bindings.dart';
 import 'package:rap_edit/data/bindings/splash_bindings.dart';
 import 'package:rap_edit/ui/pages/about_page.dart';
-import 'package:rap_edit/ui/pages/beats_page.dart';
+import 'package:rap_edit/ui/pages/beats/beats_page.dart';
 import 'package:rap_edit/ui/pages/home_page.dart';
 import 'package:rap_edit/ui/pages/lyrics_page.dart';
 import 'package:rap_edit/ui/pages/mixed_songs_page.dart';

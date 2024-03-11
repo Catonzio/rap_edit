@@ -7,8 +7,8 @@ import 'package:rap_edit/ui/widgets/tiles/basic_tile.dart';
 
 class BeatTile extends StatelessWidget {
   final Beat beat;
-  final Function() onTap;
-  const BeatTile({super.key, required this.beat, required this.onTap});
+  final Function() onUpload;
+  const BeatTile({super.key, required this.beat, required this.onUpload});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,14 @@ class BeatTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: onTap,
+              onPressed: onUpload,
               icon: const Icon(Icons.upload_rounded),
               color: Themes.yellow,
             ),
             Obx(() => IconButton(
                   onPressed: () => controller.isPlaying(beat.songUrl)
                       ? controller.pause()
-                      : controller.play(beat.songUrl),
+                      : controller.play(beat.songUrl, beat.sourceType),
                   icon: Icon(controller.isPlaying(beat.songUrl)
                       ? Icons.pause
                       : Icons.play_arrow),
