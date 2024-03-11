@@ -20,12 +20,12 @@ class HomeController extends GetxController {
 
   void setSong(Beat beat) {
     musicController.loadBeat(beat);
-    writerController.currentLyric.songUrl = beat.songUrl;
+    writerController.currentLyric.beatUrl = beat.songUrl;
   }
 
   void loadLyric(Lyric lyric) async {
     writerController.loadLyric(lyric);
-    if (lyric.songUrl.isEmpty) {
+    if (lyric.beatUrl.isEmpty) {
       musicController.setEmpty();
       return;
     }

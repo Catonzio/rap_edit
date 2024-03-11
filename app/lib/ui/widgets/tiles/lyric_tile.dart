@@ -30,10 +30,13 @@ class LyricTile extends StatelessWidget {
             ),
             Expanded(
                 flex: 4,
-                child: AutoSizeText(
-                  lyric.songName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                child: Tooltip(
+                  message: lyric.beatName,
+                  child: AutoSizeText(
+                    lyric.beatName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ))
           ],
         ),

@@ -22,7 +22,7 @@ class BeatsPage extends StatelessWidget {
         initState: (state) => state.controller?.fetchBeats(),
         builder: (controller) {
           return Stack(
-            // fit: StackFit.passthrough,
+            fit: StackFit.expand,
             children: [
               Positioned(
                 left: 0,
@@ -33,19 +33,16 @@ class BeatsPage extends StatelessWidget {
                     ? const Center(child: CircularProgressIndicator())
                     : controller.beats.isEmpty
                         ? const Center(child: Text("No beats available"))
-                        : Expanded(
-                            child: ListView.builder(
-                                itemCount: controller.beats.length,
-                                itemBuilder: (context, index) => BeatTile(
-                                    beat: controller.beats[index],
-                                    onTap: () {
-                                      controller.loadBeat(index);
-                                      // context.navigator.popAndPushNamed(Routes.writing);
-                                      context.navigator.pop();
-                                      context.navigator
-                                          .pushNamed(Routes.writing);
-                                    })),
-                          ),
+                        : ListView.builder(
+                            itemCount: controller.beats.length,
+                            itemBuilder: (context, index) => BeatTile(
+                                beat: controller.beats[index],
+                                onTap: () {
+                                  controller.loadBeat(index);
+                                  // context.navigator.popAndPushNamed(Routes.writing);
+                                  context.navigator.pop();
+                                  context.navigator.pushNamed(Routes.writing);
+                                })),
               ),
               Positioned(
                 bottom: context.height * 0.01,

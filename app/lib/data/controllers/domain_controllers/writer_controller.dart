@@ -29,7 +29,7 @@ class WriterController extends GetxController {
     Beat? currentBeat = MusicController.to.beat;
     currentLyric.text = textEditingController.text.trim();
     currentLyric.title = titleController.text.trim();
-    currentLyric.songUrl = currentBeat?.songUrl ?? "";
+    currentLyric.beatUrl = currentBeat?.songUrl ?? "";
     currentLyric.beatId = currentBeat?.id ?? "";
     // currentLyric currentLyric = currentLyric;
     return await lyricsRepository.saveLyric(currentLyric);

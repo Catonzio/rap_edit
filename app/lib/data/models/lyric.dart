@@ -3,29 +3,29 @@ import 'package:rap_edit/utils/constants.dart';
 class Lyric {
   final String id;
   String title;
-  String songUrl;
   String text;
+  String beatUrl;
   String beatId;
 
-  String get songName => songUrl.split("/").last;
+  String get beatName => beatUrl.split("/").last;
 
   Lyric({
     required this.id,
     required this.title,
-    required this.songUrl,
+    required this.beatUrl,
     required this.text,
     required this.beatId,
   });
 
   factory Lyric.empty() {
-    return Lyric(id: uuid.v4(), title: "", songUrl: "", text: "", beatId: "");
+    return Lyric(id: uuid.v4(), title: "", beatUrl: "", text: "", beatId: "");
   }
 
   factory Lyric.fromJson(Map<String, dynamic> json) {
     return Lyric(
       id: json['id'] ?? uuid.v4(),
       title: json['title'] ?? "",
-      songUrl: json['songUrl'] ?? "",
+      beatUrl: json['beatUrl'] ?? "",
       text: json['text'] ?? "",
       beatId: json['beatId'] ?? "",
     );
@@ -35,7 +35,7 @@ class Lyric {
     return {
       'id': id,
       'title': title,
-      'songUrl': songUrl,
+      'beatUrl': beatUrl,
       'text': text,
       'beatId': beatId,
     };
@@ -43,7 +43,7 @@ class Lyric {
 
   @override
   String toString() {
-    return 'Lyric{id: $id, title: $title, songUrl: $songUrl, text: $text beatId: $beatId}';
+    return 'Lyric{id: $id, title: $title, beatUrl: $beatUrl, text: $text beatId: $beatId}';
   }
 
   @override
@@ -53,11 +53,15 @@ class Lyric {
           runtimeType == other.runtimeType &&
           id == other.id &&
           title == other.title &&
-          songUrl == other.songUrl &&
+          beatUrl == other.beatUrl &&
           text == other.text &&
           beatId == other.beatId;
 
   @override
   int get hashCode =>
-      id.hashCode ^ title.hashCode ^ songUrl.hashCode ^ text.hashCode ^ beatId.hashCode;
+      id.hashCode ^
+      title.hashCode ^
+      beatUrl.hashCode ^
+      text.hashCode ^
+      beatId.hashCode;
 }

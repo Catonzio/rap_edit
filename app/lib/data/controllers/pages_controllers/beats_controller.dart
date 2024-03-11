@@ -24,8 +24,12 @@ class BeatsController extends GetxController {
   void fetchBeats() async {
     if (beats.isEmpty) {
       isLoadingBeats = true;
-      beats = assetsBeats;
-      beats = [...beats, ...(await beatsRepository.getAllBeats())];
+      List<Beat> beats = await beatsRepository.getAllBeats();
+      if (beats.isEmpty) {
+        await beatsRepository.saveBeats(assetsBeats);
+        beats = assetsBeats;
+      }
+      this.beats = beats;
       isLoadingBeats = false;
     }
   }
